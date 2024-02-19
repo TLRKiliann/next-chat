@@ -1,42 +1,39 @@
 import type { UsersProps } from './definitions';
-/* import devola from "@/public/next.svg";
-import devola from "@/public/next.svg";
-import devola from "@/public/next.svg";
-import devola from "@/public/next.svg";
-import devola from "@/public/next.svg"; */
+import userIcon from "/public/assets/logo/user_icon.jpg";
+
 
 export const userschat: UsersProps[] = [
     {
         id: 1,
-        img: "",
+        img: userIcon,
         username: "Devola",
         email: "devola@mail.com",
         onLine: true
     },
     {
         id: 2,
-        img: "",
+        img: userIcon,
         username: "Mike",
         email: "mike@mail.com",
         onLine: true
     },
     {
         id: 3,
-        img: "",
+        img: userIcon,
         username: "Doug",
         email: "doug@mail.com",
         onLine: true
     },
     {
         id: 4,
-        img: "",
+        img: userIcon,
         username: "Magalie",
         email: "maga@mail.com",
         onLine: false
     },
     {
         id: 5,
-        img: "",
+        img: userIcon,
         username: "Aglianica",
         email: "aglianica@mail.com",
         onLine: true
