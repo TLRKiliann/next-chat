@@ -90,9 +90,9 @@ export default function ChatRoom() {
                     <div className='flex justify-between bg-slate-700 h-[calc(100%-80px)]'>
                         
                         <div className='w-full h-full overflow-scroll scroll-smooth bg-yellow-600'>
-                        <p className='text-slate-600 bg-slate-100 m-4 p-2 rounded-tr-lg rounded-bl-lg rounded-br-lg'>
-                            Left screen
-                        </p>
+                            <p className='text-slate-600 bg-slate-100 m-4 p-2 rounded-tr-lg rounded-bl-lg rounded-br-lg'>
+                                Left screen
+                            </p>
                         </div>
 
                         <div className='w-full h-full overflow-scroll scroll-smooth bg-blue-600'>
