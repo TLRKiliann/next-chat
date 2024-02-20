@@ -1,11 +1,19 @@
 "use client";
 
 import type { UsersProps } from '@/app/lib/definitions';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useSession, signOut } from "next-auth/react";
+import { redirect } from 'next/navigation';
 import { userschat } from '@/app/lib/data';
 import Image from 'next/image';
 
 export default function ChatRoom() {
+
+    const {data: session} = useSession();
+
+    if (!session) {
+        redirect("/login")
+    };
 
     const [users, setUsers] = useState<UsersProps[]>(userschat);
     
@@ -26,9 +34,18 @@ export default function ChatRoom() {
     return (
         <div className='h-screen'>
             
-            <h1 className='text-2xl italic font-bold p-[20px]'>
-                Chat room
-            </h1>
+            <div className="flex items-center justify-between">
+
+                <h1 className='text-2xl italic font-bold p-[20px]'>
+                    Chat room
+                </h1>
+
+                <button type="button" onClick={() => signOut()} className='bg-slate-600 mr-[20px] px-4 py-2 rounded'>
+                    Logout
+                </button>
+
+            </div>
+
 
             <div className='flex w-full h-[calc(100%-70px)]'>
 
