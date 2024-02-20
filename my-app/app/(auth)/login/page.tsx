@@ -10,7 +10,7 @@ export default function Login() {
 
   if (!session) {
     return (
-      <div className="w-full h-screen flex flex-col justify-center items-center">
+      <div className="w-full h-screen flex flex-col justify-center items-center bg-slate-50">
         <p className="text-2xl text-gray-600 mb-2">
           Not Signed In
         </p>
@@ -20,7 +20,7 @@ export default function Login() {
           Sign in with google
         </button>
         <button className="text-gray-700 border transition trasform duration-200 
-          hover:scale-105 py-2 px-4 rounded-md hover:shadow-btn mb-2"
+          hover:scale-105 py-2 px-4 rounded-md hover:shadow mb-2"
           onClick={() => signIn('github')}
         >
           Sign in with github
