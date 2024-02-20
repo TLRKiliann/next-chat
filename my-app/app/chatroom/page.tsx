@@ -7,7 +7,8 @@ import Image from 'next/image';
 
 export default function ChatRoom() {
 
-    const [users, setUsers] = useState<UsersProps[]>(userschat)
+    const [users, setUsers] = useState<UsersProps[]>(userschat);
+    
     const [inputStr, setInputStr] = useState<string>("");
     const [allStr, setAllStr] = useState<string[]>([]);
 
@@ -31,6 +32,7 @@ export default function ChatRoom() {
 
             <div className='flex w-full h-[calc(100%-70px)]'>
 
+
                 <div className='flex flex-col w-[20%] bg-blue-900'>
 
                     {users.map((user: UsersProps) => (
@@ -51,6 +53,7 @@ export default function ChatRoom() {
                     ))}
 
                 </div>
+
 
 
                 <div className='w-full'>
