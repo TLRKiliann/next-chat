@@ -19,7 +19,7 @@ export default function Login() {
         >
           Sign in with google
         </button>
-        <button className="text-gray-700 border transition trasform duration-200 
+        <button className="text-gray-600 border border-gray-400 transition trasform duration-200 
           hover:scale-105 py-2 px-4 rounded-md hover:shadow mb-2"
           onClick={() => signIn('github')}
         >
