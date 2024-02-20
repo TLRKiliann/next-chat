@@ -1,7 +1,6 @@
 import type { UsersProps } from './definitions';
 import userIcon from "/public/assets/logo/user_icon.jpg";
 
-
 export const userschat: UsersProps[] = [
     {
         id: 1,
