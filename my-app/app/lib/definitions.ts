@@ -5,14 +5,14 @@ export type UsersProps = {
     img: StaticImageData;
     username: string;
     email: string;
-    onLine: boolean;
+    online: number;
 };
 
 export type UsersChatProps = {
-    id: string;
+    id: number;
     username: string;
     email: string;
-    online: boolean;
+    online: number;
     message: string;
     room: string;
 };
