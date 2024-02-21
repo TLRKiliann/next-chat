@@ -19,14 +19,14 @@ export default function Home() {
     const form = event.currentTarget;
     const formData = new FormData(form);
     const finalVal = formData.get("room");
-    if (finalVal === "security") {
-      router.push(`/chatroom/security`);
-    } else if (finalVal === "development") {
+
+    if (finalVal === "development") {
       router.push(`/chatroom/development`);
-    } else if (finalVal === "it") {
-      router.push(`/chatroom/it`);
+    } else if (finalVal === "programming") {
+      router.push(`/chatroom/programming`);
     } else {
       console.log("Nothing choosen !")
+      router.push(`/chatroom/security`);
     }
   }
 
@@ -41,13 +41,15 @@ export default function Home() {
 
       <hr />
 
-      <form onSubmit={(e) => handleSubmit(e)} className='flex flex-col items-center justify-between h-[120px] mt-40 p-4'>
+      <form onSubmit={(e) => handleSubmit(e)} 
+        className='flex flex-col items-center justify-between h-[120px] mt-40 p-4'>
 
         <label htmlFor="room">Select a room:
-          <select name="room" id="room" value={selectVal} onChange={handleSelect} className='text-slate-800 mx-2 px-2 py-1'>
+          <select name="room" id="room" value={selectVal} onChange={handleSelect} 
+            className='text-slate-800 mx-2 px-2 py-1'>
             <option value="security">Security</option>
             <option value="development">Development</option>
-            <option value="it">IT</option>
+            <option value="programming">Programming</option>
           </select>
         </label>
 
