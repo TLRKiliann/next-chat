@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 //import type { Metadata } from 'next/types';
 import React from 'react';
-import FormMessage from '@/app/components/chatroomComp/form-message';
 import { queryChatRoom } from '@/app/lib/db';
-import ScreenMessage from '@/app/components/chatroomComp/screen-message';
+import HeaderChatroom from '@/app/components/chatroomComp/header-chatroom';
 import UserOnline from '@/app/components/chatroomComp/user-online';
+import ScreenMessage from '@/app/components/chatroomComp/screen-message';
+import FormMessage from '@/app/components/chatroomComp/form-message';
 
 export const metadata: Metadata = {
     title: {
@@ -17,7 +18,7 @@ export default async function ChatRoom() {
 
     const request = await queryChatRoom("SELECT * FROM chatroom", []);
     const data: string = JSON.stringify(request);
-    console.log(data, "data");
+    //console.log(data, "data");
 
 /*     const req = await queryChatRoom("SELECT * FROM usersonline", []);
     const usersOnline: string = JSON.stringify(req);
@@ -34,11 +35,13 @@ export default async function ChatRoom() {
     return (
         <div className='w-full h-screen'>
             
+            <HeaderChatroom />
+
             <div className='flex w-full h-[calc(100%-70px)]'>
 
                 <UserOnline data={JSON.parse(data)} />
 
-                <div className='w-full bg-slate-800'>
+                <div className='w-full bg-slate-400'>
 
                     <ScreenMessage data={JSON.parse(data)} />
                     
