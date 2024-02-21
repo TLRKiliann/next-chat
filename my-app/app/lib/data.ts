@@ -7,34 +7,34 @@ export const userschat: UsersProps[] = [
         img: userIcon,
         username: "Devola",
         email: "devola@mail.com",
-        onLine: true
+        online: 1
     },
     {
         id: 2,
         img: userIcon,
         username: "Mike",
         email: "mike@mail.com",
-        onLine: true
+        online: 1
     },
     {
         id: 3,
         img: userIcon,
         username: "Doug",
         email: "doug@mail.com",
-        onLine: true
+        online: 1
     },
     {
         id: 4,
         img: userIcon,
         username: "Magalie",
         email: "maga@mail.com",
-        onLine: false
+        online: 0
     },
     {
         id: 5,
         img: userIcon,
         username: "Aglianica",
         email: "aglianica@mail.com",
-        onLine: true
+        online: 1
     }
 ]
