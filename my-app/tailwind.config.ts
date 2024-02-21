@@ -15,6 +15,7 @@ const config: Config = {
       },
       boxShadow: {
         'btn': '0px 0px 7px rgba(100, 100, 100, 1)',
+        'light': '0px 0px 7px rgba(255, 255, 255, 0.9)',
       },
     },
   },

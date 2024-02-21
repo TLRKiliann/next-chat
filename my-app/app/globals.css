@@ -10,7 +10,7 @@
   }
   .btn-primary {
     @apply bg-blue-600 transition ease-in-out transform duration-200 hover:scale-105 hover:bg-blue-500 
-    active:bg-blue-400 active:scale-95 px-6 py-2 rounded-full;
+    active:bg-blue-400 active:scale-95 px-6 py-2 rounded-full hover:shadow-none active:shadow-none;
   }
 }
 
@@ -30,12 +30,12 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
+/*   background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
+    rgb(var(--background-start-rgb)); */
 }
 
 @layer utilities {
