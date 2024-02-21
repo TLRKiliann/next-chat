@@ -11,18 +11,18 @@ export default function ScreenMessage({data}: {data: UsersChatProps[]}) {
 
     const {data: session} = useSession();
 
-    console.log(session?.user?.name, "username");
+    //console.log(session?.user?.name, "username");
 
     if (!session) {
         redirect("/login")
     };
 
     return (               
-        <div className='flex justify-between w-full h-[calc(100%-80px)]'>
+        <div className='flex flex-col justify-between w-full h-[calc(100%-80px)]'>
             
             {data.map((allMsg: UsersChatProps) => ( 
-                <div key={`${allMsg.id}`} className={`'flex flex-col ${allMsg.username === session?.user?.name ? "items-end" : "items-start"} justify-content 
-                    w-full h-full overflow-scroll scroll-smooth bg-slate-50'`}>
+                <div key={allMsg.id} className={`"flex flex-col ${allMsg.username === session?.user?.name ? "items-end" : "items-start"} justify-center 
+                    w-full h-full overflow-scroll scroll-smooth bg-slate-50"`}>
 
                     <div className='w-[50%] text-slate-600 bg-slate-200 m-4 p-2 rounded-tl-lg rounded-tr-lg rounded-bl-lg'>
                         
@@ -30,7 +30,7 @@ export default function ScreenMessage({data}: {data: UsersChatProps[]}) {
 
                         <div className='flex items-center justify-between text-sm text-slate-500'>
                             <p>{allMsg.username}</p>
-                            <p>{allMsg.id.toLocaleString()}</p>
+                            <p>{allMsg.id}</p>
                         </div>
 
                     </div>
