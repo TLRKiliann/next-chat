@@ -1,9 +1,6 @@
 import type { Metadata } from 'next';
 //import type { Metadata } from 'next/types';
 import React from 'react';
-//import { useSession } from "next-auth/react";
-//import { redirect, useRouter } from 'next/navigation';
-//import { userschat } from '@/app/lib/data';
 import FormMessage from '@/app/components/chatroomComp/form-message';
 import { queryChatRoom } from '@/app/lib/db';
 import ScreenMessage from '@/app/components/chatroomComp/screen-message';
@@ -19,70 +16,33 @@ export const metadata: Metadata = {
 export default async function ChatRoom() {
 
     const request = await queryChatRoom("SELECT * FROM chatroom", []);
-    const data = JSON.stringify(request);
+    const data: string = JSON.stringify(request);
     console.log(data, "data");
 
-    const req = await queryChatRoom("SELECT * FROM usersonline", []);
-    const usersOnline = JSON.stringify(req);
+/*     const req = await queryChatRoom("SELECT * FROM usersonline", []);
+    const usersOnline: string = JSON.stringify(req);
     console.log(usersOnline, "data");
-
-    /*
-    const { pending } = useFormStatus();
-    const [ code, formAction ] = useFormState(queryDecksCart, undefined)
-    //action={formAction}
-
-    const data: string = JSON.stringify(request);
-  
-    if (!data) {
-      throw new Error("Error: data not loaded for baker's decks");
-    } */
-
-    // session
-/*     const {data: session} = useSession();
-
-    console.log(session?.user?.name, "username");
-
-    if (!session) {
-        redirect("/login")
-    };
-
-    const router = useRouter();
-
-    const handleLogout = () => {
-        router.push("/logout");
-    }; */
-
-/*     const [users] = useState<UsersProps[]>(userschat);
-    
-    const [message, setMessage] = useState<string>("");
-    const [allMsgUser, setAllMsgUser] = useState<DataUserMsg[]>([]);
-
-    const derivatedState = useMemo(() => message, [message]);
  */
+    if (!data) {
+        throw new Error("Error: data not loaded for db");
+    }
 
-
-/*     const handleClick = (event: React.FormEvent<HTMLFormElement>) => {
-        event?.preventDefault();
-        const date = new Date();
-        const userMessage: DataUserMsg = {
-            id: date, session: session.user?.name || "", message: derivatedState
-        }
-        setAllMsgUser(prevState => [...prevState, userMessage]);
-        setMessage("");
-    }; */
+/*     if (!usersOnline) {
+        throw new Error("Error: usersOnline not loaded for db");
+    } */
 
     return (
         <div className='w-full h-screen'>
             
             <div className='flex w-full h-[calc(100%-70px)]'>
 
-                <UserOnline usersOnline={JSON.parse(usersOnline)}/>
+                <UserOnline data={JSON.parse(data)} />
 
-                <div className='w-full h-full'>
+                <div className='w-full bg-slate-800'>
 
-                    <ScreenMessage data={JSON.parse(data)}/>
+                    <ScreenMessage data={JSON.parse(data)} />
                     
-                    <FormMessage />
+                    <FormMessage data={JSON.parse(data)} />
 
                 </div>
 
