@@ -5,12 +5,6 @@ import React, { useState, useEffect } from 'react'
 import { useSession } from "next-auth/react";
 import { redirect } from 'next/navigation';
 
-type SessionProps = {
-    user?: {
-        name: string;
-    }
-}
-
 export default function ScreenMessage({data}: {data: UsersChatProps[]}) {
 
     const {data: session} = useSession();
@@ -22,11 +16,6 @@ export default function ScreenMessage({data}: {data: UsersChatProps[]}) {
     const [username, setUsername] = useState<string>("");
 
     useEffect(() => {
-/*         const session: SessionProps = {
-            user: {
-                name: 'ko@l@tr33'
-            }
-        }; */
         if (session && session.user && session.user.name) {
             setUsername(session.user.name);
         }
@@ -37,7 +26,6 @@ export default function ScreenMessage({data}: {data: UsersChatProps[]}) {
         <div className='flex flex-col justify-between w-full h-[calc(100%-80px)]'>
             
             {data.map((d: UsersChatProps) => (
-
                 <div key={d.id} className={`${d.username === username ? "flex flex-col items-end" : "flex flex-col items-start"} 
                     "w-full h-full overflow-scroll scroll-smooth bg-slate-50"`}>
 
