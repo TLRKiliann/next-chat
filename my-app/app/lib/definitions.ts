@@ -7,3 +7,12 @@ export type UsersProps = {
     email: string;
     onLine: boolean;
 };
+
+export type UsersChatProps = {
+    id: string;
+    username: string;
+    email: string;
+    online: boolean;
+    message: string;
+    room: string;
+};
