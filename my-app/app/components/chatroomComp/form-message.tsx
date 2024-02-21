@@ -1,7 +1,7 @@
 "use client";
 
 import { mysqlQueryChatroom } from '@/app/lib/actions';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 
 export default function FormMessage() {
@@ -10,6 +10,7 @@ export default function FormMessage() {
     const [ code, formAction ] = useFormState(mysqlQueryChatroom, undefined)
 
     const [message, setMessage] = useState<string>("");
+    //const derivatedState = useMemo(() => message, [message]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.currentTarget;

@@ -1,42 +1,42 @@
 "use client";
 
-import React, { useState } from 'react'
+import { UsersChatProps } from '@/app/lib/definitions'
+import React from 'react'
+import { useSession } from "next-auth/react";
+import { redirect } from 'next/navigation';
 
-export default function ScreenMessage() {
+export default function ScreenMessage({data}: {data: UsersChatProps[]}) {
 
-    const [allMsgUser, setAllMsgUser] = useState<DataUserMsg[]>([]);
+    //const [allMsgUser, setAllMsgUser] = useState<DataUserMsg[]>([]);
 
+    const {data: session} = useSession();
+
+    console.log(session?.user?.name, "username");
+
+    if (!session) {
+        redirect("/login")
+    };
 
     return (               
         <div className='flex justify-between w-full h-[calc(100%-80px)]'>
             
-            {/* <div className='w-full h-full overflow-scroll scroll-smooth bg-yellow-600'>
-                <p className='text-slate-600 bg-slate-100 m-4 p-2 rounded-tr-lg rounded-bl-lg rounded-br-lg'>
-                    Left screen
-                </p>
-            </div> */}
+            {data.map((allMsg: UsersChatProps) => ( 
+                <div key={`${allMsg.id}`} className={`'flex flex-col ${allMsg.username === session?.user?.name ? "items-end" : "items-start"} justify-content 
+                    w-full h-full overflow-scroll scroll-smooth bg-slate-50'`}>
 
-            {/* `{session.user?.name ? "items-end" : "items-start"}` */}
-            <div className='flex flex-col items-end justify-content 
-                w-full h-full overflow-scroll scroll-smooth bg-slate-50'>
-
-                {allMsgUser.map((allMsg: DataUserMsg) => (
-                    <div key={`${allMsg.id}`} 
-                        className='w-[50%] text-slate-600 bg-slate-200 m-4 p-2 rounded-tl-lg rounded-tr-lg rounded-bl-lg'>
+                    <div className='w-[50%] text-slate-600 bg-slate-200 m-4 p-2 rounded-tl-lg rounded-tr-lg rounded-bl-lg'>
                         
                         <p className='text-lg text-slate-800 mb-2'>{allMsg.message}</p>
 
                         <div className='flex items-center justify-between text-sm text-slate-500'>
-                            <p>{allMsg.session}</p>
+                            <p>{allMsg.username}</p>
                             <p>{allMsg.id.toLocaleString()}</p>
                         </div>
 
                     </div>
-                ))}
 
-            </div>
-
+                </div>
+            ))}
         </div>
-
     )
-}
+};
