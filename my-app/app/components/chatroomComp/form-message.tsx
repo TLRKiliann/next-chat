@@ -1,19 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { mysqlQueryChatroom } from '@/app/lib/actions';
 import { UsersChatProps } from '@/app/lib/definitions';
 import { useSession } from 'next-auth/react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { redirect } from 'next/navigation';
-
-type SessionProps = {
-    session: {
-        user: {
-            name: string | null | undefined;
-        }
-    }
-}
 
 export default function FormMessage({data}: {data: UsersChatProps[]}) {
 
@@ -26,18 +18,18 @@ export default function FormMessage({data}: {data: UsersChatProps[]}) {
     const { pending } = useFormStatus();
     const [ code, formAction ] = useFormState(mysqlQueryChatroom, undefined)
 
-    const [username, setUsername] = useState<SessionProps>(session.user.name);
+    const [username, setUsername] = useState<string>("");
+
+    useEffect(() => {
+        if (session && session.user && session.user.name) {
+            setUsername(session.user.name);
+        }
+        return () => console.log("Clean-up useEffect !");
+    }, []);
 
     const [message, setMessage] = useState<string>("");
 
-    console.log("hello FormMessage")
-
-/*     let username;
-    if (session?.user?.name !== null && session?.user?.name !== undefined) {
-        return username = session.user.name;
-    } */
-
-    console.log("hello FormMessage")
+    console.log("hello FormMessage");
 /*     //const username = session.user?.name;
     //console.log(username, "username");
    
@@ -87,7 +79,7 @@ export default function FormMessage({data}: {data: UsersChatProps[]}) {
  */}
             <input type="text" id="message" name="message" value={message} onChange={handleChange} 
                 placeholder="Comment something here..." 
-                className='w-[90%] text-slate-800 placeholder:text-slate-900 px-4 py-1 rounded-full'
+                className='w-[90%] text-slate-800 placeholder:text-slate-500 px-4 py-1 rounded-full'
             />
 
 {/*             <input type="text" id="room" name="room" value={room} hidden readOnly />
