@@ -1,35 +1,66 @@
 "use client";
 
 import type { UsersProps } from '@/app/lib/definitions';
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react';
+import { useSession } from "next-auth/react";
+import { redirect, useRouter } from 'next/navigation';
 import { userschat } from '@/app/lib/data';
 import Image from 'next/image';
 
 export default function ChatRoom() {
 
-    const [users, setUsers] = useState<UsersProps[]>(userschat)
+    const {data: session} = useSession();
+
+    console.log(session?.user?.name, "username");
+
+    if (!session) {
+        redirect("/login")
+    };
+
+    const router = useRouter();
+
+    const [users, setUsers] = useState<UsersProps[]>(userschat);
+    
     const [inputStr, setInputStr] = useState<string>("");
     const [allStr, setAllStr] = useState<string[]>([]);
+
+    const derivatedState = useMemo(() => inputStr, [inputStr]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         console.log(event?.currentTarget.value)
         const {value} = event.currentTarget;
         setInputStr(value);
-    }
+    };
 
     const handleClick = () => {
-        setAllStr((prevState) => [...prevState, inputStr]);
+        setAllStr((prevState) => [...prevState, derivatedState]);
         setInputStr("");
-    }
+    };
+
+    const handleLogout = () => {
+        router.push("/logout");
+    };
 
     return (
         <div className='h-screen'>
             
-            <h1 className='text-2xl italic font-bold p-[20px]'>
-                Chat room
-            </h1>
+            <div className="flex items-center justify-between">
+
+                <h1 className='text-2xl italic font-bold p-[20px]'>
+                    Chat room
+                </h1>
+
+                <button type="button" onClick={handleLogout} 
+                    className='bg-slate-600 mr-[20px] px-4 py-2 rounded'
+                >
+                    Logout
+                </button>
+
+            </div>
+
 
             <div className='flex w-full h-[calc(100%-70px)]'>
+
 
                 <div className='flex flex-col w-[20%] bg-blue-900'>
 
@@ -53,19 +84,20 @@ export default function ChatRoom() {
                 </div>
 
 
+
                 <div className='w-full'>
                     
                     <div className='flex justify-between bg-slate-700 h-[calc(100%-80px)]'>
                         
                         <div className='w-full h-full overflow-scroll scroll-smooth bg-yellow-600'>
-                        <p className='text-slate-600 bg-slate-100 m-4 p-2 rounded-tr-lg rounded-bl-lg rounded-br-lg'>
-                            Left screen
-                        </p>
+                            <p className='text-slate-600 bg-slate-100 m-4 p-2 rounded-tr-lg rounded-bl-lg rounded-br-lg'>
+                                Left screen
+                            </p>
                         </div>
 
                         <div className='w-full h-full overflow-scroll scroll-smooth bg-blue-600'>
                             {allStr.map((a: string) => (
-                                <p className='text-slate-600 bg-slate-100 m-4 p-2 rounded-tl-lg rounded-tr-lg rounded-bl-lg'>
+                                <p key={a} className='text-slate-600 bg-slate-100 m-4 p-2 rounded-tl-lg rounded-tr-lg rounded-bl-lg'>
                                     {a}
                                 </p>
                             ))}
