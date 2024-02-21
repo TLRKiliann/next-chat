@@ -5,7 +5,6 @@ import type {
 
 type GenericProps = UsersChatProps | [];
 
-
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
     port: Number(process.env.MYSQL_PORT),
