@@ -1,15 +1,15 @@
-import type { UsersProps } from '@/app/lib/definitions';
+import type { UsersChatProps } from '@/app/lib/definitions';
 import React from 'react'
-import Image from 'next/image';
+//import Image from 'next/image';
 
 export const dynamic = "force-dynamic";
 
-export default function UserOnline({data}: {data: UsersProps[]}) {
+export default function UserOnline({data}: {data: UsersChatProps[]}) {
 
     return (
         <div className='flex flex-col w-[25%] bg-blue-900'>
 
-            {data.map((user: UsersProps) => (
+            {data.map((user: UsersChatProps) => (
                 /* user.onLine ? ( */
                     <div key={user.id} 
                         className='flex items-center justify-start bg-slate-800 border-b border-slate-500 px-4 py-3'>
