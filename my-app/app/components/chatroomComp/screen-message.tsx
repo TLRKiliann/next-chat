@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 import { useSession } from "next-auth/react";
 import { redirect } from 'next/navigation';
 
-export default function ScreenMessage({data}: {data: UsersChatProps[]}) {
+export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
     const {data: session} = useSession();
 
@@ -23,13 +23,18 @@ export default function ScreenMessage({data}: {data: UsersChatProps[]}) {
     }, []);
 
     return (               
-        <div className='flex flex-col justify-between w-full h-[calc(100%-80px)]'>
+        <div className='flex flex-col justify-between w-full h-[calc(100%-80px)] overflow-scroll scroll-smooth'>
             
-            {data.map((d: UsersChatProps) => (
-                <div key={d.id} className={`${d.username === username ? "flex flex-col items-end" : "flex flex-col items-start"} 
-                    "w-full h-full overflow-scroll scroll-smooth bg-slate-50"`}>
+            {dataroom.map((d: UsersChatProps) => (
+                <div key={d.id} 
+                    className={`${d.username === username 
+                        ? "flex flex-col items-end" 
+                        : "flex flex-col items-start"} w-full h-full bg-slate-200`}>
 
-                    <div className='w-[50%] text-slate-600 bg-slate-200 mx-4 my-4 p-2 rounded-tl-lg rounded-tr-lg rounded-bl-lg'>
+                    <div className={`w-[50%] text-slate-600 bg-slate-100 mx-4 my-4 p-2 
+                        ${d.username === username 
+                            ? "rounded-tl-lg" 
+                            : "rounded-br-lg"} rounded-tr-lg rounded-bl-lg shadow-btn`}>
                         
                         <p className='text-lg text-slate-800 mb-2'>{d.message}</p>
 
