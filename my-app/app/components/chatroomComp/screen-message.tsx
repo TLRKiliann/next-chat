@@ -40,7 +40,7 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
 
                         <div className='flex items-center justify-between text-sm text-slate-500'>
                             <p>{d.username}</p>
-                            <p>{d.id}</p>
+                            <p>{d.date.toLocaleString()}</p>
                         </div>
 
                     </div>

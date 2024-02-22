@@ -18,8 +18,10 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
         redirect("/login")
     };
 
-    const [username, setUsername] = useState<string>("");
     const [newId, setNewId] = useState<number>(0);
+    const [username, setUsername] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
+    const [date, setDate] = useState<Date>(new Date);
 
     useEffect(() => {
         if (session && session.user && session.user.name) {
@@ -31,12 +33,11 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
     useEffect(() => {
         if (dataroom) {
             setNewId(dataroom.length + 1);
+            setDate(new Date);
             setMessage("");
         }
         return () => console.log("Clean-up useEffect 2 !");
     }, [dataroom]);
-
-    const [message, setMessage] = useState<string>("");
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.currentTarget;
@@ -63,6 +64,9 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
                         />
 
                         <input type="text" id="room" name="room" value={d.room} hidden readOnly />
+
+                        <input type="text" id="date" name="date" value={date.toLocaleString()} hidden readOnly />
+
 
                         <button type="submit" id="submit" name="submit"
                             value="insert" disabled={pending}

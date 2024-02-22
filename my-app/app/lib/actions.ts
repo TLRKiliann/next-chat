@@ -11,11 +11,12 @@ export async function mysqlQueryChatroom(prevState: {message: string} | undefine
         const online = formData.get("online");
         const message = formData.get("message");
         const room = formData.get("room");
+        const date = formData.get("date");
         const btnSubmit = formData.get("submit");
         if (btnSubmit === "insert") {
-            if (id !== null && username !== null && email && online !== null && message !== null && room !== null) {
-                const result = await queryMessage("INSERT INTO chatroom VALUES (?, ?, ?, ?, ?, ?)", 
-                    [id, username, email, online, message, room]
+            if (id !== null && username !== null && email && online !== null && message !== null && room !== null && date !== null) {
+                const result = await queryMessage("INSERT INTO chatroom VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                    [id, username, email, online, message, room, date]
                 );
                 if (result) {
                     revalidatePath("/chatroom");
@@ -28,5 +29,4 @@ export async function mysqlQueryChatroom(prevState: {message: string} | undefine
         console.log("Error", error)
         throw error;
     }
-}
-//(id, username, email, online, message, room)
+};

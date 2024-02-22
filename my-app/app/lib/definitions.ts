@@ -15,4 +15,5 @@ export type UsersChatProps = {
     online: number;
     message: string;
     room: string;
+    date: string;
 };
