@@ -1,6 +1,6 @@
 "use server";
 
-import { queryChatRoom } from './db';
+import { queryMessage } from './db';
 import { revalidatePath } from 'next/cache';
 
 export async function mysqlQueryChatroom(prevState: {message: string} | undefined, formData: FormData) {
@@ -14,8 +14,9 @@ export async function mysqlQueryChatroom(prevState: {message: string} | undefine
         const btnSubmit = formData.get("submit");
         if (btnSubmit === "insert") {
             if (id !== null && username !== null && email && online !== null && message !== null && room !== null) {
-                const result = await queryChatRoom("INSERT INTO chatroom VALUES (?, ?, ?, ?, ?, ?)", 
-                [id, username, email, online, message, room]);
+                const result = await queryMessage("INSERT INTO chatroom (id, username, email, online, message, room) VALUES (?, ?, ?, ?, ?, ?)", 
+                    [id, username, email, online, message, room]
+                );
                 if (result) {
                     revalidatePath("/chatroom");
                     return {message: "Message Sent !"}
