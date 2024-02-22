@@ -13,26 +13,15 @@ export default function UserOnline({dataroom}: {dataroom: UsersChatProps[]}) {
     if (!session) {
         redirect("/login")
     };
-    
-    const [username, setUsername] = useState<string>("");
 
-    useEffect(() => {
-        if (session && session.user && session.user.name) {
-            setUsername(session.user.name);
-        }
-        return () => console.log("Clean-up useEffect !");
-    }, []);
+    const mapping = dataroom.filter((obj: {username: string}, index: number) => {
+        return index === dataroom.findIndex((o: {username: string}) => obj.username === o.username)
+    });
 
-    //const mapping = dataroom.reduce((a, b:{id: number}) => a + b.id, 0)
-    const mapping = dataroom.filter((n, i, arr) => i === arr.indexOf(n));
-    console.log(mapping, "mapping");
-
-/*     const map2 = dataroom.filter((user: UsersChatProps) => user.username  ? "ok" : "bad");
-    console.log(map2); */
     return (
         <div className='flex flex-col w-[25%] bg-blue-900'>
 
-            {dataroom.map((user: UsersChatProps) => (
+            {mapping.map((user: UsersChatProps) => (
                 
                     <div key={user.id} 
                         className='flex items-center justify-start bg-slate-800 border-b border-slate-500 px-4 py-3'>
