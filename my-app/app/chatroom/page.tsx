@@ -7,6 +7,8 @@ import UserOnline from '@/app/components/chatroomComp/user-online';
 import ScreenMessage from '@/app/components/chatroomComp/screen-message';
 import FormMessage from '@/app/components/chatroomComp/form-message';
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
     title: {
       absolute: "Chatroom"
@@ -39,13 +41,13 @@ export default async function ChatRoom() {
 
             <div className='flex w-full h-[calc(100%-70px)]'>
 
-                <UserOnline data={JSON.parse(data)} />
+                <UserOnline dataroom={JSON.parse(data)} />
 
                 <div className='w-full bg-slate-400'>
 
-                    <ScreenMessage data={JSON.parse(data)} />
+                    <ScreenMessage dataroom={JSON.parse(data)} />
                     
-                    <FormMessage data={JSON.parse(data)} />
+                    <FormMessage dataroom={JSON.parse(data)} />
 
                 </div>
 
