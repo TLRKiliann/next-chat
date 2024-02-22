@@ -1,6 +1,6 @@
 "use server";
 
-import { queryChatRoom } from './db';
+import { queryMessage } from './db';
 import { revalidatePath } from 'next/cache';
 
 export async function mysqlQueryChatroom(prevState: {message: string} | undefined, formData: FormData) {
@@ -11,11 +11,14 @@ export async function mysqlQueryChatroom(prevState: {message: string} | undefine
         const online = formData.get("online");
         const message = formData.get("message");
         const room = formData.get("room");
+        const date = formData.get("date");
+        const img = formData.get("img");
         const btnSubmit = formData.get("submit");
         if (btnSubmit === "insert") {
-            if (id !== null && username !== null && email && online !== null && message !== null && room !== null) {
-                const result = await queryChatRoom("INSERT INTO chatroom VALUES (?, ?, ?, ?, ?, ?)", 
-                [id, username, email, online, message, room]);
+            if (id !== null && username !== null && email && online !== null && message !== null && room !== null && date !== null && img !== null) {
+                const result = await queryMessage("INSERT INTO chatroom VALUES (?, ?, ?, ?, ?, ?, ?, ?)", 
+                    [id, username, email, online, message, room, date, img]
+                );
                 if (result) {
                     revalidatePath("/chatroom");
                     return {message: "Message Sent !"}
@@ -27,4 +30,4 @@ export async function mysqlQueryChatroom(prevState: {message: string} | undefine
         console.log("Error", error)
         throw error;
     }
-}
+};

@@ -16,6 +16,7 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
+// retrieve all data about users
 const queryChatRoom = async (query: string, data: GenericProps): Promise<UsersChatProps[]> => {
     let connection;
     try {
@@ -32,6 +33,25 @@ const queryChatRoom = async (query: string, data: GenericProps): Promise<UsersCh
     }
 };
 
+// sending message
+const queryMessage = async (query: string, data: FormDataEntryValue[]): Promise<UsersChatProps[]> => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const [result] = await connection.execute(query, data);
+        return result as UsersChatProps[];
+    } catch (error) {
+        console.error(error);
+        throw error;
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+};
+
+
 export {
-    queryChatRoom
+    queryChatRoom,
+    queryMessage
 };

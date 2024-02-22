@@ -7,6 +7,8 @@ import UserOnline from '@/app/components/chatroomComp/user-online';
 import ScreenMessage from '@/app/components/chatroomComp/screen-message';
 import FormMessage from '@/app/components/chatroomComp/form-message';
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
     title: {
       absolute: "Chatroom"
@@ -18,34 +20,26 @@ export default async function ChatRoom() {
 
     const request = await queryChatRoom("SELECT * FROM chatroom", []);
     const data: string = JSON.stringify(request);
-    //console.log(data, "data");
 
-/*     const req = await queryChatRoom("SELECT * FROM usersonline", []);
-    const usersOnline: string = JSON.stringify(req);
-    console.log(usersOnline, "data");
- */
     if (!data) {
         throw new Error("Error: data not loaded for db");
-    }
-
-/*     if (!usersOnline) {
-        throw new Error("Error: usersOnline not loaded for db");
-    } */
+    };
 
     return (
         <div className='w-full h-screen'>
             
             <HeaderChatroom />
 
-            <div className='flex w-full h-[calc(100%-70px)]'>
+            <div className='flex w-full h-[calc(100%-72px)]'>
 
-                <UserOnline data={JSON.parse(data)} />
+                <UserOnline dataroom={JSON.parse(data)} />
 
-                <div className='w-full bg-slate-400'>
+                <div className='w-full h-content shadow-inside
+                    bg-gradient-to-r from-green-100 from-10% to-blue-100 to-90%'>
 
-                    <ScreenMessage data={JSON.parse(data)} />
+                    <ScreenMessage dataroom={JSON.parse(data)} />
                     
-                    <FormMessage data={JSON.parse(data)} />
+                    <FormMessage dataroom={JSON.parse(data)} />
 
                 </div>
 
