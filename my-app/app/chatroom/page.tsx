@@ -30,11 +30,12 @@ export default async function ChatRoom() {
             
             <HeaderChatroom />
 
-            <div className='flex w-full h-[calc(100%-70px)]'>
+            <div className='flex w-full h-[calc(100%-72px)]'>
 
                 <UserOnline dataroom={JSON.parse(data)} />
 
-                <div className='w-full bg-slate-400'>
+                <div className='w-full h-content shadow-inside
+                    bg-gradient-to-r from-green-100 from-10% to-blue-100 to-90%'>
 
                     <ScreenMessage dataroom={JSON.parse(data)} />
                     
