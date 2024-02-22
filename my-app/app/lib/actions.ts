@@ -12,11 +12,12 @@ export async function mysqlQueryChatroom(prevState: {message: string} | undefine
         const message = formData.get("message");
         const room = formData.get("room");
         const date = formData.get("date");
+        const img = formData.get("img");
         const btnSubmit = formData.get("submit");
         if (btnSubmit === "insert") {
-            if (id !== null && username !== null && email && online !== null && message !== null && room !== null && date !== null) {
-                const result = await queryMessage("INSERT INTO chatroom VALUES (?, ?, ?, ?, ?, ?, ?)", 
-                    [id, username, email, online, message, room, date]
+            if (id !== null && username !== null && email && online !== null && message !== null && room !== null && date !== null && img !== null) {
+                const result = await queryMessage("INSERT INTO chatroom VALUES (?, ?, ?, ?, ?, ?, ?, ?)", 
+                    [id, username, email, online, message, room, date, img]
                 );
                 if (result) {
                     revalidatePath("/chatroom");

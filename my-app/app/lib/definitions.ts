@@ -16,4 +16,5 @@ export type UsersChatProps = {
     message: string;
     room: string;
     date: string;
+    img: string;
 };

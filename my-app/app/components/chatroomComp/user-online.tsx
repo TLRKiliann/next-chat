@@ -1,10 +1,10 @@
 "use client";
 
 import type { UsersChatProps } from '@/app/lib/definitions';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSession } from "next-auth/react";
 import { redirect } from 'next/navigation';
-//import Image from 'next/image';
+import Image from 'next/image';
 
 export default function UserOnline({dataroom}: {dataroom: UsersChatProps[]}) {
     
@@ -22,12 +22,11 @@ export default function UserOnline({dataroom}: {dataroom: UsersChatProps[]}) {
         <div className='flex flex-col w-[25%] bg-blue-900'>
 
             {mapping.map((user: UsersChatProps) => (
-                
-                    <div key={user.id} 
+                    <div key={user.id}
                         className='flex items-center justify-start bg-slate-800 border-b border-slate-500 px-4 py-3'>
-                        {/* <Image src={user.img} width={30} height={30} alt={user.username} 
+                        <Image src={user.img} width={30} height={30} alt={user.username} 
                             className='flex w-[30px] h-[30px] object-cover rounded-full'
-                        /> */}
+                        />
                         <p className='w-[80%] px-2'>{user.username}</p>
 
                         {user.online === 1 
