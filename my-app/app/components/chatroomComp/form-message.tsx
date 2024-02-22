@@ -18,10 +18,6 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
         redirect("/login")
     };
 
-    if (!dataroom) {
-        throw new Error("Error with dataroom !")
-    };
-
     const [username, setUsername] = useState<string>("");
     const [newId, setNewId] = useState<number>(0);
 
@@ -40,17 +36,12 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
         return () => console.log("Clean-up useEffect 2 !");
     }, [dataroom]);
 
-
     const [message, setMessage] = useState<string>("");
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.currentTarget;
         setMessage(value);
     };
-
-/*     const handleErase = () => {
-        setMessage("");
-    }; */
 
     return (
         <>
