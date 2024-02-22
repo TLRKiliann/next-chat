@@ -23,20 +23,20 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
     }, []);
 
     return (               
-        <div className='flex flex-col w-full h-[calc(100%-80px)] overflow-scroll scroll-smooth'>
-            
+        <div className='flex flex-col items-center justify-start w-full h-[calc(100%-80px)] overflow-scroll scroll-smooth'>
+            {/* justify-start */}
             {dataroom.map((d: UsersChatProps) => (
                 <div key={d.id} 
-                    className={`${d.username === username 
-                        ? "flex flex-col items-end" 
-                        : "flex flex-col items-start"} w-full h-full bg-slate-200`}>
+                    className={`flex flex-col ${d.username === username 
+                        ? "items-end"
+                        : "items-start"} justify-center w-full`}>
 
-                    <div className={`w-[50%] text-slate-600 bg-slate-100 m-4 p-2 
+                    <div className={`w-[50%] bg-slate-100 m-4 p-2
                         ${d.username === username 
                             ? "rounded-tl-lg" 
-                            : "rounded-br-lg"} rounded-tr-lg rounded-bl-lg shadow-btn`}>
+                            : "rounded-br-lg"} rounded-tr-lg rounded-bl-lg shadow-msg`}>
                         
-                        <p className='text-lg text-slate-800 mb-2'>{d.message}</p>
+                        <p className='text-lg text-slate-700 mb-2'>{d.message}</p>
 
                         <div className='flex items-center justify-between text-sm text-slate-500'>
                             <p>{d.username}</p>

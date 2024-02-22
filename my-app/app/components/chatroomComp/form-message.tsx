@@ -46,11 +46,14 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
         setMessage(value);
     };
 
+    const verifyCodeMsg = code?.message ? console.log(code.message) : null;
+    verifyCodeMsg;
+    
     return (
         <>
             {dataroom.map((d: UsersChatProps) => (
                 username === d.username ? (
-                    <form key={d.id} action={formAction} className='absolute z-10 flex items-center justify-between w-[80%] h-[80px]
+                    <form key={d.id} action={formAction} className='absolute z-10 flex items-center justify-around w-[80%] h-[80px]
                         bg-gradient-to-r from-blue-900 from-10% via-sky-700 via-30% to-blue-900 to-90% px-4'
                     >
 
@@ -62,7 +65,7 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
                         <input type="text" id="message" name="message" value={message} 
                             onChange={handleChange}
                             placeholder="Comment something here..." 
-                            className='w-[90%] text-slate-800 placeholder:text-slate-500 px-4 py-1 rounded-full'
+                            className='w-[80%] text-slate-800 bg-slate-200 placeholder:text-slate-500 px-4 py-1 rounded-full'
                         />
 
                         <input type="text" id="room" name="room" value={d.room} hidden readOnly />
@@ -77,9 +80,6 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
                             {pending ? "Pending..." : "Enter"}
                         </button>
 
-                        {code?.message ? (
-                            <p className='text-lg text-green-400'>{code.message}</p>
-                        ) : null}
                     </form>
                 ) : null
             ))}
