@@ -20,19 +20,10 @@ export default async function ChatRoom() {
 
     const request = await queryChatRoom("SELECT * FROM chatroom", []);
     const data: string = JSON.stringify(request);
-    //console.log(data, "data");
 
-/*     const req = await queryChatRoom("SELECT * FROM usersonline", []);
-    const usersOnline: string = JSON.stringify(req);
-    console.log(usersOnline, "data");
- */
     if (!data) {
         throw new Error("Error: data not loaded for db");
-    }
-
-/*     if (!usersOnline) {
-        throw new Error("Error: usersOnline not loaded for db");
-    } */
+    };
 
     return (
         <div className='w-full h-screen'>
