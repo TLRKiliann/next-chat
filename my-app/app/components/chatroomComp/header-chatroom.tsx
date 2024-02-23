@@ -3,7 +3,7 @@
 import React from 'react'
 import { useRouter } from 'next/navigation';
 
-export default function HeaderChatroom() {
+export default function HeaderChatroom({children}: {children: React.ReactNode}) {
 
     const router = useRouter();
 
@@ -16,7 +16,7 @@ export default function HeaderChatroom() {
             bg-gradient-to-r from-blue-900 from-10% via-sky-700 via-30% to-blue-900 to-90%">
 
             <h1 className='text-2xl italic font-bold p-[20px]'>
-                Chat room
+                {children}
             </h1>
 
             <button type="button" onClick={handleLogout} 

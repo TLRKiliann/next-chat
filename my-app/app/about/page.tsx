@@ -1,7 +1,8 @@
 import React from 'react'
 
-export default function AboutPage() {
+export default function About() {
   return (
-    <div>AboutPage</div>
+    <div>About</div>
   )
 }
+

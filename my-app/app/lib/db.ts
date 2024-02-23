@@ -1,9 +1,9 @@
 import mysql from 'mysql2/promise';
 import type {
-    UsersChatProps,
+    UsersChatProps, UsersProps
 } from './definitions';
 
-type GenericProps = UsersChatProps | [];
+type GenericProps = UsersChatProps | UsersProps | [];
 
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
@@ -17,6 +17,23 @@ const pool = mysql.createPool({
 });
 
 // retrieve all data about users
+const queryUsers = async (query: string, data: GenericProps): Promise<UsersProps[]> => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const [result] = await connection.execute(query, data);
+        return result as UsersProps[];
+    } catch (error) {
+        console.error(error);
+        throw error;
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+};
+
+// to send message & data for chatroom
 const queryChatRoom = async (query: string, data: GenericProps): Promise<UsersChatProps[]> => {
     let connection;
     try {
@@ -33,7 +50,7 @@ const queryChatRoom = async (query: string, data: GenericProps): Promise<UsersCh
     }
 };
 
-// sending message
+// sending message with server action
 const queryMessage = async (query: string, data: FormDataEntryValue[]): Promise<UsersChatProps[]> => {
     let connection;
     try {
@@ -50,8 +67,26 @@ const queryMessage = async (query: string, data: FormDataEntryValue[]): Promise<
     }
 };
 
+// sending invitation with server action
+const queryInvitation = async (query: string, data: FormDataEntryValue[]): Promise<UsersProps[]> => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const [result] = await connection.execute(query, data);
+        return result as UsersProps[];
+    } catch (error) {
+        console.error(error);
+        throw error;
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+};
 
 export {
+    queryUsers,
     queryChatRoom,
-    queryMessage
+    queryMessage,
+    queryInvitation
 };
