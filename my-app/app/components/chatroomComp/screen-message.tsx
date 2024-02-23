@@ -1,6 +1,6 @@
 "use client";
 
-import { UsersChatProps } from '@/app/lib/definitions'
+import type { UsersChatProps } from '@/app/lib/definitions'
 import React, { useState, useEffect, useRef } from 'react'
 import { useSession } from "next-auth/react";
 import { redirect } from 'next/navigation';
@@ -8,13 +8,7 @@ import { redirect } from 'next/navigation';
 export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
     const {data: session} = useSession();
-    
     const msgRef = useRef<HTMLDivElement>(null);
-
-    if (!session) {
-        redirect("/login")
-    };
-
     const [username, setUsername] = useState<string>("");
 
     useEffect(() => {
@@ -28,7 +22,12 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
 
     useEffect(() => {
         msgRef.current?.scrollIntoView();
+        return () => console.log("Clean-up update msg !")
     }, [updateMsg])
+
+    if (!session) {
+        redirect("/login")
+    };
 
     return (               
         <div className='flex flex-col items-center justify-start w-full h-[calc(100%-80px)] overflow-scroll scroll-smooth'>

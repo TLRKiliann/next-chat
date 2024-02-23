@@ -1,7 +1,7 @@
 "use client";
 
 import type { UsersChatProps } from '@/app/lib/definitions';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
 import { useFormState, useFormStatus } from 'react-dom';
 import { mysqlSendInvitation } from '@/app/lib/actions';
@@ -9,15 +9,18 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export const dynamic = "force-dynamic";
-
 export default function UserOnline({dataroom}: {dataroom: UsersChatProps[]}) {
     
     const {data: session} = useSession();
     
-    if (!session) {
-        redirect("/login")
-    };
+    const [userName, setUserName] = useState<string>("");
+
+    useEffect(() => {
+        if (session && session.user && session.user.name) {
+            setUserName(session.user.name)
+        };
+        return () => console.log("Clean-up session userName !")
+    }, [])
 
     const {pending} = useFormStatus();
     const [code, formData] = useFormState(mysqlSendInvitation, undefined);
@@ -27,29 +30,53 @@ export default function UserOnline({dataroom}: {dataroom: UsersChatProps[]}) {
     });
 
     const [newMapping, setNewMapping] = useState<UsersChatProps[]>(mapping);
+    const [acceptInvite, setAcceptInvite] = useState<boolean>(false);
+    const [refuseInvite, setRefuseInvite] = useState<boolean>(false);
 
-    const handleDisplayLinks = (id: number) => {
+    const [stateRoom, setStateRoom] = useState<{info: boolean, question: boolean, confidential: boolean}>({
+        info: false,
+        question: false,
+        confidential: false
+    });
+
+    const handleDisplayLinks = (id: number): void => {
         const findById = mapping.map((user: UsersChatProps) => user.id === id ? {...user, boolInvitation: 1} : user);
-        console.log(findById, "findById");
+        //console.log(findById, "findById");
         setNewMapping(findById);
     };
 
-    const handleCloseInvitation = (id: number) => {
+    const handleCloseInvitation = (id: number): void => {
         const closeInvitation = mapping.map((user: UsersChatProps) => user.id === id ? {...user, boolInvitation: 0} : user);
-        console.log(closeInvitation, "closeInvitation");
+        //console.log(closeInvitation, "closeInvitation");
         setNewMapping(closeInvitation);
     };
 
-    const [acceptInvite, setAcceptInvite] = useState<boolean>(false);
-
-    const [refuseInvite, setRefuseInvite] = useState<boolean>(false);
-
-    const handleAccept = () => {
+    const handleAccept = (): void => {
         setAcceptInvite(!acceptInvite);
     };
 
-    const handleRefuse = () => {
+    const handleRefuse = (): void => {
         setRefuseInvite(!refuseInvite);
+    };
+
+
+    const handleInfo = (): void => {
+        setStateRoom((prevState) => ({...prevState, info: !prevState.info}))
+    };
+
+    const handleQuestion = (): void => {
+        setStateRoom((prevState) => ({...prevState, question: !prevState.question}))
+    };
+
+    const handleConfidential = (): void => {
+        setStateRoom((prevState) => ({...prevState, confidential: !prevState.confidential}))
+    };
+
+    console.log(stateRoom, "stateRoom");
+    console.log(stateRoom.info, "stateRoom - info");
+
+    if (!session) {
+        redirect("/login")
     };
 
     return (
@@ -115,18 +142,23 @@ export default function UserOnline({dataroom}: {dataroom: UsersChatProps[]}) {
                             </div>
 
                             <form action={formData} className="flex flex-col items-center justify-center">
-                                
-                                <div className='flex my-5'>
-                                    <label htmlFor="room">Choose Room :</label>
-                                    <select name="room" id="room">
-                                        <option value="info">Info</option>
-                                        <option value="question">Question</option>
-                                        <option value="confidential">Confidential</option>
-                                    </select>
 
-                                </div>
+                                <label htmlFor="info">Info</label>
+                                <input type="checkbox" id="info" name="info" checked={stateRoom.info} onChange={handleInfo} />
+                                <label htmlFor="question">Question</label>
+                                <input type="checkbox" id="question" name="question" checked={stateRoom.question} onChange={handleQuestion} />
+                                <label htmlFor="confidential">Confidential</label>
+                                <input type="checkbox" id="confidential" name="confidential" checked={stateRoom.confidential} onChange={handleConfidential} />
 
-                                <button type="submit" disabled={pending} className='text-slate-50 btn-primary mb-5 shadow-btn'>Submit</button>
+                                <input type="number" id="id" name="id" value={user.id} hidden readOnly />
+                                <input type="text" id="otheruser" name="otheruser" value={user.username} hidden readOnly />
+                                <input type="text" id="usersender" name="usersender" value={userName} hidden readOnly />
+
+                                <button type="submit" disabled={pending} 
+                                    className='text-slate-50 btn-primary mb-5 shadow-btn'
+                                >
+                                    Submit
+                                </button>
                                 
                                 {code?.message ? (
                                     <p>{code.message}</p>
