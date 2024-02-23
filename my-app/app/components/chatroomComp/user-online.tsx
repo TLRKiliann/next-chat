@@ -126,36 +126,50 @@ export default function UserOnline({dataroom}: {dataroom: UsersChatProps[]}) {
                 {newMapping.map((user: UsersChatProps) => (
                     user.boolInvitation === 1 ? (
                         <div key={user.id} className="fixed z-20 top-0 left-0 w-2/5 h-auto
-                            bg-slate-400 text-slate-600 border">
+                            bg-slate-200 text-slate-600 rounded-br-xl shadow-2xl">
                             <div className='flex justify-end'>
                                 <button type="button" onClick={() => handleCloseInvitation(user.id)}
-                                    className="flex items-center justify-center text-slate-600 mt-2 mr-2 px-2 
+                                    className="flex items-center justify-center w-5 h-5 pb-[2px] text-slate-500 mt-2 mr-2 
                                         border border-slate-500 rounded-full"
                                 >
-                                    X
+                                    x
                                 </button>
                             </div>
                           
                             <div className='flex flex-col'>
-                                <h2 className="font-bold text-xl text-center">Invitation Proposal for :</h2>
-                                <p className="text-lg text-center text-slate-500 mt-2">{user.username}</p>
+                                <h2 className="font-bold text-lg text-center">Invitation proposal for :</h2>
+                                <p className="text-lg text-center text-indigo-600 mt-2 mb-1">{user.username}</p>
                             </div>
 
                             <form action={formData} className="flex flex-col items-center justify-center">
 
-                                <label htmlFor="info">Info</label>
-                                <input type="checkbox" id="info" name="info" checked={stateRoom.info} onChange={handleInfo} />
-                                <label htmlFor="question">Question</label>
-                                <input type="checkbox" id="question" name="question" checked={stateRoom.question} onChange={handleQuestion} />
-                                <label htmlFor="confidential">Confidential</label>
-                                <input type="checkbox" id="confidential" name="confidential" checked={stateRoom.confidential} onChange={handleConfidential} />
+                                <div className='flex items-center justify-between w-[180px] text-slate-100 
+                                    bg-slate-800 my-2 px-4 py-2 rounded-xl shadow-inside'>
+                                    <label htmlFor="info">Info</label>
+                                    <input type="checkbox" id="info" name="info" 
+                                        checked={stateRoom.info} onChange={handleInfo} />
+                                </div>
+
+                                <div className='flex items-center justify-between w-[180px] text-slate-100 
+                                    bg-slate-800 my-2 px-4 py-2 rounded-xl shadow-inside'>
+                                    <label htmlFor="question">Question</label>
+                                    <input type="checkbox" id="question" name="question" 
+                                        checked={stateRoom.question} onChange={handleQuestion} />
+                                </div>
+
+                                <div className='flex items-center justify-between w-[180px] text-slate-100 
+                                    bg-slate-800 my-2 px-4 py-2 rounded-xl shadow-inside'>
+                                    <label htmlFor="confidential">Confidential</label>
+                                    <input type="checkbox" id="confidential" name="confidential" 
+                                    checked={stateRoom.confidential} onChange={handleConfidential} />
+                                </div>
 
                                 <input type="number" id="id" name="id" value={user.id} hidden readOnly />
                                 <input type="text" id="otheruser" name="otheruser" value={user.username} hidden readOnly />
                                 <input type="text" id="usersender" name="usersender" value={userName} hidden readOnly />
 
                                 <button type="submit" disabled={pending} 
-                                    className='text-slate-50 btn-primary mb-5 shadow-btn'
+                                    className='text-slate-50 btn-primary mt-4 shadow-btn'
                                 >
                                     Submit
                                 </button>
@@ -166,9 +180,13 @@ export default function UserOnline({dataroom}: {dataroom: UsersChatProps[]}) {
                                 }
                             </form>
 
-                            <li className='text-center text-blue-600 mb-2'>
-                                <Link href="/email">Send an e-mail</Link>
-                            </li>
+                            <ul className='flex items-center justify-center'>
+                                <li className='list-disc text-md text-blue-600 hover:text-blue-600/70 
+                                    active:text-blue-500 m-4'>
+                                    <Link href="/email">Send e-mail</Link>
+                                </li>
+                            </ul>
+
                         </div>
                     ) : null
                 ))}
