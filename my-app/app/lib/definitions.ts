@@ -10,7 +10,7 @@ export type UsersProps = {
     displayInvitation: number;
     userSender: string;
     roomSelected: string;
-    response: number;
+    response?: number;
 };
 
 export type UsersChatProps = {

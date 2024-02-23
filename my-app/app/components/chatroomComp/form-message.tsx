@@ -19,7 +19,6 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
     const [username, setUsername] = useState<string>("");
     const [message, setMessage] = useState<string>("");
     const [date, setDate] = useState<Date>(new Date);
-    const [img, setImg] = useState<string>("");
 
     const pathname = usePathname();
     //console.log(pathname, "pathname");
@@ -27,7 +26,7 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
     useEffect(() => {
         if (session && session.user && session.user.name && session.user.image) {
             setUsername(session.user.name);
-            setImg(session.user.image);
+            //setImg(session.user.image);
         }
         return () => console.log("Clean-up useEffect !");
     }, []);
@@ -63,8 +62,8 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
                         <input type="number" id="id" name="id" value={newId} hidden readOnly />
                         <input type="text" id="username" name="username" value={username} hidden readOnly />
-                        {/* <input type="text" id="email" name="email" value={d.email} hidden readOnly />
-                        <input type="number" id="online" name="online" value={d.online} hidden readOnly /> */}
+                        
+                        <input type="number" id="online" name="online" value={d.online} hidden readOnly />
 
                         <input type="text" id="message" name="message" value={message} 
                             onChange={handleChange}
@@ -75,7 +74,6 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
                         <input type="text" id="room" name="room" value={pathname} hidden readOnly />
 
                         <input type="text" id="date" name="date" value={date.toLocaleString()} hidden readOnly />
-                        {/* <input type="text" id="img" name="img" value={img} hidden readOnly /> */}
 
                         <button type="submit" id="submit" name="submit"
                             value="insert" disabled={pending}

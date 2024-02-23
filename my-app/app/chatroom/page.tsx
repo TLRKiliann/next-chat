@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default async function ChatRoom() {
 
-    const req = await queryUsers("SELECT * FROM users", []);
+    const req = await queryUsers("SELECT * FROM userschat", []);
     const dataUsers: string = JSON.stringify(req);
 
     const request = await queryChatRoom("SELECT * FROM chatroom", []);

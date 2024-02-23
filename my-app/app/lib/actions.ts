@@ -7,17 +7,15 @@ export async function mysqlQueryChatroom(prevState: {message: string} | undefine
     try {
         const id = formData.get("id");
         const username = formData.get("username");
-        /* const email = formData.get("email");
-        const online = formData.get("online"); */
+        const online = formData.get("online");
         const message = formData.get("message");
         const room = formData.get("room");
         const date = formData.get("date");
-        /* const img = formData.get("img"); */
         const btnSubmit = formData.get("submit");
         if (btnSubmit === "insert") {
-            if (id !== null && username !== null && message !== null && room !== null && date !== null) {
-                const result = await queryMessage("INSERT INTO chatroom VALUES (?, ?, ?, ?, ?)", 
-                    [id, username, message, room, date]
+            if (id !== null && username !== null && online !== null && message !== null && room !== null && date !== null) {
+                const result = await queryMessage("INSERT INTO chatroom VALUES (?, ?, ?, ?, ?, ?)", 
+                    [id, username, online, message, room, date]
                 );
                 if (result) {
                     revalidatePath("/chatroom");
@@ -46,7 +44,7 @@ export async function mysqlSendInvitation(prevState: {message: string} | undefin
         const btnSubmitInvitation = formData.get("submit");
         if (btnSubmitInvitation === "updatemessage") {
             if (id !== null && userSender !== null && selectedRoom !== null && displayInvitation !== null) {
-                const result = await queryInvitation("UPDATE users SET usersender=?, display=?, \
+                const result = await queryInvitation("UPDATE userschat SET sender=?, display=?, \
                     selectedroom=? WHERE id=?",
                     [userSender, displayInvitation, selectedRoom, id]
                 );

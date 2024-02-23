@@ -31,7 +31,6 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
 
     return (               
         <div className='flex flex-col items-center justify-start w-full h-[calc(100%-80px)] overflow-scroll scroll-smooth'>
-            {/* justify-start */}
             {dataroom.map((d: UsersChatProps) => (
                 <div key={d.id} 
                     className={`flex flex-col ${d.username === username 
