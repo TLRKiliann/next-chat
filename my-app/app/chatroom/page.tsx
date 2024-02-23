@@ -37,7 +37,7 @@ export default async function ChatRoom() {
                     bg-gradient-to-r from-green-200 from-10% to-blue-200 to-90%'>
 
                     <ScreenMessage dataroom={JSON.parse(data)} />
-                    
+
                     <FormMessage dataroom={JSON.parse(data)} />
 
                 </div>
