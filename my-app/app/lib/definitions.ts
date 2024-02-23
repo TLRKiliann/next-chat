@@ -17,4 +17,6 @@ export type UsersChatProps = {
     room: string;
     date: string;
     img: string;
+    boolInvitation: number;
+    roomSelected: string;
 };

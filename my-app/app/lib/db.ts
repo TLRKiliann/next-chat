@@ -50,8 +50,25 @@ const queryMessage = async (query: string, data: FormDataEntryValue[]): Promise<
     }
 };
 
+// sending message
+const queryInvitation = async (query: string, data: FormDataEntryValue[]): Promise<UsersChatProps[]> => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const [result] = await connection.execute(query, data);
+        return result as UsersChatProps[];
+    } catch (error) {
+        console.error(error);
+        throw error;
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+};
 
 export {
     queryChatRoom,
-    queryMessage
+    queryMessage,
+    queryInvitation
 };
