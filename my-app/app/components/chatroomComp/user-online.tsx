@@ -25,13 +25,13 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
 
 
     const handleDisplayLinks = (id: number): void => {
-        const findById = mapping.map((user: UsersProps) => user.id === id ? {...user, boolInvitation: 1} : user);
+        const findById = mapping.map((user: UsersProps) => user.id === id ? {...user, boolinvitation: 1} : user);
         //console.log(findById, "findById");
         setNewMapping(findById);
     };
 
     const handleCloseInvitation = (id: number): void => {
-        const closeInvitation = mapping.map((user: UsersProps) => user.id === id ? {...user, boolInvitation: 0} : user);
+        const closeInvitation = mapping.map((user: UsersProps) => user.id === id ? {...user, boolinvitation: 0} : user);
         //console.log(closeInvitation, "closeInvitation");
         setNewMapping(closeInvitation);
     };
@@ -66,7 +66,7 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
 
             {newMapping.map((user: UsersProps) => (
                 
-                user.displayInvitation === 1 ? (
+                user.display === 1 ? (
 
                     <div key={user.id}>
                         
@@ -74,11 +74,11 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
                         
                         <p className='text-red-600'>
                             <span>
-                                {user.userSender} 
+                                {user.sender} 
                             </span>
                             sent an invitation to you for gooing to 
                             <span>
-                                {user.roomSelected}
+                                {user.roomselected}
                             </span>
                             room.
                         </p>

@@ -33,7 +33,7 @@ const queryUsers = async (query: string, data: GenericProps): Promise<UsersProps
     }
 };
 
-// to send message
+// to send message & data for chatroom
 const queryChatRoom = async (query: string, data: GenericProps): Promise<UsersChatProps[]> => {
     let connection;
     try {
@@ -50,7 +50,7 @@ const queryChatRoom = async (query: string, data: GenericProps): Promise<UsersCh
     }
 };
 
-// sending message
+// sending message with server action
 const queryMessage = async (query: string, data: FormDataEntryValue[]): Promise<UsersChatProps[]> => {
     let connection;
     try {
@@ -67,13 +67,13 @@ const queryMessage = async (query: string, data: FormDataEntryValue[]): Promise<
     }
 };
 
-// sending message
-const queryInvitation = async (query: string, data: FormDataEntryValue[]): Promise<UsersChatProps[]> => {
+// sending invitation with server action
+const queryInvitation = async (query: string, data: FormDataEntryValue[]): Promise<UsersProps[]> => {
     let connection;
     try {
         connection = await pool.getConnection();
         const [result] = await connection.execute(query, data);
-        return result as UsersChatProps[];
+        return result as UsersProps[];
     } catch (error) {
         console.error(error);
         throw error;

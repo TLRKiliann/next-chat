@@ -6,11 +6,11 @@ export type UsersProps = {
     email: string;
     online: number;
     img: StaticImageData;
-    boolInvitation: number;
-    displayInvitation: number;
-    userSender: string;
-    roomSelected: string;
-    response?: number;
+    boolinvitation: number;
+    display: number;
+    sender: string;
+    roomselected: string;
+    response: number;
 };
 
 export type UsersChatProps = {

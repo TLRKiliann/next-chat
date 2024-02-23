@@ -36,21 +36,24 @@ export async function mysqlSendInvitation(prevState: {message: string} | undefin
     try {
         const id = formData.get("id");
         const userSender = formData.get("usersender");
-        /* const info = formData.get("info");
-        const question = formData.get("question");
-        const confidential = formData.get("confidential"); */
-        const displayInvitation = formData.get("displayInvitation");
+        const display = formData.get("displayinvitation");
         const selectedRoom = formData.get("selectedroom");
         const btnSubmitInvitation = formData.get("submit");
+        console.log(id, "id");
+        console.log(userSender, "userSender");
+        console.log(display, "displayInvitation");
+        console.log(selectedRoom, "selectedRoom");
+
         if (btnSubmitInvitation === "updatemessage") {
-            if (id !== null && userSender !== null && selectedRoom !== null && displayInvitation !== null) {
-                const result = await queryInvitation("UPDATE userschat SET sender=?, display=?, \
+            if (id !== null && userSender !== null && selectedRoom !== null && display !== null) {
+                const result = await queryInvitation("UPDATE userschat SET id=?, sender=?, display=?, \
                     selectedroom=? WHERE id=?",
-                    [userSender, displayInvitation, selectedRoom, id]
+                    [id, userSender, display, selectedRoom, id]
                 );
                 if (result) {
+                    console.log(result, "result");
                     revalidatePath("/chatroom");
-                    return {message: "Message Sent !"}
+                    return {message: "Invitation Sent !"}
                 }
             }
         }

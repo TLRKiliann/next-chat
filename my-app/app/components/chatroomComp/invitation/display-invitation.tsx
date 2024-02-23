@@ -3,7 +3,7 @@
 import type { UsersProps } from '@/app/lib/definitions';
 import { mysqlSendInvitation } from '@/app/lib/actions';
 import { useSession } from 'next-auth/react';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -14,7 +14,7 @@ type DisplayInvitationProps = {
 };
 
 export default function DisplayInvitation({newMapping, handleCloseInvitation}: DisplayInvitationProps) {
- 
+
     const {pending} = useFormStatus();
     const [code, formData] = useFormState(mysqlSendInvitation, undefined);
 
@@ -37,18 +37,33 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
     }, [])
 
     const handleInfo = (): void => {
-        setStateRoom((prevStateInfo) => ({...prevStateInfo, info: !prevStateInfo.info}));
-        setSelectedRoom("info");
+        if (stateRoom.info === false) {
+            setStateRoom((prevInfo) => ({...prevInfo, info: !prevInfo.info}));
+            setSelectedRoom("info");
+        } else {
+            setStateRoom((prevInfo) => ({...prevInfo, info: !prevInfo.info}));
+            setSelectedRoom("");
+        }
     };
 
     const handleQuestion = (): void => {
-        setStateRoom((prevStateQuestion) => ({...prevStateQuestion, question: !prevStateQuestion.question}));
-        setSelectedRoom("question");
+        if (stateRoom.question === false) {
+            setStateRoom((prevQuestion) => ({...prevQuestion, question: !prevQuestion.question}));
+            setSelectedRoom("question");
+        } else {
+            setStateRoom((prevQuestion) => ({...prevQuestion, question: !prevQuestion.question}));
+            setSelectedRoom("");
+        }
     };
 
     const handleConfidential = (): void => {
-        setStateRoom((prevStateConfi) => ({...prevStateConfi, confidential: !prevStateConfi.confidential}));
-        setSelectedRoom("confidential");
+        if (stateRoom.confidential === false) {
+            setStateRoom((prevConfi) => ({...prevConfi, confidential: !prevConfi.confidential}));
+            setSelectedRoom("confidential");
+        } else {
+            setStateRoom((prevConfi) => ({...prevConfi, confidential: !prevConfi.confidential}));
+            setSelectedRoom("");
+        }
     };
 
     //console.log(stateRoom, "stateRoom");
@@ -57,11 +72,11 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
     if (!session) {
         redirect("/login")
     };
-
+    console.log(selectedRoom, "selectedRoom")
     return (
         <div>
             {newMapping.map((user: UsersProps) => (
-                user.boolInvitation === 1 ? (
+                user.boolinvitation === 1 ? (
                     <div key={user.id} className="fixed z-20 top-0 left-0 w-2/5 h-auto
                         bg-slate-200 text-slate-600 rounded-br-xl shadow-2xl">
                         <div className='flex justify-end'>
@@ -78,8 +93,7 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
                             <p className="text-lg text-center text-indigo-600 mt-2 mb-1">{user.username}</p>
                         </div>
 
-                        <form action={formData} className="flex flex-col items-center justify-center">
-
+                        <div className='flex flex-col items-center justify-center'>
                             <div className='flex items-center justify-between w-[180px] text-slate-100 
                                 bg-slate-800 my-2 px-4 py-2 rounded-xl shadow-inside'>
                                 <label htmlFor="info">Info</label>
@@ -100,16 +114,19 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
                                 <input type="checkbox" id="confidential" name="confidential" 
                                 checked={stateRoom.confidential} onChange={handleConfidential} />
                             </div>
+                        </div>
+
+                        <form action={formData} className="flex flex-col items-center justify-center">
 
                             <input type="number" id="id" name="id" value={user.id} hidden readOnly />
                 
                             <input type="text" id="usersender" name="usersender" value={userName} hidden readOnly />
                             <input type="number" id="displayinvitation" name="displayinvitation" 
-                                value={user.displayInvitation} hidden readOnly />
+                                value={1} hidden readOnly />
 
                             <input type="text" id="selectedroom" name="selectedroom" value={selectedRoom} hidden readOnly />
                  
-                            <button type="submit" disabled={pending} value="updatemessage"
+                            <button type="submit" id="submit" name="submit" value="updatemessage" disabled={pending}
                                 className='text-slate-50 btn-primary mt-4 shadow-btn'
                             >
                                 Submit
