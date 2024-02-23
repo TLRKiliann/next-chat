@@ -17,6 +17,11 @@ export type UsersChatProps = {
     room: string;
     date: string;
     img: string;
+    
     boolInvitation: number;
+    displayInvitation: number;
+    userSender: string;
     roomSelected: string;
+    response: number;
 };
+// to put into file form-message.tsx
