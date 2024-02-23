@@ -1,11 +1,12 @@
 "use client";
 
+import type { UsersChatProps } from '@/app/lib/definitions';
 import React, { useState, useEffect } from 'react';
-import { mysqlQueryChatroom } from '@/app/lib/actions';
-import { UsersChatProps } from '@/app/lib/definitions';
 import { useSession } from 'next-auth/react';
+import { mysqlQueryChatroom } from '@/app/lib/actions';
 import { useFormState, useFormStatus } from 'react-dom';
 import { redirect } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
@@ -14,15 +15,14 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
     const {data: session} = useSession();
 
-    if (!session) {
-        redirect("/login")
-    };
-
     const [newId, setNewId] = useState<number>(0);
     const [username, setUsername] = useState<string>("");
     const [message, setMessage] = useState<string>("");
     const [date, setDate] = useState<Date>(new Date);
     const [img, setImg] = useState<string>("");
+
+    const pathname = usePathname();
+    //console.log(pathname, "pathname");
 
     useEffect(() => {
         if (session && session.user && session.user.name && session.user.image) {
@@ -46,8 +46,12 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
         setMessage(value);
     };
 
-    const verifyCodeMsg = code?.message ? console.log(code.message) : null;
-    verifyCodeMsg;
+    if (!session) {
+        redirect("/login")
+    };
+
+    const verifyCodeMsg = code?.message ? code.message : null;
+    console.log(verifyCodeMsg, "return of code.message");
     
     return (
         <>
@@ -68,11 +72,10 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
                             className='w-[80%] text-slate-800 bg-slate-200 placeholder:text-slate-500 px-4 py-1 rounded-full'
                         />
 
-                        <input type="text" id="room" name="room" value={d.room} hidden readOnly />
+                        <input type="text" id="room" name="room" value={pathname} hidden readOnly />
 
                         <input type="text" id="date" name="date" value={date.toLocaleString()} hidden readOnly />
                         <input type="text" id="img" name="img" value={img} hidden readOnly />
-
 
                         <button type="submit" id="submit" name="submit"
                             value="insert" disabled={pending}
