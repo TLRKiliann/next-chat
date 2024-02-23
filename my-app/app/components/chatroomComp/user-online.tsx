@@ -1,48 +1,76 @@
 "use client";
 
 import type { UsersProps } from '@/app/lib/definitions';
-import React, { useState } from 'react';
-/* import { useSession } from "next-auth/react";
+import React, { useState, useEffect } from 'react';
+import { useSession } from "next-auth/react";
 import { useFormState, useFormStatus } from 'react-dom';
-import { mysqlSendInvitation } from '@/app/lib/actions'; */
+import { mysqlResponseInvitation } from '@/app/lib/actions';
 import Image from 'next/image';
 import DisplayInvitation from './invitation/display-invitation';
 
 export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
-    
-    /* const {data: session} = useSession();
-    
+
     const {pending} = useFormStatus();
-    const [code, formData] = useFormState(mysqlSendInvitation, undefined); */
+    const [code, formData] = useFormState(mysqlResponseInvitation, undefined);
+
+    const {data: session} = useSession();
+    
+    const [userName, setUserName] = useState<string>("");
+
+    useEffect(() => {
+        if (session && session.user && session.user.name) {
+            setUserName(session.user.name);
+        };
+        return () => console.log("Clean-up session user-online !");
+    }, [])
+
 
     const mapping = dataUsers.filter((obj: {username: string}, index: number) => {
         return index === dataUsers.findIndex((o: {username: string}) => obj.username === o.username)
     });
 
+    // SENDER !!!
+    //const findSender = dataUsers.map();
+
     const [newMapping, setNewMapping] = useState<UsersProps[]>(mapping);
+
+
     const [acceptInvite, setAcceptInvite] = useState<boolean>(false);
     const [refuseInvite, setRefuseInvite] = useState<boolean>(false);
 
+    const [response, setResponse] = useState<number>(0);
 
     const handleDisplayLinks = (id: number): void => {
         const findById = mapping.map((user: UsersProps) => user.id === id ? {...user, boolinvitation: 1} : user);
-        //console.log(findById, "findById");
         setNewMapping(findById);
     };
 
     const handleCloseInvitation = (id: number): void => {
         const closeInvitation = mapping.map((user: UsersProps) => user.id === id ? {...user, boolinvitation: 0} : user);
-        //console.log(closeInvitation, "closeInvitation");
         setNewMapping(closeInvitation);
     };
 
     const handleAccept = (): void => {
-        setAcceptInvite(!acceptInvite);
+        if (response === 0) {
+            setAcceptInvite(!acceptInvite);
+            setResponse(prev => prev = 1);
+        } else {
+            setAcceptInvite(!acceptInvite);
+            setResponse(prev => prev = 0);
+        }
     };
 
     const handleRefuse = (): void => {
-        setRefuseInvite(!refuseInvite);
+        if (response === 1) {
+            setRefuseInvite(!refuseInvite);
+            setResponse(prev => prev = 0);
+        } else {
+            setRefuseInvite(!refuseInvite);
+            setResponse(prev => prev = 1);
+        }
     };
+
+    console.log(response, "response")
 
     return (
         <div className='flex flex-col w-[25%] bg-blue-900'>
@@ -65,42 +93,72 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
             ))}
 
             {newMapping.map((user: UsersProps) => (
-                
-                user.display === 1 ? (
-
-                    <div key={user.id}>
+                (user.display === 1) /* && (user.username === userName) */ ? (
+                    <div key={user.id} className='fixed z-10 top-0 left-0 w-[400px] text-slate-600
+                        bg-slate-400 rounded-br-xl shadow-lg'>
                         
-                        <h2>Invitation</h2>
+                        <h2 className='text-xl font-bold text-center my-2'>Invitation</h2>
                         
-                        <p className='text-red-600'>
-                            <span>
+                        <p className='px-10 py-2'>
+                            <span className='text-red-600'>
                                 {user.sender} 
                             </span>
-                            sent an invitation to you for gooing to 
-                            <span>
-                                {user.roomselected}
+                            &nbsp;sent an invitation to you for gooing to&nbsp;
+                            <span className='text-red-600'>
+                                {user.selectedroom}&nbsp;
                             </span>
                             room.
                         </p>
 
-                        <form action="">
-                            <h2>
-                                Accept ?
-                            </h2>
+                        <h2 className="mb-2 px-10 py-2">
+                            Accept ?
+                        </h2>
 
-                            <label htmlFor="accept">Yes
-                                <input type="checkbox" id="accept" name="accept" checked={acceptInvite} onChange={handleAccept} />
-                            </label>
-                            <label htmlFor="refuse">
-                                <input type="checkbox" id="refuse" name="refuse" checked={refuseInvite} onChange={handleRefuse} />
-                            </label>
+                        <div className='flex items-center justify-around w-[200px] m-auto'>
+
+                            <span>
+                                <label htmlFor="accept">Yes</label>
+                                <input type="checkbox" id="accept" name="accept" 
+                                    checked={acceptInvite} onChange={handleAccept} className='ml-2'/>
+                            </span>
+
+                            <span>
+                                <label htmlFor="refuse">No</label>
+                                <input type="checkbox" id="refuse" name="refuse" 
+                                    checked={refuseInvite} onChange={handleRefuse} className='ml-2' />              
+                            </span>  
+
+                        </div>
+
+                        <form action={formData}>
+
+                            {acceptInvite === true ? (
+                                <input type="number" id="reponse" name="response" value={response} hidden readOnly />
+                                ) : null
+                            };
+
+                            {refuseInvite === true ? (
+                                <input type="number" id="response" name="response" value={response} hidden readOnly />
+                                ) : null
+                            };
                             
-                            <button type="submit">Submit</button>
+                            <div className='flex items-center justify-center my-6'>
+                                {acceptInvite === false}
+                                <button type="submit" id="submit" name="submit" value="responseInvite" 
+                                    disabled={pending || (acceptInvite === false) && (refuseInvite === false)}
+                                    className='text-slate-50 btn-primary shadow-btn'
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                            {code?.message ? (
+                                <p>{code.message}</p>
+                                ) : null
+                            }
                         </form>
                     </div>
                 ) : null
             ))}
-
             <DisplayInvitation
                 newMapping={newMapping}
                 handleCloseInvitation={(id: number) => handleCloseInvitation(id)} 

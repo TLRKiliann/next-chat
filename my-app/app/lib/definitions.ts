@@ -9,7 +9,7 @@ export type UsersProps = {
     boolinvitation: number;
     display: number;
     sender: string;
-    roomselected: string;
+    selectedroom: string;
     response: number;
 };
 

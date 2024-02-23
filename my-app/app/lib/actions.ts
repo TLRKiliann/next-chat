@@ -63,3 +63,31 @@ export async function mysqlSendInvitation(prevState: {message: string} | undefin
         throw error;
     }
 };
+
+export async function mysqlResponseInvitation(prevState: {message: string} | undefined, formData: FormData) {
+    try {
+        const id = formData.get("id");
+        const userSender = formData.get("usersender");
+        const display = formData.get("displayinvitation");
+        const selectedRoom = formData.get("selectedroom");
+        const btnSubmitInvitation = formData.get("submit");
+
+        if (btnSubmitInvitation === "responseInvite") {
+            if (id !== null && userSender !== null && selectedRoom !== null && display !== null) {
+                const result = await queryInvitation("UPDATE userschat SET id=?, sender=?, display=?, \
+                    selectedroom=? WHERE id=?",
+                    [id, userSender, display, selectedRoom, id]
+                );
+                if (result) {
+                    console.log(result, "result");
+                    revalidatePath("/chatroom");
+                    return {message: "Invitation Sent !"}
+                }
+            }
+        }
+    }
+    catch (error) {
+        console.log("Error", error)
+        throw error;
+    }
+};
