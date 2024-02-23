@@ -1,13 +1,15 @@
 "use client";
 
 import { UsersChatProps } from '@/app/lib/definitions'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSession } from "next-auth/react";
 import { redirect } from 'next/navigation';
 
 export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
     const {data: session} = useSession();
+    
+    const msgRef = useRef<HTMLDivElement>(null);
 
     if (!session) {
         redirect("/login")
@@ -22,6 +24,12 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
         return () => console.log("Clean-up useEffect !");
     }, []);
 
+    const updateMsg = dataroom.map((msg: UsersChatProps) => msg.message);
+
+    useEffect(() => {
+        msgRef.current?.scrollIntoView();
+    }, [updateMsg])
+
     return (               
         <div className='flex flex-col items-center justify-start w-full h-[calc(100%-80px)] overflow-scroll scroll-smooth'>
             {/* justify-start */}
@@ -31,7 +39,7 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
                         ? "items-end"
                         : "items-start"} justify-center w-full`}>
 
-                    <div className={`w-[50%] bg-slate-100 m-4 p-2
+                    <div ref={msgRef} className={`w-[50%] bg-slate-100 m-4 p-2
                         ${d.username === username 
                             ? "rounded-tl-lg" 
                             : "rounded-br-lg"} rounded-tr-lg rounded-bl-lg shadow-msg`}>
