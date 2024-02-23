@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-//import type { Metadata } from 'next/types';
 import React from 'react';
 import { queryChatRoom } from '@/app/lib/db';
 import HeaderChatroom from '@/app/components/chatroomComp/header-chatroom';
@@ -28,14 +27,14 @@ export default async function ChatRoom() {
     return (
         <div className='w-full h-screen'>
             
-            <HeaderChatroom />
+            <HeaderChatroom>Chatroom</HeaderChatroom>
 
             <div className='flex w-full h-[calc(100%-72px)]'>
 
                 <UserOnline dataroom={JSON.parse(data)} />
 
                 <div className='w-full h-content shadow-inside
-                    bg-gradient-to-r from-green-100 from-10% to-blue-100 to-90%'>
+                    bg-gradient-to-r from-green-200 from-10% to-blue-200 to-90%'>
 
                     <ScreenMessage dataroom={JSON.parse(data)} />
                     
