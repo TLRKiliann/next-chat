@@ -1,6 +1,6 @@
 "use client";
 
-import type { UsersChatProps } from '@/app/lib/definitions';
+import type { UsersProps } from '@/app/lib/definitions';
 import React, { useState } from 'react';
 /* import { useSession } from "next-auth/react";
 import { useFormState, useFormStatus } from 'react-dom';
@@ -8,30 +8,30 @@ import { mysqlSendInvitation } from '@/app/lib/actions'; */
 import Image from 'next/image';
 import DisplayInvitation from './invitation/display-invitation';
 
-export default function UserOnline({dataroom}: {dataroom: UsersChatProps[]}) {
+export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     
-/*     const {data: session} = useSession();
+    /* const {data: session} = useSession();
     
     const {pending} = useFormStatus();
-    const [code, formData] = useFormState(mysqlSendInvitation, undefined);
- */
-    const mapping = dataroom.filter((obj: {username: string}, index: number) => {
-        return index === dataroom.findIndex((o: {username: string}) => obj.username === o.username)
+    const [code, formData] = useFormState(mysqlSendInvitation, undefined); */
+
+    const mapping = dataUsers.filter((obj: {username: string}, index: number) => {
+        return index === dataUsers.findIndex((o: {username: string}) => obj.username === o.username)
     });
 
-    const [newMapping, setNewMapping] = useState<UsersChatProps[]>(mapping);
+    const [newMapping, setNewMapping] = useState<UsersProps[]>(mapping);
     const [acceptInvite, setAcceptInvite] = useState<boolean>(false);
     const [refuseInvite, setRefuseInvite] = useState<boolean>(false);
 
 
     const handleDisplayLinks = (id: number): void => {
-        const findById = mapping.map((user: UsersChatProps) => user.id === id ? {...user, boolInvitation: 1} : user);
+        const findById = mapping.map((user: UsersProps) => user.id === id ? {...user, boolInvitation: 1} : user);
         //console.log(findById, "findById");
         setNewMapping(findById);
     };
 
     const handleCloseInvitation = (id: number): void => {
-        const closeInvitation = mapping.map((user: UsersChatProps) => user.id === id ? {...user, boolInvitation: 0} : user);
+        const closeInvitation = mapping.map((user: UsersProps) => user.id === id ? {...user, boolInvitation: 0} : user);
         //console.log(closeInvitation, "closeInvitation");
         setNewMapping(closeInvitation);
     };
@@ -47,11 +47,11 @@ export default function UserOnline({dataroom}: {dataroom: UsersChatProps[]}) {
     return (
         <div className='flex flex-col w-[25%] bg-blue-900'>
 
-            {newMapping.map((user: UsersChatProps) => (
+            {newMapping.map((user: UsersProps) => (
                 <div key={user.id} onClick={() => handleDisplayLinks(user.id)}
                     className='flex items-center justify-start bg-slate-800 cursor-pointer border-b border-slate-700 px-4 py-3'>
                     
-                    <Image src={user.img} width={30} height={30} alt={user.username} 
+                    <Image src={user.img} width={30} height={30} alt={user.username ? user.username : "img missing"} 
                         className='flex w-[30px] h-[30px] object-cover rounded-full'
                     />
                     
@@ -64,21 +64,35 @@ export default function UserOnline({dataroom}: {dataroom: UsersChatProps[]}) {
                 </div>
             ))}
 
-            {newMapping.map((user: UsersChatProps) => (
+            {newMapping.map((user: UsersProps) => (
+                
                 user.displayInvitation === 1 ? (
+
                     <div key={user.id}>
+                        
                         <h2>Invitation</h2>
-                        <p>{user.userSender} sent an invitation to {user.roomSelected}</p>
+                        
+                        <p className='text-red-600'>
+                            <span>
+                                {user.userSender} 
+                            </span>
+                            sent an invitation to you for gooing to 
+                            <span>
+                                {user.roomSelected}
+                            </span>
+                            room.
+                        </p>
+
                         <form action="">
                             <h2>
                                 Accept ?
                             </h2>
 
-                            <label htmlFor="">Yes
-                                <input type="checkbox" checked={acceptInvite} onChange={handleAccept} />
+                            <label htmlFor="accept">Yes
+                                <input type="checkbox" id="accept" name="accept" checked={acceptInvite} onChange={handleAccept} />
                             </label>
-                            <label htmlFor="">
-                                <input type="checkbox" checked={refuseInvite} onChange={handleRefuse} />
+                            <label htmlFor="refuse">
+                                <input type="checkbox" id="refuse" name="refuse" checked={refuseInvite} onChange={handleRefuse} />
                             </label>
                             
                             <button type="submit">Submit</button>

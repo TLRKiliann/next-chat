@@ -1,6 +1,6 @@
 "use client";
 
-import type { UsersChatProps } from '@/app/lib/definitions';
+import type { UsersProps } from '@/app/lib/definitions';
 import { mysqlSendInvitation } from '@/app/lib/actions';
 import { useSession } from 'next-auth/react';
 import React, { useState, useEffect } from 'react'
@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 type DisplayInvitationProps = {
-    newMapping: UsersChatProps[];
+    newMapping: UsersProps[];
     handleCloseInvitation: (id: number) => void;
 };
 
@@ -21,6 +21,7 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
     const {data: session} = useSession();
 
     const [userName, setUserName] = useState<string>("");
+    const [selectedRoom, setSelectedRoom] = useState<string>("");
 
     const [stateRoom, setStateRoom] = useState<{info: boolean, question: boolean, confidential: boolean}>({
         info: false,
@@ -36,15 +37,18 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
     }, [])
 
     const handleInfo = (): void => {
-        setStateRoom((prevState) => ({...prevState, info: !prevState.info}))
+        setStateRoom((prevStateInfo) => ({...prevStateInfo, info: !prevStateInfo.info}));
+        setSelectedRoom("info");
     };
 
     const handleQuestion = (): void => {
-        setStateRoom((prevState) => ({...prevState, question: !prevState.question}))
+        setStateRoom((prevStateQuestion) => ({...prevStateQuestion, question: !prevStateQuestion.question}));
+        setSelectedRoom("question");
     };
 
     const handleConfidential = (): void => {
-        setStateRoom((prevState) => ({...prevState, confidential: !prevState.confidential}))
+        setStateRoom((prevStateConfi) => ({...prevStateConfi, confidential: !prevStateConfi.confidential}));
+        setSelectedRoom("confidential");
     };
 
     //console.log(stateRoom, "stateRoom");
@@ -56,7 +60,7 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
 
     return (
         <div>
-            {newMapping.map((user: UsersChatProps) => (
+            {newMapping.map((user: UsersProps) => (
                 user.boolInvitation === 1 ? (
                     <div key={user.id} className="fixed z-20 top-0 left-0 w-2/5 h-auto
                         bg-slate-200 text-slate-600 rounded-br-xl shadow-2xl">
@@ -98,10 +102,14 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
                             </div>
 
                             <input type="number" id="id" name="id" value={user.id} hidden readOnly />
-                            <input type="text" id="otheruser" name="otheruser" value={user.username} hidden readOnly />
+                
                             <input type="text" id="usersender" name="usersender" value={userName} hidden readOnly />
+                            <input type="number" id="displayinvitation" name="displayinvitation" 
+                                value={user.displayInvitation} hidden readOnly />
 
-                            <button type="submit" disabled={pending} 
+                            <input type="text" id="selectedroom" name="selectedroom" value={selectedRoom} hidden readOnly />
+                 
+                            <button type="submit" disabled={pending} value="updatemessage"
                                 className='text-slate-50 btn-primary mt-4 shadow-btn'
                             >
                                 Submit
