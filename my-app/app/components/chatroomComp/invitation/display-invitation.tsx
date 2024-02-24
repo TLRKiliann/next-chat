@@ -66,13 +66,10 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
         }
     };
 
-    //console.log(stateRoom, "stateRoom");
-    //console.log(stateRoom.info, "stateRoom - info");
-
     if (!session) {
         redirect("/login")
     };
-    console.log(selectedRoom, "selectedRoom")
+    //console.log(selectedRoom, "selectedRoom")
     return (
         <div>
             {newMapping.map((user: UsersProps) => (
