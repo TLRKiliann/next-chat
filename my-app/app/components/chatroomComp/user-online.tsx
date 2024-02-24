@@ -3,34 +3,55 @@
 import type { UsersProps } from '@/app/lib/definitions';
 import React, { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
-import { useFormState, useFormStatus } from 'react-dom';
-import { mysqlResponseInvitation } from '@/app/lib/actions';
+/* import { useFormState, useFormStatus } from 'react-dom';
+import { mysqlResponseInvitation } from '@/app/lib/actions'; */
 import Image from 'next/image';
 import DisplayInvitation from './invitation/display-invitation';
+import ResponseReceiver from './invitation/response-receiver';
 
 export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
 
-    const {pending} = useFormStatus();
+/*     const {pending} = useFormStatus();
     const [code, formData] = useFormState(mysqlResponseInvitation, undefined);
-
+ */
     const {data: session} = useSession();
     
     const [userName, setUserName] = useState<string>("");
+
+    const [senderInvite, setSenderInvite] = useState<string>("");
+
+    const [senderResponse, setSenderResponse] = useState<UsersProps | undefined>(undefined)
+
+    console.log(senderInvite, "senderInvite");
+
+    const handleResponse = (findsender: string) => {
+        const responseToSender = dataUsers.find((data: UsersProps) => data.username === findsender);
+        if (responseToSender) {
+            setSenderResponse(responseToSender);
+        } else {
+            return null;
+        }
+    }
 
     useEffect(() => {
         if (session && session.user && session.user.name) {
             setUserName(session.user.name);
         };
+        const callSender = () => {
+            const findSender = dataUsers.find((user: UsersProps) => user.sender !== "");
+            if (findSender && findSender.sender) {
+                setSenderInvite(findSender.sender);
+                handleResponse(findSender.sender);
+            }
+        };
+        callSender()
         return () => console.log("Clean-up session user-online !");
-    }, [])
+    }, []);
 
 
     const mapping = dataUsers.filter((obj: {username: string}, index: number) => {
         return index === dataUsers.findIndex((o: {username: string}) => obj.username === o.username)
     });
-
-    // SENDER !!!
-    //const findSender = dataUsers.map();
 
     const [newMapping, setNewMapping] = useState<UsersProps[]>(mapping);
 
@@ -41,32 +62,34 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     const [response, setResponse] = useState<number>(0);
 
     const handleDisplayLinks = (id: number): void => {
-        const findById = mapping.map((user: UsersProps) => user.id === id ? {...user, boolinvitation: 1} : user);
+        const findById = mapping.map((user: UsersProps) => user.id === id 
+            ? {...user, boolinvitation: 1} : user);
         setNewMapping(findById);
     };
 
     const handleCloseInvitation = (id: number): void => {
-        const closeInvitation = mapping.map((user: UsersProps) => user.id === id ? {...user, boolinvitation: 0} : user);
+        const closeInvitation = mapping.map((user: UsersProps) => user.id === id 
+            ? {...user, boolinvitation: 0} : user);
         setNewMapping(closeInvitation);
     };
 
     const handleAccept = (): void => {
         if (response === 0) {
             setAcceptInvite(!acceptInvite);
-            setResponse(prev => prev = 1);
+            setResponse((prev) => prev = 1);
         } else {
             setAcceptInvite(!acceptInvite);
-            setResponse(prev => prev = 0);
+            setResponse((prev) => prev = 0);
         }
     };
 
     const handleRefuse = (): void => {
         if (response === 1) {
             setRefuseInvite(!refuseInvite);
-            setResponse(prev => prev = 0);
+            setResponse((prev) => prev = 0);
         } else {
             setRefuseInvite(!refuseInvite);
-            setResponse(prev => prev = 1);
+            setResponse((prev) => prev = 1);
         }
     };
 
@@ -92,73 +115,16 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
                 </div>
             ))}
 
-            {newMapping.map((user: UsersProps) => (
-                (user.display === 1) /* && (user.username === userName) */ ? (
-                    <div key={user.id} className='fixed z-10 top-0 left-0 w-[400px] text-slate-600
-                        bg-slate-400 rounded-br-xl shadow-lg'>
-                        
-                        <h2 className='text-xl font-bold text-center my-2'>Invitation</h2>
-                        
-                        <p className='px-10 py-2'>
-                            <span className='text-red-600'>
-                                {user.sender} 
-                            </span>
-                            &nbsp;sent an invitation to you for gooing to&nbsp;
-                            <span className='text-red-600'>
-                                {user.selectedroom}&nbsp;
-                            </span>
-                            room.
-                        </p>
-
-                        <h2 className="mb-2 px-10 py-2">
-                            Accept ?
-                        </h2>
-
-                        <div className='flex items-center justify-around w-[200px] m-auto'>
-
-                            <span>
-                                <label htmlFor="accept">Yes</label>
-                                <input type="checkbox" id="accept" name="accept" 
-                                    checked={acceptInvite} onChange={handleAccept} className='ml-2'/>
-                            </span>
-
-                            <span>
-                                <label htmlFor="refuse">No</label>
-                                <input type="checkbox" id="refuse" name="refuse" 
-                                    checked={refuseInvite} onChange={handleRefuse} className='ml-2' />              
-                            </span>  
-
-                        </div>
-
-                        <form action={formData}>
-
-                            {acceptInvite === true ? (
-                                <input type="number" id="reponse" name="response" value={response} hidden readOnly />
-                                ) : null
-                            };
-
-                            {refuseInvite === true ? (
-                                <input type="number" id="response" name="response" value={response} hidden readOnly />
-                                ) : null
-                            };
-                            
-                            <div className='flex items-center justify-center my-6'>
-                                {acceptInvite === false}
-                                <button type="submit" id="submit" name="submit" value="responseInvite" 
-                                    disabled={pending || (acceptInvite === false) && (refuseInvite === false)}
-                                    className='text-slate-50 btn-primary shadow-btn'
-                                >
-                                    Submit
-                                </button>
-                            </div>
-                            {code?.message ? (
-                                <p>{code.message}</p>
-                                ) : null
-                            }
-                        </form>
-                    </div>
-                ) : null
-            ))}
+            <ResponseReceiver 
+                newMapping={newMapping}
+                acceptInvite={acceptInvite}
+                refuseInvite={refuseInvite}
+                handleAccept={handleAccept}
+                handleRefuse={handleRefuse}
+                senderResponse={senderResponse}
+                response={response}
+            />
+            
             <DisplayInvitation
                 newMapping={newMapping}
                 handleCloseInvitation={(id: number) => handleCloseInvitation(id)} 
