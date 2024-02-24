@@ -5,6 +5,8 @@ import HeaderChatroom from '@/app/components/chatroomComp/header-chatroom';
 import UserOnline from '@/app/components/chatroomComp/user-online';
 import ScreenMessage from '@/app/components/chatroomComp/screen-message';
 import FormMessage from '@/app/components/chatroomComp/form-message';
+import { UsersProps } from '../lib/definitions';
+import { redirect } from 'next/navigation';
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +21,13 @@ export default async function ChatRoom() {
 
     const req = await queryUsers("SELECT * FROM userschat", []);
     const dataUsers: string = JSON.stringify(req);
+
+    // useeffect ???
+    const mappingToRedirect = JSON.parse(dataUsers).map((d: UsersProps) => d.selectedroom);
+    //console.log(mappingToRedirect[0], "mapping redirect") 
+    if (mappingToRedirect.length === 2) {
+        redirect(`/chatroom/${mappingToRedirect[0]}`)
+    };
 
     const request = await queryChatRoom("SELECT * FROM chatroom", []);
     const data: string = JSON.stringify(request);
