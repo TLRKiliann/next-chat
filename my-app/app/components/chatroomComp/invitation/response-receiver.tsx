@@ -10,7 +10,7 @@ type ResponseReceiverProps = {
     senderResponse: UsersProps | undefined;
     handleAccept: () => void;
     handleRefuse: () => void;
-    response: number;
+    userName: string;
 }
 
 export default function ResponseReceiver({
@@ -19,8 +19,8 @@ export default function ResponseReceiver({
     refuseInvite, 
     handleAccept, 
     handleRefuse, 
-    senderResponse, 
-    response }: ResponseReceiverProps) {
+    senderResponse,
+    userName }: ResponseReceiverProps) {
 
     const {pending} = useFormStatus();
     const [code, formData] = useFormState(mysqlResponseInvitation, undefined);
@@ -28,9 +28,9 @@ export default function ResponseReceiver({
     return (
         <>
             {newMapping.map((user: UsersProps) => (
-                (user.display === 1) /* && (user.username === userName) */ ? (
+                (user.display === 1) /* && (user.username === userName)  */? (
                     <div key={user.id} className='fixed z-10 top-0 left-0 w-[400px] text-slate-600
-                        bg-slate-400 rounded-br-xl shadow-lg'>
+                        bg-slate-200 rounded-br-xl shadow-lg'>
                         
                         <h2 className='text-xl font-bold text-center my-2'>Invitation</h2>
                         
@@ -45,7 +45,7 @@ export default function ResponseReceiver({
                             room.
                         </p>
 
-                        <h2 className="mb-2 px-10 py-2">
+                        <h2 className="font-bold mb-2 px-10 py-2">
                             Accept ?
                         </h2>
 
@@ -65,40 +65,40 @@ export default function ResponseReceiver({
 
                         </div>
 
-                        
-
                         <form action={formData}>
-
-                            {acceptInvite === true ? (
+                            {acceptInvite === true && refuseInvite === false ? (
                                 <>
+                                    <input type="number" id="otherid" name="otherid" value={user.id} hidden readOnly />
+                                    <input type="number" id="otherdisplay" name="otherdisplay" value={0} hidden readOnly />
+                                    
                                     <input type="number" id="id" name="id" 
                                         value={senderResponse?.id ? senderResponse.id : ""} hidden readOnly />
                                     <input type="string" id="selectedroom" name="selectedroom" 
-                                        value={senderResponse?.selectedroom ? senderResponse.selectedroom : ""} hidden readOnly />
-                                    
-                                    
+                                        value={user.selectedroom} hidden readOnly />
+                                    <input type="number" id="display" name="display" value={0} hidden readOnly />
                                     <input type="string" id="usersender" name="usersender" value={user.username} hidden readOnly />
-                                    <input type="number" id="reponse" name="response" value={response} hidden readOnly />                                
+                                    <input type="number" id="reponse" name="response" value={1} hidden readOnly />                                
                                 </>
                                 ) : null
                             }
 
-                            {refuseInvite === true ? (
+                            {refuseInvite === true && acceptInvite === false ? (
                                 <>
+                                    <input type="number" id="otherid" name="otherid" value={user.id} hidden readOnly />
+                                    <input type="number" id="otherdisplay" name="otherdisplay" value={0} hidden readOnly />
+
                                     <input type="number" id="id" name="id" 
                                         value={senderResponse?.id ? senderResponse.id : ""} hidden readOnly />
                                     <input type="string" id="selectedroom" name="selectedroom" 
-                                        value={senderResponse?.selectedroom ? senderResponse.selectedroom : ""} hidden readOnly />
-
-
-
+                                        value={user.selectedroom} hidden readOnly />
+                                    <input type="number" id="display" name="display" value={0} hidden readOnly />
                                     <input type="string" id="usersender" name="usersender" value={user.username} hidden readOnly />
-                                    <input type="number" id="reponse" name="response" value={response} hidden readOnly />   
+                                    <input type="number" id="reponse" name="response" value={0} hidden readOnly />   
                                 </>
                                 ) : null
                             }
                             
-                            <div className='flex items-center justify-center my-6'>
+                            <div className='flex items-center justify-center mt-6 mb-2'>
                                 {acceptInvite === false}
                                 <button type="submit" id="submit" name="submit" value="responseInvite" 
                                     disabled={pending || (acceptInvite === false) && (refuseInvite === false)}
@@ -108,7 +108,7 @@ export default function ResponseReceiver({
                                 </button>
                             </div>
                             {code?.message ? (
-                                <p>{code.message}</p>
+                                <p className='text-center text-indigo-500 mb-2'>{code.message}</p>
                                 ) : null
                             }
                         </form>
