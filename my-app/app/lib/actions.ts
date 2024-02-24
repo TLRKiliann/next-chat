@@ -1,5 +1,6 @@
 "use server";
 
+import { redirect } from 'next/navigation';
 import { queryMessage, queryInvitation } from './db';
 import { revalidatePath } from 'next/cache';
 
