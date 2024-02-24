@@ -22,8 +22,11 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
         }
     };
 
+    const testerMappingToRedirect = dataUsers.map((d: UsersProps) => d.selectedroom !== "");
+    console.log(testerMappingToRedirect, "testerMappingToRedirect")
+
     useEffect(() => {
-        const mappingToRedirect = dataUsers.map((d: UsersProps) => d.selectedroom);
+        const mappingToRedirect = dataUsers.map((d: UsersProps) => d.selectedroom !== "");
         if (mappingToRedirect.length === 2) {
             router.push(`/chatroom/${mappingToRedirect[0]}`)
         } else {
