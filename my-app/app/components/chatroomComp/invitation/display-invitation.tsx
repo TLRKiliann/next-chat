@@ -125,7 +125,8 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
                                 value={1} hidden readOnly />
 
                             <input type="text" id="selectedroom" name="selectedroom" value={selectedRoom} hidden readOnly />
-                 
+                            <input type="number" id="response" name="response" value={1} hidden readOnly />
+
                             <button type="submit" id="submit" name="submit" value="updatemessage" disabled={pending}
                                 className='text-slate-50 btn-primary mt-4 shadow-btn'
                             >
