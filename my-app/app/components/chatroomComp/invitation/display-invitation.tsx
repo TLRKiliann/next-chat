@@ -34,7 +34,7 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
             setUserName(session.user.name)
         };
         return () => console.log("Clean-up session userName !")
-    }, [])
+    }, [session])
 
     const handleInfo = (): void => {
         if (stateRoom.info === false) {
@@ -66,13 +66,10 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
         }
     };
 
-    //console.log(stateRoom, "stateRoom");
-    //console.log(stateRoom.info, "stateRoom - info");
-
     if (!session) {
         redirect("/login")
     };
-    console.log(selectedRoom, "selectedRoom")
+    //console.log(selectedRoom, "selectedRoom")
     return (
         <div>
             {newMapping.map((user: UsersProps) => (
@@ -125,7 +122,8 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
                                 value={1} hidden readOnly />
 
                             <input type="text" id="selectedroom" name="selectedroom" value={selectedRoom} hidden readOnly />
-                 
+                            <input type="number" id="response" name="response" value={1} hidden readOnly />
+
                             <button type="submit" id="submit" name="submit" value="updatemessage" disabled={pending}
                                 className='text-slate-50 btn-primary mt-4 shadow-btn'
                             >

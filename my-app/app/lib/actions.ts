@@ -1,5 +1,6 @@
 "use server";
 
+import { redirect } from 'next/navigation';
 import { queryMessage, queryInvitation } from './db';
 import { revalidatePath } from 'next/cache';
 
@@ -30,25 +31,20 @@ export async function mysqlQueryChatroom(prevState: {message: string} | undefine
     }
 };
 
-// update !!! dans la table du user invité !
-// sending invitation to another user + type to review !!!
+// sending invitation to another user
 export async function mysqlSendInvitation(prevState: {message: string} | undefined, formData: FormData) {
     try {
         const id = formData.get("id");
         const userSender = formData.get("usersender");
         const display = formData.get("displayinvitation");
         const selectedRoom = formData.get("selectedroom");
+        const response = formData.get("response");
         const btnSubmitInvitation = formData.get("submit");
-        console.log(id, "id");
-        console.log(userSender, "userSender");
-        console.log(display, "displayInvitation");
-        console.log(selectedRoom, "selectedRoom");
-
         if (btnSubmitInvitation === "updatemessage") {
-            if (id !== null && userSender !== null && selectedRoom !== null && display !== null) {
+            if (id !== null && userSender !== null && selectedRoom !== null && display !== null && response !== null) {
                 const result = await queryInvitation("UPDATE userschat SET id=?, sender=?, display=?, \
-                    selectedroom=? WHERE id=?",
-                    [id, userSender, display, selectedRoom, id]
+                    selectedroom=?, response=? WHERE id=?",
+                    [id, userSender, display, selectedRoom, response, id]
                 );
                 if (result) {
                     console.log(result, "result");
@@ -64,24 +60,31 @@ export async function mysqlSendInvitation(prevState: {message: string} | undefin
     }
 };
 
+// receiver sending response to sender & update display value
 export async function mysqlResponseInvitation(prevState: {message: string} | undefined, formData: FormData) {
     try {
         const id = formData.get("id");
         const userSender = formData.get("usersender");
-        const display = formData.get("displayinvitation");
+        const display = formData.get("display");
         const selectedRoom = formData.get("selectedroom");
+        const response = formData.get("response");
+        const otherid = formData.get("otherid");
+        const otherdisplay = formData.get("otherdisplay");
         const btnSubmitInvitation = formData.get("submit");
-
         if (btnSubmitInvitation === "responseInvite") {
-            if (id !== null && userSender !== null && selectedRoom !== null && display !== null) {
+            if (id !== null && userSender !== null && selectedRoom !== null && display !== null && response !== null) {
                 const result = await queryInvitation("UPDATE userschat SET id=?, sender=?, display=?, \
-                    selectedroom=? WHERE id=?",
-                    [id, userSender, display, selectedRoom, id]
+                    selectedroom=?, response=? WHERE id=?", [id, userSender, display, selectedRoom, response, id]
                 );
                 if (result) {
-                    console.log(result, "result");
-                    revalidatePath("/chatroom");
-                    return {message: "Invitation Sent !"}
+                    if (otherid !== null && otherdisplay !== null) {
+                        const secondquery = await queryInvitation("UPDATE userschat SET id=?, display=? WHERE id=?", 
+                            [otherid, otherdisplay, otherid]);
+                        if (secondquery) {
+                            revalidatePath("/chatroom");
+                            return {message: "Invitation Sent !"}
+                        }
+                    }
                 }
             }
         }
