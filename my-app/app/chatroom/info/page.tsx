@@ -12,6 +12,14 @@ export default async function InfoRoom() {
     const request = await queryChatRoom("SELECT * FROM chatroom", []);
     const data = JSON.stringify(request);
 
+    if (!dataUsers) {
+        throw new Error("Error: dataUsers not loaded for db");
+    };
+
+    if (!data) {
+        throw new Error("Error: data not loaded for db");
+    };
+
     return (
         <div className='bg-slate-900'>
             <h1 className='text-2xl italic font-bold p-[20px]'>
