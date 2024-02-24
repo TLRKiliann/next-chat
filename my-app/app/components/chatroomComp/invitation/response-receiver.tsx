@@ -2,6 +2,7 @@ import type { UsersProps } from '@/app/lib/definitions';
 import React from 'react'
 import { useFormState, useFormStatus } from 'react-dom';
 import { mysqlResponseInvitation } from '@/app/lib/actions';
+import { redirect } from 'next/dist/server/api-utils';
 
 type ResponseReceiverProps = {
     newMapping: UsersProps[];
