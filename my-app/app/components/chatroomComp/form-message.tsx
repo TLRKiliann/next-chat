@@ -29,7 +29,7 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
             //setImg(session.user.image);
         }
         return () => console.log("Clean-up useEffect !");
-    }, []);
+    }, [session]);
 
     useEffect(() => {
         if (dataroom) {

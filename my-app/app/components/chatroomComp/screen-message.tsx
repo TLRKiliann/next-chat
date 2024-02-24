@@ -16,7 +16,7 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
             setUsername(session.user.name);
         }
         return () => console.log("Clean-up useEffect !");
-    }, []);
+    }, [session]);
 
     const updateMsg = dataroom.map((msg: UsersChatProps) => msg.message);
 

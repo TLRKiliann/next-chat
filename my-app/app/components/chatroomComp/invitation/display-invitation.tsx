@@ -34,7 +34,7 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
             setUserName(session.user.name)
         };
         return () => console.log("Clean-up session userName !")
-    }, [])
+    }, [session])
 
     const handleInfo = (): void => {
         if (stateRoom.info === false) {

@@ -2,16 +2,14 @@
 
 import type { UsersProps } from '@/app/lib/definitions';
 import React, { useState, useEffect } from 'react';
-import { useSession } from "next-auth/react";
 import DisplayInvitation from './invitation/display-invitation';
 import ResponseReceiver from './invitation/response-receiver';
 import UsersBoard from './invitation/users-board';
+import { useRouter } from 'next/navigation';
 
 export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
-
-    const {data: session} = useSession();
     
-    const [userName, setUserName] = useState<string>("");
+    const router = useRouter();
 
     const [senderInvite, setSenderInvite] = useState<string>("");
 
@@ -26,10 +24,16 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
         }
     };
 
-    useEffect(() => {
-        if (session && session.user && session.user.name) {
-            setUserName(session.user.name);
+    const verifyBeforeRedirect = () => {
+        const mappingToRedirect = dataUsers.map((d: UsersProps) => d.selectedroom);
+        if (mappingToRedirect.length === 2) {
+            router.push(`/chatroom/${mappingToRedirect[0]}`)
+        } else {
+            console.log("No room select by 2 users...")
         }
+    }
+
+    useEffect(() => {
         const callSender = () => {
             const findSender = dataUsers.find((user: UsersProps) => user.sender !== "");
             if (findSender && findSender.sender) {
@@ -37,9 +41,10 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
                 handleResponse(findSender.sender);
             }
         };
-        callSender()
+        callSender();
+        verifyBeforeRedirect();
         return () => console.log("Clean-up session user-online !");
-    }, []);
+    }, [dataUsers]);
 
 
     const mapping = dataUsers.filter((obj: {username: string}, index: number) => {
@@ -83,7 +88,6 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
                 handleAccept={handleAccept}
                 handleRefuse={handleRefuse}
                 senderResponse={senderResponse}
-                userName={userName}
             />
             
             <DisplayInvitation

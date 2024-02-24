@@ -22,13 +22,6 @@ export default async function ChatRoom() {
     const req = await queryUsers("SELECT * FROM userschat", []);
     const dataUsers: string = JSON.stringify(req);
 
-    // useeffect ???
-    const mappingToRedirect = JSON.parse(dataUsers).map((d: UsersProps) => d.selectedroom);
-    //console.log(mappingToRedirect[0], "mapping redirect") 
-    if (mappingToRedirect.length === 2) {
-        redirect(`/chatroom/${mappingToRedirect[0]}`)
-    };
-
     const request = await queryChatRoom("SELECT * FROM chatroom", []);
     const data: string = JSON.stringify(request);
 

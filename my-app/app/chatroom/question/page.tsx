@@ -9,7 +9,7 @@ export default async function QuestionRoom() {
     const req = await queryUsers("SELECT * FROM userschat", []);
     const dataUsers: string = JSON.stringify(req);
 
-    const request = await queryChatRoom("SELECT * FROM question", []);
+    const request = await queryChatRoom("SELECT * FROM chatroom", []);
     const data = JSON.stringify(request);
 
     return (
