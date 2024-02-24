@@ -11,12 +11,10 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     
     const router = useRouter();
 
-    const [senderInvite, setSenderInvite] = useState<string>("");
-
     const [senderResponse, setSenderResponse] = useState<UsersProps | undefined>(undefined)
 
-    const handleResponse = (findsender: string) => {
-        const responseToSender = dataUsers.find((data: UsersProps) => data.username === findsender);
+    const handleResponse = (findSender: string) => {
+        const responseToSender = dataUsers.find((data: UsersProps) => data.username === findSender);
         if (responseToSender) {
             setSenderResponse(responseToSender);
         } else {
@@ -24,28 +22,23 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
         }
     };
 
-    const verifyBeforeRedirect = () => {
+    useEffect(() => {
         const mappingToRedirect = dataUsers.map((d: UsersProps) => d.selectedroom);
         if (mappingToRedirect.length === 2) {
             router.push(`/chatroom/${mappingToRedirect[0]}`)
         } else {
             console.log("No room select by 2 users...")
-        }
-    }
+        };
+        return () => console.log("clean-up mappingToRedirect"); //clearInterval(interval);
+    }, [])
 
     useEffect(() => {
-        const callSender = () => {
-            const findSender = dataUsers.find((user: UsersProps) => user.sender !== "");
-            if (findSender && findSender.sender) {
-                setSenderInvite(findSender.sender);
-                handleResponse(findSender.sender);
-            }
-        };
-        callSender();
-        verifyBeforeRedirect();
-        return () => console.log("Clean-up session user-online !");
+        const findSender = dataUsers.find((user: UsersProps) => user.sender !== "");
+        if (findSender && findSender.sender) {
+            handleResponse(findSender.sender);
+        }
+        return () => console.log("Clean-up session findSender!");
     }, [dataUsers]);
-
 
     const mapping = dataUsers.filter((obj: {username: string}, index: number) => {
         return index === dataUsers.findIndex((o: {username: string}) => obj.username === o.username)
@@ -90,10 +83,9 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
                 senderResponse={senderResponse}
             />
             
-            <DisplayInvitation
-                newMapping={newMapping}
-                handleCloseInvitation={(id: number) => handleCloseInvitation(id)} 
-            />
+            <DisplayInvitation newMapping={newMapping} 
+                handleCloseInvitation={(id: number) => handleCloseInvitation(id)} />
+
         </div>
     )
 }
