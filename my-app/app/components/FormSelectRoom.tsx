@@ -43,7 +43,7 @@ export default function FormSelectRoom() {
             </select>
             </label>
 
-            <button type="submit" className='btn-primary'>Submit</button>
+            <button type="submit" className='btn-primary shadow-light'>Submit</button>
 
         </form>
     )
