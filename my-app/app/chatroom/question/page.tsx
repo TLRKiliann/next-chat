@@ -5,6 +5,7 @@ import HeaderChatroom from '@/app/components/chatroomComp/header-chatroom';
 import FormMessage from '@/app/components/chatroomComp/form-message';
 import ScreenMessage from '@/app/components/chatroomComp/screen-message';
 import UserOnline from '@/app/components/chatroomComp/user-online';
+import BackToChatroom from '@/app/components/nextroom/backto-chatroom';
 
 export const metadata: Metadata = {
     title: {
@@ -47,6 +48,8 @@ export default async function QuestionRoom() {
                 </div>
 
             </div>
+
+            <BackToChatroom dataUsers={JSON.parse(dataUsers)} />
 
         </div>
     )

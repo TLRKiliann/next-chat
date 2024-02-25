@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from 'next/navigation';
 import { queryMessage, queryInvitation } from './db';
 import { revalidatePath } from 'next/cache';
 
@@ -26,7 +25,7 @@ export async function mysqlQueryChatroom(prevState: {message: string} | undefine
         }
     }
     catch (error) {
-        console.log("Error", error)
+        console.log("Error: ", error)
         throw error;
     }
 };
@@ -49,13 +48,13 @@ export async function mysqlSendInvitation(prevState: {message: string} | undefin
                 if (result) {
                     console.log(result, "result");
                     revalidatePath("/chatroom");
-                    return {message: "Invitation Sent !"}
+                    return {message: "Invitation Sent !"};
                 }
             }
         }
     }
     catch (error) {
-        console.log("Error", error)
+        console.log("Error: ", error);
         throw error;
     }
 };
@@ -82,7 +81,7 @@ export async function mysqlResponseInvitation(prevState: {message: string} | und
                             [otherid, otherdisplay, otherid]);
                         if (secondquery) {
                             revalidatePath("/chatroom");
-                            return {message: "Invitation Sent !"}
+                            return {message: "Invitation Sent !"};
                         }
                     }
                 }
@@ -90,7 +89,30 @@ export async function mysqlResponseInvitation(prevState: {message: string} | und
         }
     }
     catch (error) {
-        console.log("Error", error)
+        console.log("Error: ", error);
+        throw error;
+    }
+};
+
+// when user return to chatroom from info - question - confidential
+export default async function returnToChatRoom(prevState: {message: string} | undefined, formData: FormData) {
+    try {
+        const id = formData.get("id");
+        const sender = formData.get("sender");
+        const selectedroom = formData.get("selectedroom");
+        const btnBackToChatRoom = formData.get("submit");
+        if (btnBackToChatRoom === "btnBackToMain") {
+            if (id !== null && sender !== null && selectedroom !== null) {
+                const queryChange = await queryInvitation("UPDATE userschat SET id=?, sender=?, selectedroom=? WHERE id=?", 
+                [id, sender, selectedroom, id]);
+                if (queryChange) {
+                    revalidatePath("/chatroom")
+                    return {message: "Back to chatroom..."};
+                }
+            }
+        }
+    } catch (error) {
+        console.log("Error: ", error);
         throw error;
     }
 };
