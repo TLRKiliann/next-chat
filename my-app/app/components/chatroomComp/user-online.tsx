@@ -22,18 +22,18 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
         }
     };
 
-    const testerMappingToRedirect = dataUsers.map((d: UsersProps) => d.selectedroom !== "");
-    console.log(testerMappingToRedirect, "testerMappingToRedirect")
+    /* const testerMappingToRedirect = dataUsers.filter((d: UsersProps) => d.selectedroom);
+    console.log(testerMappingToRedirect, "testerMappingToRedirect") */
 
     useEffect(() => {
-        const mappingToRedirect = dataUsers.map((d: UsersProps) => d.selectedroom !== "");
+        const mappingToRedirect = dataUsers.map((d: UsersProps) => d.selectedroom);
         if (mappingToRedirect.length === 2) {
             router.push(`/chatroom/${mappingToRedirect[0]}`)
         } else {
             console.log("No room select by 2 users...")
         };
-        return () => console.log("clean-up mappingToRedirect"); //clearInterval(interval);
-    }, [])
+        return () => console.log("clean-up mappingToRedirect");
+    }, []);
 
     useEffect(() => {
         const findSender = dataUsers.find((user: UsersProps) => user.sender !== "");
