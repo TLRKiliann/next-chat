@@ -1,8 +1,17 @@
+import type { Metadata } from 'next';
 import React from 'react';
 import { queryChatRoom, queryUsers } from '@/app/lib/db';
+import HeaderChatroom from '@/app/components/chatroomComp/header-chatroom';
 import FormMessage from '@/app/components/chatroomComp/form-message';
 import ScreenMessage from '@/app/components/chatroomComp/screen-message';
 import UserOnline from '@/app/components/chatroomComp/user-online';
+
+export const metadata: Metadata = {
+    title: {
+      absolute: "Question"
+    },
+    description: "Question room"
+};
 
 export default async function QuestionRoom() {
 
@@ -22,16 +31,14 @@ export default async function QuestionRoom() {
 
     return (
         <div className='w-full h-screen bg-slate-900'>
-            <h1 className='text-2xl italic font-bold p-[20px]'>
-                Question
-            </h1>
+
+            <HeaderChatroom>Question</HeaderChatroom>
 
             <div className='flex w-full h-[calc(100%-72px)]'>
 
                 <UserOnline dataUsers={JSON.parse(dataUsers)} />
 
-                <div className='w-full h-content shadow-inside
-                    bg-gradient-to-r from-green-200 from-10% to-blue-200 to-90%'>
+                <div className='w-full h-content shadow-inside bg-slate-50'>
 
                     <ScreenMessage dataroom={JSON.parse(data)} />
 
