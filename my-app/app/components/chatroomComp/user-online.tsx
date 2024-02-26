@@ -50,20 +50,22 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
 
     const handleRouteToChange = () => {
         setTimeout(() => {
-            const filterUserSession = dataUsers.filter((d: UsersProps) => (d.username === userName) && (d.selectedroom === "question"));
+            const filterUserSession = dataUsers.filter((d: UsersProps) => d.username === userName);
             const senderMessage = filterUserSession[0]?.sender;
 
             const mappingFilterSender = dataUsers.filter((n: UsersProps) => n.username === senderMessage);
             const filterDataByRoomQuestion = dataUsers.filter((d: UsersProps) => d.selectedroom === "question");
-            
             const filterDataByRoomInfo = dataUsers.filter((d: UsersProps) => d.selectedroom === "info");
             const filterDataByRoomSecret = dataUsers.filter((d: UsersProps) => d.selectedroom === "confidential");
+
             if ((filterDataByRoomQuestion.length === 2) || (filterDataByRoomInfo.length === 2) || (filterDataByRoomSecret.length === 2)) {
-                if ((filterUserSession[0]?.selectedroom === "question") && (filterDataByRoomQuestion[1].selectedroom === "question")) {
+                if ((filterUserSession[0]?.selectedroom === "question") && (filterDataByRoomQuestion[0].selectedroom === "question")) {
                     router.push("/chatroom/question");
-                } else if ((filterUserSession[0]?.selectedroom === "info") && (mappingFilterSender[0]?.selectedroom === "info")) {
+                } else if ((filterUserSession[0]?.selectedroom === "info") && (filterDataByRoomSecret[0]?.selectedroom === "info")) {
                     router.push("/chatroom/info");
-                } else if ((filterUserSession[0]?.selectedroom === "confidential") && (filterDataByRoomSecret[1]?.selectedroom === "confidential")) {
+                } else if ((filterUserSession[0]?.selectedroom === "confidential") && (filterDataByRoomSecret[0]?.selectedroom === "confidential")) {
+                    //console.info(filterUserSession[0]?.selectedroom, "1 - is defined ???")
+                    //console.info(filterDataByRoomSecret[0]?.selectedroom, "2 - is defined ???")
                     router.push("/chatroom/confidential");
                 } else {
                     console.log("2 users required !")
