@@ -2,15 +2,19 @@
 
 import type { UsersProps } from '@/app/lib/definitions';
 import React, { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import DisplayInvitation from './invitation/display-invitation';
 import ResponseReceiver from './invitation/response-receiver';
 import UsersBoard from './invitation/users-board';
 import { useRouter } from 'next/navigation';
 
 export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
-    
+
+    const { data: session } = useSession();
+
     const router = useRouter();
 
+    const [userName, setUserName] = useState<string>("");
     const [senderResponse, setSenderResponse] = useState<UsersProps | undefined>(undefined)
 
     const mapping = dataUsers.filter((obj: {username: string}, index: number) => {
@@ -20,6 +24,12 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     const [newMapping, setNewMapping] = useState<UsersProps[]>(mapping);
     const [acceptInvite, setAcceptInvite] = useState<boolean>(false);
     const [refuseInvite, setRefuseInvite] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (session && session.user && session.user.name) {
+            setUserName(session.user.name)
+        }
+    }, []);
 
     const handleResponse = (findSender: string) => {
         const responseToSender = dataUsers.find((data: UsersProps) => data.username === findSender);
@@ -40,27 +50,28 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
 
     const handleRouteToChange = () => {
         setTimeout(() => {
-            const dataFilterQuestion = dataUsers.filter((d: UsersProps) => d.selectedroom === "question");
-            console.log(dataFilterQuestion, "data filter (1)");
-            console.log(dataFilterQuestion[0], "data filter (1)");
-            
-            const dataFilterInfo = dataUsers.filter((d: UsersProps) => d.selectedroom === "info");
-            console.log(dataFilterInfo, "data filter (2)");
-            
-            const dataFilterConfidential = dataUsers.filter((d: UsersProps) => d.selectedroom === "confidential");
-            console.log(dataFilterConfidential, "data filter (3)");
+            const filterUserSession = dataUsers.filter((d: UsersProps) => (d.username === userName) && (d.selectedroom === "question"));
+            const senderMessage = filterUserSession[0]?.sender;
 
-            const filterRoomQuestion = dataFilterQuestion.map((u: UsersProps) => u.selectedroom);
-            //console.log(mappingRoom, "mapping room");
-            if (filterRoomQuestion.length === 2) {
-                router.push("/chatroom/question");
-            } else if (filterRoomQuestion.length === 2) {
-                //case selectedroom === "question";
-                router.push("/chatroom/info");
-            } else if (filterRoomQuestion.length === 2) {
-                router.push("/chatroom/confidential");
+            const mappingFilterSender = dataUsers.filter((n: UsersProps) => n.username === senderMessage);
+            const filterDataByRoomQuestion = dataUsers.filter((d: UsersProps) => d.selectedroom === "question");
+            
+            const filterDataByRoomInfo = dataUsers.filter((d: UsersProps) => d.selectedroom === "info");
+            const filterDataByRoomSecret = dataUsers.filter((d: UsersProps) => d.selectedroom === "confidential");
+            if ((filterDataByRoomQuestion.length === 2) || (filterDataByRoomInfo.length === 2) || (filterDataByRoomSecret.length === 2)) {
+                if ((filterUserSession[0]?.selectedroom === "question") && (filterDataByRoomQuestion[1].selectedroom === "question")) {
+                    router.push("/chatroom/question");
+                } else if ((filterUserSession[0]?.selectedroom === "info") && (mappingFilterSender[0]?.selectedroom === "info")) {
+                    router.push("/chatroom/info");
+                } else if ((filterUserSession[0]?.selectedroom === "confidential") && (filterDataByRoomSecret[1]?.selectedroom === "confidential")) {
+                    router.push("/chatroom/confidential");
+                } else {
+                    console.log("2 users required !")
+                }
+            } else if ((filterDataByRoomQuestion.length > 2) && (filterDataByRoomInfo.length > 2) && (filterDataByRoomSecret.length > 2)) {
+                console.error("users greater than 2 !")
             } else {
-                console.log("No room select by 2 users...")
+                console.error("2 users required !")
             };
         }, 2000)
     };
