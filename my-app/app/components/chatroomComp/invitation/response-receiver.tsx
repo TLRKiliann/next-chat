@@ -11,6 +11,7 @@ type ResponseReceiverProps = {
     senderResponse: UsersProps | undefined;
     handleAccept: () => void;
     handleRefuse: () => void;
+    handleRouteToChange: () => void;
 }
 
 export default function ResponseReceiver({
@@ -18,7 +19,8 @@ export default function ResponseReceiver({
     acceptInvite, 
     refuseInvite, 
     handleAccept, 
-    handleRefuse, 
+    handleRefuse,
+    handleRouteToChange,
     senderResponse }: ResponseReceiverProps) {
 
     const {pending} = useFormStatus();
@@ -111,7 +113,8 @@ export default function ResponseReceiver({
                             
                             <div className='flex items-center justify-center mt-6 mb-2'>
                                 {acceptInvite === false}
-                                <button type="submit" id="submit" name="submit" value="responseInvite" 
+                                <button type="submit" id="submit" name="submit" value="responseInvite"
+                                    onClick={handleRouteToChange} 
                                     disabled={pending || (acceptInvite === false) && (refuseInvite === false)}
                                     className='text-slate-50 btn-primary shadow-btn'
                                 >

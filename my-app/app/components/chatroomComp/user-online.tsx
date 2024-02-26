@@ -13,6 +13,14 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
 
     const [senderResponse, setSenderResponse] = useState<UsersProps | undefined>(undefined)
 
+    const mapping = dataUsers.filter((obj: {username: string}, index: number) => {
+        return index === dataUsers.findIndex((o: {username: string}) => obj.username === o.username)
+    });
+
+    const [newMapping, setNewMapping] = useState<UsersProps[]>(mapping);
+    const [acceptInvite, setAcceptInvite] = useState<boolean>(false);
+    const [refuseInvite, setRefuseInvite] = useState<boolean>(false);
+
     const handleResponse = (findSender: string) => {
         const responseToSender = dataUsers.find((data: UsersProps) => data.username === findSender);
         if (responseToSender) {
@@ -22,19 +30,6 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
         }
     };
 
-    /* const testerMappingToRedirect = dataUsers.filter((d: UsersProps) => d.selectedroom);
-    console.log(testerMappingToRedirect, "testerMappingToRedirect") */
-
-    useEffect(() => {
-        const mappingToRedirect = dataUsers.map((d: UsersProps) => d.selectedroom);
-        if (mappingToRedirect.length === 2) {
-            router.push(`/chatroom/${mappingToRedirect[0]}`)
-        } else {
-            console.log("No room select by 2 users...")
-        };
-        return () => console.log("clean-up mappingToRedirect");
-    }, []);
-
     useEffect(() => {
         const findSender = dataUsers.find((user: UsersProps) => user.sender !== "");
         if (findSender && findSender.sender) {
@@ -43,14 +38,32 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
         return () => console.log("Clean-up session findSender!");
     }, [dataUsers]);
 
-    const mapping = dataUsers.filter((obj: {username: string}, index: number) => {
-        return index === dataUsers.findIndex((o: {username: string}) => obj.username === o.username)
-    });
+    const handleRouteToChange = () => {
+        setTimeout(() => {
+            const dataFilterQuestion = dataUsers.filter((d: UsersProps) => d.selectedroom === "question");
+            console.log(dataFilterQuestion, "data filter (1)");
+            console.log(dataFilterQuestion[0], "data filter (1)");
+            
+            const dataFilterInfo = dataUsers.filter((d: UsersProps) => d.selectedroom === "info");
+            console.log(dataFilterInfo, "data filter (2)");
+            
+            const dataFilterConfidential = dataUsers.filter((d: UsersProps) => d.selectedroom === "confidential");
+            console.log(dataFilterConfidential, "data filter (3)");
 
-    const [newMapping, setNewMapping] = useState<UsersProps[]>(mapping);
-
-    const [acceptInvite, setAcceptInvite] = useState<boolean>(false);
-    const [refuseInvite, setRefuseInvite] = useState<boolean>(false);
+            const filterRoomQuestion = dataFilterQuestion.map((u: UsersProps) => u.selectedroom);
+            //console.log(mappingRoom, "mapping room");
+            if (filterRoomQuestion.length === 2) {
+                router.push("/chatroom/question");
+            } else if (filterRoomQuestion.length === 2) {
+                //case selectedroom === "question";
+                router.push("/chatroom/info");
+            } else if (filterRoomQuestion.length === 2) {
+                router.push("/chatroom/confidential");
+            } else {
+                console.log("No room select by 2 users...")
+            };
+        }, 2000)
+    };
 
     const handleDisplayLinks = (id: number): void => {
         const findById = mapping.map((user: UsersProps) => user.id === id 
@@ -84,6 +97,7 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
                 handleAccept={handleAccept}
                 handleRefuse={handleRefuse}
                 senderResponse={senderResponse}
+                handleRouteToChange={handleRouteToChange}
             />
             
             <DisplayInvitation newMapping={newMapping} 
