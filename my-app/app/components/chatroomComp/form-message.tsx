@@ -153,7 +153,7 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
                         <button type="submit" id="submit" name="submit"
                             value="insert" disabled={pending}
-                            className='btn-primary shadow-light'>
+                            className='btn-primary'>
                             {pending ? "Pending..." : "Enter"}
                         </button>
 
