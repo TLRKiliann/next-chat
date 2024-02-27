@@ -14,7 +14,7 @@ export async function mysqlQueryChatroom(prevState: {message: string} | undefine
         const btnSubmit = formData.get("submit");
         if (btnSubmit === "insert") {
             if (newId !== null && username !== null && online !== null && message !== null && room !== null && date !== null) {
-                const result = await queryMessage("INSERT INTO chatroom VALUES (?, ?, ?, ?, ?, ?)", 
+                const result = await queryMessage(`INSERT INTO ${room.slice(1)} VALUES (?, ?, ?, ?, ?, ?)`, 
                     [newId, username, online, message, room, date]
                 );
                 if (result) {
