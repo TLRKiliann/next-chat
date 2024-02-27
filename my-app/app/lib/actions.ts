@@ -100,11 +100,12 @@ export default async function returnToChatRoom(prevState: {message: string} | un
         const id = formData.get("id");
         const sender = formData.get("sender");
         const selectedroom = formData.get("selectedroom");
+        const response = formData.get("response");
         const btnBackToChatRoom = formData.get("submit");
         if (btnBackToChatRoom === "btnBackToMain") {
-            if (id !== null && sender !== null && selectedroom !== null) {
-                const queryChange = await queryInvitation("UPDATE userschat SET id=?, sender=?, selectedroom=? WHERE id=?", 
-                [id, sender, selectedroom, id]);
+            if (id !== null && sender !== null && selectedroom !== null && response !== null) {
+                const queryChange = await queryInvitation("UPDATE userschat SET id=?, sender=?, selectedroom=?, response=? WHERE id=?", 
+                [id, sender, selectedroom, response, id]);
                 if (queryChange) {
                     revalidatePath("/chatroom")
                     return {message: "Back to chatroom..."};
