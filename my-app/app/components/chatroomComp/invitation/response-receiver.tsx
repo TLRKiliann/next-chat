@@ -11,6 +11,7 @@ type ResponseReceiverProps = {
     senderResponse: UsersProps | undefined;
     handleAccept: () => void;
     handleRefuse: () => void;
+    handleRouteToChange: () => void;
 }
 
 export default function ResponseReceiver({
@@ -18,7 +19,8 @@ export default function ResponseReceiver({
     acceptInvite, 
     refuseInvite, 
     handleAccept, 
-    handleRefuse, 
+    handleRefuse,
+    handleRouteToChange,
     senderResponse }: ResponseReceiverProps) {
 
     const {pending} = useFormStatus();
@@ -39,7 +41,7 @@ export default function ResponseReceiver({
     return (
         <>
             {newMapping.map((user: UsersProps) => (
-                (user.display === 1) /* && (user.username === userName) */ ? (
+                (user.display === 1) && (user.username === userName) ? (
                     <div key={user.id} className='fixed z-10 top-0 left-0 w-[400px] text-slate-600
                         bg-slate-200 rounded-br-xl shadow-lg'>
                         
@@ -111,11 +113,12 @@ export default function ResponseReceiver({
                             
                             <div className='flex items-center justify-center mt-6 mb-2'>
                                 {acceptInvite === false}
-                                <button type="submit" id="submit" name="submit" value="responseInvite" 
+                                <button type="submit" id="submit" name="submit" value="responseInvite"
+                                    onClick={handleRouteToChange} 
                                     disabled={pending || (acceptInvite === false) && (refuseInvite === false)}
                                     className='text-slate-50 btn-primary shadow-btn'
                                 >
-                                    Submit
+                                    {pending ? "Pending..." : "Submit"}
                                 </button>
                             </div>
                             {code?.message ? (

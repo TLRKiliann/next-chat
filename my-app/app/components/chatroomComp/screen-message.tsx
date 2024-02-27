@@ -10,6 +10,7 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
     const {data: session} = useSession();
     const msgRef = useRef<HTMLDivElement>(null);
     const [username, setUsername] = useState<string>("");
+    const updateMsg = dataroom.map((msg: UsersChatProps) => msg.message);
 
     useEffect(() => {
         if (session && session.user && session.user.name) {
@@ -17,8 +18,6 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
         }
         return () => console.log("Clean-up useEffect !");
     }, [session]);
-
-    const updateMsg = dataroom.map((msg: UsersChatProps) => msg.message);
 
     useEffect(() => {
         msgRef.current?.scrollIntoView();
@@ -29,8 +28,11 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
         redirect("/login")
     };
 
+    console.log(username, "++username")
+
     return (               
-        <div className='flex flex-col items-center justify-start w-full h-[calc(100%-80px)] overflow-scroll scroll-smooth'>
+        <div className='flex flex-col items-center justify-start w-full h-[calc(100%-80px)] overflow-scroll 
+            scroll-smooth'>
             {dataroom.map((d: UsersChatProps) => (
                 <div key={d.id} 
                     className={`flex flex-col ${d.username === username 

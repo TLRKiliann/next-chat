@@ -1,8 +1,20 @@
+import type { Metadata } from 'next';
 import React from 'react';
 import { queryChatRoom, queryUsers } from '@/app/lib/db';
 import FormMessage from '@/app/components/chatroomComp/form-message';
 import ScreenMessage from '@/app/components/chatroomComp/screen-message';
 import UserOnline from '@/app/components/chatroomComp/user-online';
+import HeaderChatroom from '@/app/components/chatroomComp/header-chatroom';
+import BackToChatroom from '@/app/components/nextroom/backto-chatroom';
+
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+    title: {
+      absolute: "Confidential"
+    },
+    description: "Confidential room"
+};
 
 export default async function SecretRoom() {
 
@@ -21,17 +33,15 @@ export default async function SecretRoom() {
     };
 
     return (
-        <div className='bg-slate-900'>
-            <h1 className='text-2xl italic font-bold p-[20px]'>
-                Confidential
-            </h1>
+        <div className='w-full h-screen bg-slate-900'>
+
+            <HeaderChatroom>Confidential</HeaderChatroom>
 
             <div className='flex w-full h-[calc(100%-72px)]'>
 
                 <UserOnline dataUsers={JSON.parse(dataUsers)} />
 
-                <div className='w-full h-content shadow-inside
-                    bg-gradient-to-r from-green-200 from-10% to-blue-200 to-90%'>
+                <div className='w-full h-content shadow-inside bg-slate-50'>
 
                     <ScreenMessage dataroom={JSON.parse(data)} />
 
@@ -40,6 +50,8 @@ export default async function SecretRoom() {
                 </div>
 
             </div>
+
+            <BackToChatroom dataUsers={JSON.parse(dataUsers)} />
 
         </div>
     )

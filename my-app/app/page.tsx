@@ -7,7 +7,7 @@ export default function Home() {
 
       <div className='flex items-center justify-content'>
 
-        <h1 className='text-4xl font-bold p-8'>Welcome to Chatr00m !</h1>
+        <h1 className='text-4xl font-bold p-8'>Welcome to Chatr0↔️0m !</h1>
         <Link href="/chatroom">Chatroom</Link>
       </div>
 

@@ -24,6 +24,8 @@ export default function FormSelectRoom() {
         router.push(`/chatroom/development`);
       } else if (finalVal === "programming") {
         router.push(`/chatroom/programming`);
+      } else if (finalVal === "chatroom") {
+        router.push(`/chatroom`);
       } else {
         console.log("Nothing choosen !")
         router.push(`/chatroom/security`);
@@ -40,10 +42,11 @@ export default function FormSelectRoom() {
                 <option value="security">Security</option>
                 <option value="development">Development</option>
                 <option value="programming">Programming</option>
+                <option value="chatroom">Chatroom</option>
             </select>
             </label>
 
-            <button type="submit" className='btn-primary'>Submit</button>
+            <button type="submit" className='btn-primary shadow-light'>Submit</button>
 
         </form>
     )

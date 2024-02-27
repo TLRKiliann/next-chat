@@ -5,8 +5,6 @@ import HeaderChatroom from '@/app/components/chatroomComp/header-chatroom';
 import UserOnline from '@/app/components/chatroomComp/user-online';
 import ScreenMessage from '@/app/components/chatroomComp/screen-message';
 import FormMessage from '@/app/components/chatroomComp/form-message';
-//import { UsersProps } from '../lib/definitions';
-//import { redirect } from 'next/navigation';
 
 export const dynamic = "force-dynamic";
 

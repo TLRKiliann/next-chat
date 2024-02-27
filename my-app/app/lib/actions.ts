@@ -1,12 +1,11 @@
 "use server";
 
-import { redirect } from 'next/navigation';
 import { queryMessage, queryInvitation } from './db';
 import { revalidatePath } from 'next/cache';
 
 export async function mysqlQueryChatroom(prevState: {message: string} | undefined, formData: FormData) {
     try {
-        const id = formData.get("id");
+        const newId = formData.get("id");
         const username = formData.get("username");
         const online = formData.get("online");
         const message = formData.get("message");
@@ -14,9 +13,9 @@ export async function mysqlQueryChatroom(prevState: {message: string} | undefine
         const date = formData.get("date");
         const btnSubmit = formData.get("submit");
         if (btnSubmit === "insert") {
-            if (id !== null && username !== null && online !== null && message !== null && room !== null && date !== null) {
+            if (newId !== null && username !== null && online !== null && message !== null && room !== null && date !== null) {
                 const result = await queryMessage("INSERT INTO chatroom VALUES (?, ?, ?, ?, ?, ?)", 
-                    [id, username, online, message, room, date]
+                    [newId, username, online, message, room, date]
                 );
                 if (result) {
                     revalidatePath("/chatroom");
@@ -26,7 +25,7 @@ export async function mysqlQueryChatroom(prevState: {message: string} | undefine
         }
     }
     catch (error) {
-        console.log("Error", error)
+        console.log("Error: ", error)
         throw error;
     }
 };
@@ -49,13 +48,13 @@ export async function mysqlSendInvitation(prevState: {message: string} | undefin
                 if (result) {
                     console.log(result, "result");
                     revalidatePath("/chatroom");
-                    return {message: "Invitation Sent !"}
+                    return {message: "Invitation Sent !"};
                 }
             }
         }
     }
     catch (error) {
-        console.log("Error", error)
+        console.log("Error: ", error);
         throw error;
     }
 };
@@ -82,7 +81,7 @@ export async function mysqlResponseInvitation(prevState: {message: string} | und
                             [otherid, otherdisplay, otherid]);
                         if (secondquery) {
                             revalidatePath("/chatroom");
-                            return {message: "Invitation Sent !"}
+                            return {message: "Invitation Sent !"};
                         }
                     }
                 }
@@ -90,7 +89,31 @@ export async function mysqlResponseInvitation(prevState: {message: string} | und
         }
     }
     catch (error) {
-        console.log("Error", error)
+        console.log("Error: ", error);
+        throw error;
+    }
+};
+
+// when user return to chatroom from info - question - confidential
+export default async function returnToChatRoom(prevState: {message: string} | undefined, formData: FormData) {
+    try {
+        const id = formData.get("id");
+        const sender = formData.get("sender");
+        const selectedroom = formData.get("selectedroom");
+        const response = formData.get("response");
+        const btnBackToChatRoom = formData.get("submit");
+        if (btnBackToChatRoom === "btnBackToMain") {
+            if (id !== null && sender !== null && selectedroom !== null && response !== null) {
+                const queryChange = await queryInvitation("UPDATE userschat SET id=?, sender=?, selectedroom=?, response=? WHERE id=?", 
+                [id, sender, selectedroom, response, id]);
+                if (queryChange) {
+                    revalidatePath("/chatroom")
+                    return {message: "Back to chatroom..."};
+                }
+            }
+        }
+    } catch (error) {
+        console.log("Error: ", error);
         throw error;
     }
 };
