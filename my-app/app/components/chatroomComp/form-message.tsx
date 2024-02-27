@@ -1,7 +1,7 @@
 "use client";
 
 import type { UsersChatProps } from '@/app/lib/definitions';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { mysqlQueryChatroom } from '@/app/lib/actions';
 import { useFormState, useFormStatus } from 'react-dom';
@@ -20,6 +20,8 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
     const [message, setMessage] = useState<string>("");
     const [date, setDate] = useState<Date>(new Date);
 
+    const [toggleEmoji, setToggleEmoji] = useState<boolean>(false);
+
     const pathname = usePathname();
 
     useEffect(() => {
@@ -35,12 +37,40 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
             setDate(new Date);
             setMessage("");
         }
-        return () => console.log("Clean-up useEffect 2 !");
+        return () => console.log("Clean-up useEffect form-msg 2 !");
     }, [dataroom]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.currentTarget;
         setMessage(value);
+    };
+
+    const handleToggleEmoji = () => {
+        setToggleEmoji(!toggleEmoji);
+    };
+    
+    const handleClickEmoji = (event: React.MouseEvent<HTMLSpanElement>) => {
+        console.log("emoji clicked !");
+        console.log(event?.currentTarget)
+        const value = event.currentTarget;
+        if (value.id === "emo1") {
+            setMessage(message + " 🙂 ");
+        } else if (value.id === "emo2") {
+            setMessage(message + " 😃 ");
+        } else if (value.id === "emo3") {
+            setMessage(message + " 😙 ");
+        } else if (value.id === "emo4") {
+            setMessage(message + " 😇 ");
+        } else if (value.id === "emo5") {
+            setMessage(message + " 😎 ");
+        } else if (value.id === "emo6") {
+            setMessage(message + " 🥲 ");
+        } else if (value.id === "emo7") {
+            setMessage(message + " 😈 ");
+        } else {
+            console.log("No emoji corresponding...")
+        }
+        setToggleEmoji(false);
     };
 
     if (!session) {
@@ -62,17 +92,61 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
                         <input type="number" id="id" name="id" value={newId} hidden readOnly />
                         <input type="text" id="username" name="username" value={username} hidden readOnly />
-                        
                         <input type="number" id="online" name="online" value={d.online} hidden readOnly />
 
-                        <input type="text" id="message" name="message" value={message} 
-                            onChange={handleChange}
-                            placeholder="Comment something here..." 
-                            className='w-[80%] text-slate-800 bg-slate-200 placeholder:text-slate-500 px-4 py-1 rounded-full'
-                        />
+                        <div className='flex items-center justify-end w-full'>
+                            <input type="text" id="message" name="message" value={message} 
+                                onChange={handleChange}
+                                placeholder="Comment something here..." 
+                                className='w-full text-slate-800 bg-slate-200 placeholder:text-slate-500 mr-10 px-4 py-1 rounded-full'
+                            />
+                            <button onClick={handleToggleEmoji}
+                                className='absolute mr-11 text-xl'
+                            >
+                                🙂
+                            </button>
+                            {toggleEmoji === true ? (
+                                <div className='fixed z-10 bottom-[70px] h-auto bg-slate-500 p-4 rounded-xl'>
+                                    <div className='bg-slate-800 p-2 rounded-lg'>
+
+                                        <span id="emo1" onClick={(e) => handleClickEmoji(e)} 
+                                            className='text-xl cursor-pointer'>
+                                            🙂
+                                        </span>
+                                        <span id="emo2" onClick={(e) => handleClickEmoji(e)} 
+                                            className='text-xl cursor-pointer'>
+                                            😃
+                                        </span>
+                                        <span id="emo3" onClick={(e) => handleClickEmoji(e)} 
+                                            className='text-xl cursor-pointer'>
+                                            😙
+                                        </span>
+
+                                        <span id="emo4" onClick={(e) => handleClickEmoji(e)} 
+                                            className='text-xl cursor-pointer'>
+                                            😇
+                                        </span>
+                                        <span id="emo5" onClick={(e) => handleClickEmoji(e)} 
+                                            className='text-xl cursor-pointer'>
+                                            😎
+                                        </span>
+                                        <span id="emo6" onClick={(e) => handleClickEmoji(e)} 
+                                            className='text-xl cursor-pointer'>
+                                            🥲
+                                        </span>
+                                        <span id="emo7" onClick={(e) => handleClickEmoji(e)} 
+                                            className='text-xl cursor-pointer'>
+                                            😈
+                                        </span>
+
+                                    </div>
+                                </div>
+                                ) : null
+                            }
+                        </div>
+
 
                         <input type="text" id="room" name="room" value={pathname} hidden readOnly />
-
                         <input type="text" id="date" name="date" value={date.toLocaleString()} hidden readOnly />
 
                         <button type="submit" id="submit" name="submit"
