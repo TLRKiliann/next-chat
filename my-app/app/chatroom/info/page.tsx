@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
     title: {
-      absolute: "Info"
+        absolute: "Info"
     },
     description: "Info room"
 };
