@@ -20,7 +20,7 @@ export default function HeaderChatroom({children}: {children: React.ReactNode}) 
             </h1>
 
             <button type="button" onClick={handleLogout} 
-                className='btn-primary mr-6 shadow-light'
+                className='btn-primary mr-6'
             >
                 Logout
             </button>
