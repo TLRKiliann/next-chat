@@ -7,22 +7,48 @@ import { redirect, usePathname } from 'next/navigation';
 
 export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
+    console.info(dataroom, "+++ dataroom +++");
+
     const {data: session} = useSession();
-    const msgRef = useRef<HTMLDivElement>(null);
-    const [username, setUsername] = useState<string>("");
     const pathname = usePathname();
-    const updateMsg = dataroom.map((msg: UsersChatProps) => msg.message);
+
+    const [username, setUsername] = useState<string>("");
+    const [customPathname, setCustomPathname] = useState<string>("");
+    
+    const msgRef = useRef<HTMLDivElement>(null);
+
+    const updateMsg = dataroom?.map((msg: UsersChatProps) => msg.message);
+
+    useEffect(() => {
+        switch(pathname) {
+            case "/chatroom/question":
+                setCustomPathname("/question");
+                break;
+            case "/chatroom/info":
+                setCustomPathname("/info");
+                break;
+            case "/chatroom/confidential":
+                setCustomPathname("/confidential");
+                break;
+            case "/chatroom":
+                setCustomPathname("/chatroom");
+                break;
+            default:
+                console.log("end of loop (s-m)");
+        };
+        return () => console.log("Clean-up pathname (sm) !")
+    }, []);
 
     useEffect(() => {
         if (session && session.user && session.user.name) {
             setUsername(session.user.name);
         }
-        return () => console.log("Clean-up useEffect !");
+        return () => console.log("Clean-up session (sm) !");
     }, [session]);
 
     useEffect(() => {
         msgRef.current?.scrollIntoView();
-        return () => console.log("Clean-up update msg !")
+        return () => console.log("Clean-up update msg (sm) !")
     }, [updateMsg])
 
     if (!session) {
@@ -33,7 +59,7 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
         <div className='flex flex-col items-center justify-start w-full h-[calc(100%-80px)] overflow-scroll 
             scroll-smooth'>
             {dataroom.map((d: UsersChatProps) => (
-                d.room === pathname ? (
+                d.room === customPathname ? (
                 <div key={d.id} 
                     className={`flex flex-col ${d.username === username 
                         ? "items-end"
