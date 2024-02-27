@@ -14,7 +14,7 @@ type dataStateProps = {
     message: string;
     date: Date;
     toggleEmoji: boolean;
-}
+};
 
 export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
@@ -56,8 +56,6 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
     };
     
     const handleClickEmoji = (event: React.MouseEvent<HTMLSpanElement>) => {
-        console.log("emoji clicked !");
-        console.log(event?.currentTarget)
         const value = event.currentTarget;
         if (value.id === "emo1") {
             setDataState((prev) => ({...prev, message: prev.message + " 🙂 "}));
@@ -74,7 +72,7 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
         } else if (value.id === "emo7") {
             setDataState((prev) => ({...prev, message: prev.message + " 😈 "}));
         } else {
-            console.log("No emoji corresponding...")
+            console.log("No emoji corresponding...");
         }
         setDataState((prev) => ({...prev, toggleEmoji: false}));
     };
