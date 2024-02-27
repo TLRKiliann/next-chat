@@ -46,7 +46,6 @@ export async function mysqlSendInvitation(prevState: {message: string} | undefin
                     [id, userSender, display, selectedRoom, response, id]
                 );
                 if (result) {
-                    console.log(result, "result");
                     revalidatePath("/chatroom");
                     return {message: "Invitation Sent !"};
                 }
