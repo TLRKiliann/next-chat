@@ -21,7 +21,7 @@ export default async function SecretRoom() {
     const req = await queryUsers("SELECT * FROM userschat", []);
     const dataUsers: string = JSON.stringify(req);
 
-    const request = await queryChatRoom("SELECT * FROM chatroom", []);
+    const request = await queryChatRoom("SELECT * FROM confidential", []);
     const data = JSON.stringify(request);
 
     if (!dataUsers) {
