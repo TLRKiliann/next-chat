@@ -3,13 +3,14 @@
 import type { UsersChatProps } from '@/app/lib/definitions'
 import React, { useState, useEffect, useRef } from 'react'
 import { useSession } from "next-auth/react";
-import { redirect } from 'next/navigation';
+import { redirect, usePathname } from 'next/navigation';
 
 export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
     const {data: session} = useSession();
     const msgRef = useRef<HTMLDivElement>(null);
     const [username, setUsername] = useState<string>("");
+    const pathname = usePathname();
     const updateMsg = dataroom.map((msg: UsersChatProps) => msg.message);
 
     useEffect(() => {
@@ -28,12 +29,11 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
         redirect("/login")
     };
 
-    console.log(username, "++username")
-
     return (               
         <div className='flex flex-col items-center justify-start w-full h-[calc(100%-80px)] overflow-scroll 
             scroll-smooth'>
             {dataroom.map((d: UsersChatProps) => (
+                d.room === pathname ? (
                 <div key={d.id} 
                     className={`flex flex-col ${d.username === username 
                         ? "items-end"
@@ -54,6 +54,7 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
                     </div>
 
                 </div>
+                ) : null
             ))}
         </div>
     )

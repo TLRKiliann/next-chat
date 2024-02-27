@@ -43,11 +43,11 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
             const filterDataByRoom = dataUsers.filter((d: UsersProps) => d.selectedroom);
             const filterDataByRoomFind = dataUsers.find((d: UsersProps) => d.selectedroom);
             if (filterDataByRoom.length === 2) {
-                if (filterDataByRoomFind?.selectedroom === "question") {
+                if (filterDataByRoomFind?.selectedroom === "/question") {
                     router.push("/chatroom/question");
-                } else if (filterDataByRoomFind?.selectedroom === "info") {
+                } else if (filterDataByRoomFind?.selectedroom === "/info") {
                     router.push("/chatroom/info");
-                } else if (filterDataByRoomFind?.selectedroom === "confidential") {
+                } else if (filterDataByRoomFind?.selectedroom === "/confidential") {
                     router.push("/chatroom/confidential");
                 } else {
                     console.log("2 users required !")
