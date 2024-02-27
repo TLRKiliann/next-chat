@@ -21,19 +21,17 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
     const [date, setDate] = useState<Date>(new Date);
 
     const pathname = usePathname();
-    //console.log(pathname, "pathname");
 
     useEffect(() => {
         if (session && session.user && session.user.name && session.user.image) {
             setUsername(session.user.name);
-            //setImg(session.user.image);
-        }
-        return () => console.log("Clean-up useEffect !");
+        };
+        return () => console.log("Clean-up useEffect form-msg !");
     }, [session]);
 
     useEffect(() => {
         if (dataroom) {
-            setNewId(dataroom.length + 1);
+            setNewId(dataroom?.length + 1);
             setDate(new Date);
             setMessage("");
         }
@@ -49,15 +47,17 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
         redirect("/login")
     };
 
-    const verifyCodeMsg = code?.message ? code.message : null;
-    console.log(verifyCodeMsg, "return of code.message");
-    
+    if (code?.message) {
+        console.log(code.message);
+    };
+
     return (
         <>
             {dataroom.map((d: UsersChatProps) => (
                 username === d.username ? (
-                    <form key={d.id} action={formAction} className='absolute z-10 flex items-center justify-around w-[80%] h-[80px]
-                        bg-gradient-to-r from-blue-900 from-10% via-sky-700 via-30% to-blue-900 to-90% px-4'
+                    <form key={d.id} action={formAction} className='absolute z-10 flex items-center justify-around 
+                        w-[80%] h-[80px] bg-gradient-to-r from-blue-900 from-10% via-sky-700 via-30% 
+                        to-blue-900 to-90% px-4'
                     >
 
                         <input type="number" id="id" name="id" value={newId} hidden readOnly />
