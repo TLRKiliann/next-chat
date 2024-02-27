@@ -7,6 +7,8 @@ import ScreenMessage from '@/app/components/chatroomComp/screen-message';
 import UserOnline from '@/app/components/chatroomComp/user-online';
 import BackToChatroom from '@/app/components/nextroom/backto-chatroom';
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
     title: {
       absolute: "Question"

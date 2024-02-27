@@ -7,6 +7,8 @@ import UserOnline from '@/app/components/chatroomComp/user-online';
 import HeaderChatroom from '@/app/components/chatroomComp/header-chatroom';
 import BackToChatroom from '@/app/components/nextroom/backto-chatroom';
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
     title: {
       absolute: "Confidential"
