@@ -39,7 +39,7 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
     const handleInfo = (): void => {
         if (stateRoom.info === false) {
             setStateRoom((prevInfo) => ({...prevInfo, info: !prevInfo.info}));
-            setSelectedRoom("info");
+            setSelectedRoom("/info");
         } else {
             setStateRoom((prevInfo) => ({...prevInfo, info: !prevInfo.info}));
             setSelectedRoom("");
@@ -49,7 +49,7 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
     const handleQuestion = (): void => {
         if (stateRoom.question === false) {
             setStateRoom((prevQuestion) => ({...prevQuestion, question: !prevQuestion.question}));
-            setSelectedRoom("question");
+            setSelectedRoom("/question");
         } else {
             setStateRoom((prevQuestion) => ({...prevQuestion, question: !prevQuestion.question}));
             setSelectedRoom("");
@@ -59,7 +59,7 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
     const handleConfidential = (): void => {
         if (stateRoom.confidential === false) {
             setStateRoom((prevConfi) => ({...prevConfi, confidential: !prevConfi.confidential}));
-            setSelectedRoom("confidential");
+            setSelectedRoom("/confidential");
         } else {
             setStateRoom((prevConfi) => ({...prevConfi, confidential: !prevConfi.confidential}));
             setSelectedRoom("");

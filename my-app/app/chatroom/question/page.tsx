@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
     title: {
-      absolute: "Question"
+        absolute: "Question"
     },
     description: "Question room"
 };
@@ -21,7 +21,7 @@ export default async function QuestionRoom() {
     const req = await queryUsers("SELECT * FROM userschat", []);
     const dataUsers: string = JSON.stringify(req);
 
-    const request = await queryChatRoom("SELECT * FROM chatroom", []);
+    const request = await queryChatRoom("SELECT * FROM question", []);
     const data = JSON.stringify(request);
 
     if (!dataUsers) {

@@ -8,7 +8,7 @@ import { useFormState, useFormStatus } from 'react-dom';
 import { useRouter } from 'next/navigation';
 
 const SENDERMSG = "";
-const SELECTROOM = "chatroom";
+const SELECTROOM = "/chatroom";
 const RESPONSE = 0;
 
 export default function BackToChatroom({dataUsers}: {dataUsers: UsersProps[]}) {
@@ -30,7 +30,7 @@ export default function BackToChatroom({dataUsers}: {dataUsers: UsersProps[]}) {
 
     const handleRouteToChange = () => {
         setTimeout(() => {
-            const dataFilter = dataUsers.filter((d: UsersProps) => d.selectedroom === "chatroom");
+            const dataFilter = dataUsers.filter((d: UsersProps) => d.selectedroom === "/chatroom");
             console.log(dataFilter, "data filter");
             const mappingRoom = dataFilter.map((u: UsersProps) => u.selectedroom);
             console.log(mappingRoom, "mapping room");

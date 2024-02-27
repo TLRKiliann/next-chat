@@ -51,7 +51,7 @@ export default function ResponseReceiver({
                             <span className='text-red-600'>
                                 {user.sender} 
                             </span>
-                            &nbsp;sent an invitation to you for gooing to&nbsp;
+                            &nbsp;sent an invitation to you for going to&nbsp;
                             <span className='text-red-600'>
                                 {user.selectedroom}&nbsp;
                             </span>

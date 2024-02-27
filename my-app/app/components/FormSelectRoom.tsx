@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 export default function FormSelectRoom() {
 
     const router = useRouter();
-    const [selectVal, setSelectVal] = useState("security");
+    const [selectVal, setSelectVal] = useState("chatroom");
   
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
       const { value } = event.currentTarget;
@@ -24,11 +24,11 @@ export default function FormSelectRoom() {
         router.push(`/chatroom/development`);
       } else if (finalVal === "programming") {
         router.push(`/chatroom/programming`);
-      } else if (finalVal === "chatroom") {
-        router.push(`/chatroom`);
+      } else if (finalVal === "security") {
+        router.push(`/chatroom/security`);
       } else {
         console.log("Nothing choosen !")
-        router.push(`/chatroom/security`);
+        router.push(`/chatroom`);
       }
     }
 
@@ -39,14 +39,14 @@ export default function FormSelectRoom() {
             <label htmlFor="room">Select a room:
             <select name="room" id="room" value={selectVal} onChange={handleSelect} 
                 className='text-slate-800 mx-2 px-2 py-1'>
-                <option value="security">Security</option>
+                <option value="chatroom">Chatroom</option>
                 <option value="development">Development</option>
                 <option value="programming">Programming</option>
-                <option value="chatroom">Chatroom</option>
+                <option value="security">Security</option>
             </select>
             </label>
 
-            <button type="submit" className='btn-primary shadow-light'>Submit</button>
+            <button type="submit" className='btn-primary'>Submit</button>
 
         </form>
     )
