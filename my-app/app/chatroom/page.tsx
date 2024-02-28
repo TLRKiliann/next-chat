@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import React from 'react';
-import { queryUsers, queryChatRoom } from '@/app/lib/db';
+import { queryUsers, queryChatRoom, queryToJoin } from '@/app/lib/db';
 import HeaderChatroom from '@/app/components/chatroomComp/header-chatroom';
 import UserOnline from '@/app/components/chatroomComp/user-online';
 import ScreenMessage from '@/app/components/chatroomComp/screen-message';
@@ -23,6 +23,11 @@ export default async function ChatRoom() {
     const request = await queryChatRoom("SELECT * FROM chatroom", []);
     const data: string = JSON.stringify(request);
 
+    //cross join
+    /* const reqToJoin = await queryToJoin("SELECT * FROM chatroom CROSS JOIN userschat", []);
+    const dataToJoin: string = JSON.stringify(reqToJoin); */
+    //console.info(dataToJoin)
+
     if (!dataUsers) {
         throw new Error("Error: data not loaded for db");
     };
@@ -30,7 +35,7 @@ export default async function ChatRoom() {
     if (!data) {
         throw new Error("Error: data not loaded for db");
     };
-
+    // SELECT * FROM chatroom CROSS JOIN (shipping checkpaid)
     return (
         <div className='w-full h-screen'>
             
@@ -45,7 +50,7 @@ export default async function ChatRoom() {
 
                     <ScreenMessage dataroom={JSON.parse(data)} />
 
-                    <FormMessage dataroom={JSON.parse(data)} />
+                    <FormMessage dataroom={JSON.parse(data)} dataUsers={JSON.parse(dataUsers)} />
 
                 </div>
 
@@ -54,3 +59,5 @@ export default async function ChatRoom() {
         </div>
     )
 };
+
+
