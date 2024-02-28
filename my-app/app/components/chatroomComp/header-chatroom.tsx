@@ -7,13 +7,14 @@ export default function HeaderChatroom({children}: {children: React.ReactNode}) 
 
     const router = useRouter();
 
-    const handleLogout = () => {
+    const handleLogout = (): void => {
         router.push("/logout");
     };
 
     return (
-        <div className="flex items-center justify-between 
-            bg-gradient-to-r from-blue-900 from-10% via-sky-700 via-30% to-blue-900 to-90%">
+        <div className="flex items-center justify-between bg-gradient-to-r from-blue-900 from-10% 
+            via-sky-700 via-30% to-blue-900 to-90%"
+        >
 
             <h1 className='text-2xl italic font-bold p-[20px]'>
                 {children}

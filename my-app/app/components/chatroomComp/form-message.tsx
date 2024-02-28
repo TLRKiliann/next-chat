@@ -7,6 +7,7 @@ import { mysqlQueryChatroom } from '@/app/lib/actions';
 import { useFormState, useFormStatus } from 'react-dom';
 import { redirect } from 'next/navigation';
 import { usePathname } from 'next/navigation';
+import { effectFunc } from '@/app/utils/functions';
 
 type dataStateProps = {
     newId: number;
@@ -23,8 +24,7 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
 
     const { data: session } = useSession();
     const pathname = usePathname();
-    const [customPathname, setCustomPathname] = useState<string>("");
-    
+
     const [dataState, setDataState] = useState<dataStateProps>({
         newId: 0,
         username: "",
@@ -33,25 +33,7 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
         toggleEmoji: false
     });
 
-    useEffect(() => {
-        switch(pathname) {
-            case "/chatroom/question":
-                setCustomPathname("/question");
-                break;
-            case "/chatroom/info":
-                setCustomPathname("/info");
-                break;
-            case "/chatroom/confidential":
-                setCustomPathname("/confidential");
-                break;
-            case "/chatroom":
-                setCustomPathname("/chatroom");
-                break;
-            default:
-                console.log("end of loop (s-m)");
-        };
-        return () => console.log("Clean-up pathname (sm) !")
-    }, []);
+    const callerPathName = effectFunc({pathname});
 
     useEffect(() => {
         if (session && session.user && session.user.name && session.user.image) {
@@ -67,16 +49,16 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
         return () => console.log("Clean-up useEffect form-msg 2 !");
     }, [dataroom]);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const { value } = event.currentTarget;
         setDataState((prev) => ({...prev, message: value}));
     };
 
-    const handleToggleEmoji = () => {
+    const handleToggleEmoji = (): void => {
         setDataState((prev) => ({...prev, toggleEmoji: !prev.toggleEmoji}));
     };
     
-    const handleClickEmoji = (event: React.MouseEvent<HTMLSpanElement>) => {
+    const handleClickEmoji = (event: React.MouseEvent<HTMLSpanElement>): void => {
         const value = event.currentTarget;
         if (value.id === "emo1") {
             setDataState((prev) => ({...prev, message: prev.message + " 🙂 "}));
@@ -171,7 +153,7 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
                             }
                         </div>
 
-                        <input type="text" id="room" name="room" value={customPathname} hidden readOnly />
+                        <input type="text" id="room" name="room" value={callerPathName} hidden readOnly />
                         <input type="text" id="date" name="date" value={dataState.date.toLocaleString()} hidden readOnly />
 
                         <button type="submit" id="submit" name="submit"

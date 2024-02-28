@@ -38,7 +38,7 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
         return () => console.log("Clean-up session findSender!");
     }, [dataUsers]);
 
-    const handleRouteToChange = () => {
+    const handleRouteToChange = (): void => {
         setTimeout(() => {
             const filterDataByRoom = dataUsers.filter((d: UsersProps) => d.selectedroom);
             const filterDataByRoomFind = dataUsers.find((d: UsersProps) => d.selectedroom);
@@ -61,9 +61,9 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     };
 
     const handleDisplayLinks = (id: number): void => {
-        const findById = mapping.map((user: UsersProps) => user.id === id 
+        const openInvitation = mapping.map((user: UsersProps) => user.id === id 
             ? {...user, boolinvitation: 1} : user);
-        setNewMapping(findById);
+        setNewMapping(openInvitation);
     };
 
     const handleCloseInvitation = (id: number): void => {
@@ -98,8 +98,10 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
                 handleRouteToChange={handleRouteToChange}
             />
             
-            <DisplayInvitation newMapping={newMapping} 
-                handleCloseInvitation={(id: number) => handleCloseInvitation(id)} />
+            <DisplayInvitation
+                newMapping={newMapping} 
+                handleCloseInvitation={(id: number) => handleCloseInvitation(id)} 
+            />
 
         </div>
     )

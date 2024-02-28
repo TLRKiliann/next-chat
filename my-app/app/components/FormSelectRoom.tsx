@@ -8,13 +8,13 @@ export default function FormSelectRoom() {
     const router = useRouter();
     const [selectVal, setSelectVal] = useState("chatroom");
   
-    const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
       const { value } = event.currentTarget;
       console.log(value, "value selected");
       setSelectVal(value);
     }
   
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
       event.preventDefault();
       const form = event.currentTarget;
       const formData = new FormData(form);

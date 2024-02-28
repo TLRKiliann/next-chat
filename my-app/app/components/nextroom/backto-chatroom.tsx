@@ -22,13 +22,14 @@ export default function BackToChatroom({dataUsers}: {dataUsers: UsersProps[]}) {
 
     const [userName, setUserName] = useState<string>("");
 
+    // const callerSession = sessionUserName({session})
     useEffect(() => {
         if (session && session.user && session.user.name) {
             setUserName(session.user.name);
         }
     }, [session]);
 
-    const handleRouteToChange = () => {
+    const handleRouteToChange = (): void => {
         setTimeout(() => {
             const dataFilter = dataUsers.filter((d: UsersProps) => d.selectedroom === "/chatroom");
             console.log(dataFilter, "data filter");
@@ -39,7 +40,6 @@ export default function BackToChatroom({dataUsers}: {dataUsers: UsersProps[]}) {
             }
         }, 2000)
     };
-
 
     console.log(code?.message ? code.message : "No code message");
     

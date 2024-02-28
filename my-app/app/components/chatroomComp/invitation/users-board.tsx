@@ -2,7 +2,7 @@ import type { UsersProps } from '@/app/lib/definitions'
 import React from 'react'
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import effectFunc from '@/app/utils/functions';
+import { effectFunc } from '@/app/utils/functions';
 
 type UsersBoard = {
     newMapping: UsersProps[];
