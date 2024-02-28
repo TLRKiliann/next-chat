@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import React from 'react';
-import { queryChatRoom, queryUsers } from '@/app/lib/db';
+import { queryChatRoom, queryToJoin, queryUsers } from '@/app/lib/db';
 import HeaderChatroom from '@/app/components/chatroomComp/header-chatroom';
 import FormMessage from '@/app/components/chatroomComp/form-message';
 import ScreenMessage from '@/app/components/chatroomComp/screen-message';
 import UserOnline from '@/app/components/chatroomComp/user-online';
 import BackToChatroom from '@/app/components/nextroom/backto-chatroom';
+import { UsersToJoin } from '@/app/lib/definitions';
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +46,7 @@ export default async function QuestionRoom() {
 
                     <ScreenMessage dataroom={JSON.parse(data)} />
 
-                    <FormMessage dataroom={JSON.parse(data)} />
+                    <FormMessage dataroom={JSON.parse(data)} dataUsers={JSON.parse(dataUsers)} />
 
                 </div>
 

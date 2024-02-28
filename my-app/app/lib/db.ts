@@ -1,9 +1,9 @@
 import mysql from 'mysql2/promise';
 import type {
-    UsersChatProps, UsersProps
+    UsersChatProps, UsersProps, UsersToJoin
 } from './definitions';
 
-type GenericProps = UsersChatProps | UsersProps | [];
+type GenericProps = UsersChatProps | UsersProps | UsersToJoin | [];
 
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
@@ -40,6 +40,23 @@ const queryChatRoom = async (query: string, data: GenericProps): Promise<UsersCh
         connection = await pool.getConnection();
         const [result] = await connection.execute(query, data);
         return result as UsersChatProps[];
+    } catch (error) {
+        console.error(error);
+        throw error;
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+};
+
+// to send message & data for chatroom
+const queryToJoin = async (query: string, data: GenericProps): Promise<UsersToJoin[]> => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const [result] = await connection.execute(query, data);
+        return result as UsersToJoin[];
     } catch (error) {
         console.error(error);
         throw error;
@@ -87,6 +104,7 @@ const queryInvitation = async (query: string, data: FormDataEntryValue[]): Promi
 export {
     queryUsers,
     queryChatRoom,
+    queryToJoin,
     queryMessage,
     queryInvitation
 };

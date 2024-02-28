@@ -45,7 +45,7 @@ export default async function InfoRoom() {
 
                     <ScreenMessage dataroom={JSON.parse(data)} />
 
-                    <FormMessage dataroom={JSON.parse(data)} />
+                    <FormMessage dataroom={JSON.parse(data)} dataUsers={JSON.parse(dataUsers)} />
 
                 </div>
 

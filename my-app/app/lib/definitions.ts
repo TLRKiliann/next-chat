@@ -14,10 +14,28 @@ export type UsersProps = {
 };
 
 export type UsersChatProps = {
+    chatid: number;
     id: number;
     username: string;
-    online: number;
     message: string;
+    online: number;
     room: string;
     date: string;
 };
+
+export type UsersToJoin ={
+    chatid: number;
+    id: number;
+    username: string;
+    email: string;
+    online: number;
+    img: StaticImageData;
+    boolinvitation: number;
+    display: number;
+    sender: string;
+    selectedroom: string;
+    response: number;
+    message: string;
+    room: string;
+    date: string;
+}
