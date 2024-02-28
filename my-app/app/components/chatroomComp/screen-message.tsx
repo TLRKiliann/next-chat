@@ -17,7 +17,7 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
     
     const msgRef = useRef<HTMLDivElement>(null);
 
-    const updateMsg = dataroom?.map((msg: UsersChatProps) => msg.message);
+    const updateMsg: string[] = dataroom.map((msg: UsersChatProps) => msg.message);
 
     useEffect(() => {
         switch(pathname) {
@@ -60,7 +60,7 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
             scroll-smooth'>
             {dataroom.map((d: UsersChatProps) => (
                 d.room === customPathname ? (
-                <div key={d.id} 
+                <div key={d.chatid} 
                     className={`flex flex-col ${d.username === username 
                         ? "items-end"
                         : "items-start"} justify-center w-full`}>
