@@ -45,7 +45,7 @@ export default async function SecretRoom() {
 
                     <ScreenMessage dataroom={JSON.parse(data)} />
 
-                    <FormMessage dataroom={JSON.parse(data)} />
+                    <FormMessage dataroom={JSON.parse(data)} dataUsers={JSON.parse(dataUsers)} />
 
                 </div>
 
