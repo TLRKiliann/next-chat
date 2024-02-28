@@ -2,16 +2,16 @@
 
 import type { UsersProps } from '@/app/lib/definitions';
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import DisplayInvitation from './invitation/display-invitation';
 import ResponseReceiver from './invitation/response-receiver';
 import UsersBoard from './invitation/users-board';
-import { useRouter } from 'next/navigation';
 
 export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
 
     const router = useRouter();
 
-    const [senderResponse, setSenderResponse] = useState<UsersProps | undefined>(undefined)
+    const [senderResponse, setSenderResponse] = useState<UsersProps | undefined>(undefined);
 
     const mapping: UsersProps[] = dataUsers.filter((obj: {username: string}, index: number) => {
         return index === dataUsers.findIndex((o: {username: string}) => obj.username === o.username)
@@ -83,7 +83,10 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     return (
         <div className='flex flex-col w-[25%] bg-blue-900'>
 
-            <UsersBoard newMapping={newMapping} handleDisplayLinks={(id) => handleDisplayLinks(id)} />
+            <UsersBoard 
+                newMapping={newMapping}
+                handleDisplayLinks={(id) => handleDisplayLinks(id)}
+            />
 
             <ResponseReceiver 
                 newMapping={newMapping}
