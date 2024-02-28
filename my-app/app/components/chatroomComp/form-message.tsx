@@ -1,7 +1,7 @@
 "use client";
 
-import type { UsersChatProps } from '@/app/lib/definitions';
-import React, { useState, useEffect, useMemo } from 'react';
+import type { UsersChatProps, UsersProps } from '@/app/lib/definitions';
+import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { mysqlQueryChatroom } from '@/app/lib/actions';
 import { useFormState, useFormStatus } from 'react-dom';
@@ -16,14 +16,15 @@ type dataStateProps = {
     toggleEmoji: boolean;
 };
 
-export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
+export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatProps[], dataUsers: UsersProps[]}) {
 
     const { pending } = useFormStatus();
     const [ code, formAction ] = useFormState(mysqlQueryChatroom, undefined)
 
     const { data: session } = useSession();
     const pathname = usePathname();
-
+    const [customPathname, setCustomPathname] = useState<string>("");
+    
     const [dataState, setDataState] = useState<dataStateProps>({
         newId: 0,
         username: "",
@@ -31,6 +32,26 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
         date: new Date,
         toggleEmoji: false
     });
+
+    useEffect(() => {
+        switch(pathname) {
+            case "/chatroom/question":
+                setCustomPathname("/question");
+                break;
+            case "/chatroom/info":
+                setCustomPathname("/info");
+                break;
+            case "/chatroom/confidential":
+                setCustomPathname("/confidential");
+                break;
+            case "/chatroom":
+                setCustomPathname("/chatroom");
+                break;
+            default:
+                console.log("end of loop (s-m)");
+        };
+        return () => console.log("Clean-up pathname (sm) !")
+    }, []);
 
     useEffect(() => {
         if (session && session.user && session.user.name && session.user.image) {
@@ -41,7 +62,7 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
     useEffect(() => {
         if (dataroom) {
-            setDataState((prev) => ({...prev, newId: dataroom?.length + 1, date: new Date, message: ""}));
+            setDataState((prev) => ({...prev, newId: dataroom.length + 1, date: new Date, message: ""}));
         }
         return () => console.log("Clean-up useEffect form-msg 2 !");
     }, [dataroom]);
@@ -87,14 +108,16 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
     return (
         <>
-            {dataroom.map((d: UsersChatProps) => (
+            {dataUsers.map((d: UsersProps) => (
                 dataState.username === d.username ? (
                     <form key={d.id} action={formAction} className='absolute z-10 flex items-center justify-around 
                         w-[80%] h-[80px] bg-gradient-to-r from-blue-900 from-10% via-sky-700 via-30% 
                         to-blue-900 to-90% px-4'
                     >
 
-                        <input type="number" id="id" name="id" value={dataState.newId} hidden readOnly />
+                        <input type="number" id="chatid" name="chatid" value={dataState.newId} hidden readOnly />
+                        <input type="number" id="id" name="id" value={d.id} hidden readOnly />
+                        
                         <input type="text" id="username" name="username" value={dataState.username} hidden readOnly />
                         <input type="number" id="online" name="online" value={d.online} hidden readOnly />
 
@@ -148,7 +171,7 @@ export default function FormMessage({dataroom}: {dataroom: UsersChatProps[]}) {
                             }
                         </div>
 
-                        <input type="text" id="room" name="room" value={pathname} hidden readOnly />
+                        <input type="text" id="room" name="room" value={customPathname} hidden readOnly />
                         <input type="text" id="date" name="date" value={dataState.date.toLocaleString()} hidden readOnly />
 
                         <button type="submit" id="submit" name="submit"
