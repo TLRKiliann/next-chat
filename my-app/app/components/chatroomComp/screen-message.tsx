@@ -4,6 +4,7 @@ import type { UsersChatProps } from '@/app/lib/definitions'
 import React, { useState, useEffect, useRef } from 'react'
 import { useSession } from "next-auth/react";
 import { redirect, usePathname } from 'next/navigation';
+import effectFunc from '@/app/utils/functions';
 
 export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
@@ -13,31 +14,12 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
     const pathname = usePathname();
 
     const [username, setUsername] = useState<string>("");
-    const [customPathname, setCustomPathname] = useState<string>("");
-    
+
     const msgRef = useRef<HTMLDivElement>(null);
 
     const updateMsg: string[] = dataroom.map((msg: UsersChatProps) => msg.message);
 
-    useEffect(() => {
-        switch(pathname) {
-            case "/chatroom/question":
-                setCustomPathname("/question");
-                break;
-            case "/chatroom/info":
-                setCustomPathname("/info");
-                break;
-            case "/chatroom/confidential":
-                setCustomPathname("/confidential");
-                break;
-            case "/chatroom":
-                setCustomPathname("/chatroom");
-                break;
-            default:
-                console.log("end of loop (s-m)");
-        };
-        return () => console.log("Clean-up pathname (sm) !")
-    }, []);
+    const callerPathName = effectFunc({pathname});
 
     useEffect(() => {
         if (session && session.user && session.user.name) {
@@ -59,7 +41,7 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
         <div className='flex flex-col items-center justify-start w-full h-[calc(100%-80px)] overflow-scroll 
             scroll-smooth'>
             {dataroom.map((d: UsersChatProps) => (
-                d.room === customPathname ? (
+                d.room === callerPathName ? (
                 <div key={d.chatid} 
                     className={`flex flex-col ${d.username === username 
                         ? "items-end"
