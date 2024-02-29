@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useRouter } from 'next/navigation';
+import { FaPowerOff } from "react-icons/fa6";
 
 export default function HeaderChatroom({children}: {children: React.ReactNode}) {
 
@@ -21,9 +22,10 @@ export default function HeaderChatroom({children}: {children: React.ReactNode}) 
             </h1>
 
             <button type="button" onClick={handleLogout} 
-                className='btn-primary mr-6'
+                className='text-slate-200 bg-blue-600 transition ease-in-out transform duration-100 hover:scale-105 hover:bg-blue-600/70 
+                active:bg-blue-400 active:scale-95 px-2 py-2 rounded-full hover:shadow-none active:shadow-none mr-4'
             >
-                Logout
+                <FaPowerOff />
             </button>
 
         </div>
