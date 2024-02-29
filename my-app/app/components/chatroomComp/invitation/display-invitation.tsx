@@ -36,6 +36,10 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
         return () => console.log("Clean-up session userName !")
     }, [session])
 
+    if (!session) {
+        redirect("/login")
+    };
+
     const handleInfo = (): void => {
         setStateRoom((prevInfo) => ({...prevInfo, info: !prevInfo.info}));
         if (stateRoom.info === false) {
@@ -61,10 +65,6 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
         } else {
             setSelectedRoom("");
         }
-    };
-
-    if (!session) {
-        redirect("/login")
     };
 
     return (
@@ -121,21 +121,31 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
                             <input type="text" id="selectedroom" name="selectedroom" value={selectedRoom} hidden readOnly />
                             <input type="number" id="response" name="response" value={1} hidden readOnly />
 
-                            <button type="submit" id="submit" name="submit" value="updatemessage" disabled={pending}
+                            <button type="submit" id="submit" name="submit" value="updatemessage" 
+                                
+                                onClick={() => handleCloseInvitation(user.id)}
+                                
+                                disabled={pending}
                                 className='text-slate-50 btn-primary mt-4 shadow-btn'
                             >
                                 Submit
                             </button>
                             
                             {code?.message ? (
-                                <p className='text-indigo-500 mt-4'>{code.message}</p>
+                                <>
+                                    <p className='text-indigo-500 mt-4'>{code.message}</p>
+                                    <button type="button" onClick={() => handleCloseInvitation(user.id)}>
+                                        Close
+                                    </button>
+                                </>
                                 ) : null
                             }
                         </form>
 
                         <ul className='flex items-center justify-center'>
                             <li className='list-disc text-md text-blue-600 hover:text-blue-600/70 active:text-blue-500 my-4'>
-                                <Link href="/email">Send e-mail</Link>
+                                {/* <Link href={`/email/${user.username}`}>Send e-mail</Link> */}
+                                <Link href="email">Send e-mail</Link>
                             </li>
                         </ul>
 
