@@ -81,7 +81,7 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
                                 x
                             </button>
                         </div>
-                    
+
                         <div className='flex flex-col'>
                             <h2 className="font-bold text-lg text-center">Invitation proposal for :</h2>
                             <p className="text-lg text-center text-indigo-600 mt-2 mb-1">{user.username}</p>
@@ -122,9 +122,6 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
                             <input type="number" id="response" name="response" value={1} hidden readOnly />
 
                             <button type="submit" id="submit" name="submit" value="updatemessage" 
-                                
-                                onClick={() => handleCloseInvitation(user.id)}
-                                
                                 disabled={pending}
                                 className='text-slate-50 btn-primary mt-4 shadow-btn'
                             >
@@ -134,7 +131,9 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
                             {code?.message ? (
                                 <>
                                     <p className='text-indigo-500 mt-4'>{code.message}</p>
-                                    <button type="button" onClick={() => handleCloseInvitation(user.id)}>
+                                    <button type="button" onClick={() => handleCloseInvitation(user.id)}
+                                        className='mt-2'
+                                    >
                                         Close
                                     </button>
                                 </>

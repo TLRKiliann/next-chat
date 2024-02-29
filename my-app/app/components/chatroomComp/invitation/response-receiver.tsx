@@ -34,7 +34,7 @@ export default function ResponseReceiver({
         if (session && session.user && session.user.name) {
             setUserName(session.user.name);
         }
-        return () => console.log("clean-up response-receive");
+        return () => console.log("clean-up (res-rec)");
     }, [session]);
 
     return (
@@ -72,13 +72,13 @@ export default function ResponseReceiver({
                             <span>
                                 <label htmlFor="refuse">No</label>
                                 <input type="checkbox" id="refuse" name="refuse" 
-                                    checked={refuseInvite} onChange={handleRefuse} className='ml-2' />              
+                                    checked={refuseInvite} onChange={handleRefuse} className='ml-2' />
                             </span>
 
                         </div>
 
                         <form action={formData}>
-                            {acceptInvite === true && refuseInvite === false ? (
+                            {(acceptInvite === true) && (refuseInvite === false) ? (
                                 <>
                                     <input type="number" id="otherid" name="otherid" value={user.id} hidden readOnly />
                                     <input type="number" id="otherdisplay" name="otherdisplay" value={0} hidden readOnly />
@@ -94,7 +94,7 @@ export default function ResponseReceiver({
                                 ) : null
                             }
 
-                            {refuseInvite === true && acceptInvite === false ? (
+                            {(refuseInvite === true) && (acceptInvite === false) ? (
                                 <>
                                     <input type="number" id="otherid" name="otherid" value={user.id} hidden readOnly />
                                     <input type="number" id="otherdisplay" name="otherdisplay" value={0} hidden readOnly />

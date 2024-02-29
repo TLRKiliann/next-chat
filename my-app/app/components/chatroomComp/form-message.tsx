@@ -39,14 +39,14 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
         if (session && session.user && session.user.name && session.user.image) {
             setDataState((prev) => ({...prev, username: session.user?.name}));
         };
-        return () => console.log("Clean-up useEffect form-msg !");
+        return () => console.log("Clean-up useEffect (f-m) 1 !");
     }, [session]);
 
     useEffect(() => {
         if (dataroom) {
             setDataState((prev) => ({...prev, newId: dataroom.length + 1, date: new Date, message: ""}));
         }
-        return () => console.log("Clean-up useEffect form-msg 2 !");
+        return () => console.log("Clean-up useEffect (f-m) 2 !");
     }, [dataroom]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
