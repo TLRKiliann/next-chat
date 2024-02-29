@@ -35,7 +35,7 @@ export default async function ChatRoom() {
     if (!data) {
         throw new Error("Error: data not loaded for db");
     };
-    // SELECT * FROM chatroom CROSS JOIN (shipping checkpaid)
+
     return (
         <div className='w-full h-screen'>
             
