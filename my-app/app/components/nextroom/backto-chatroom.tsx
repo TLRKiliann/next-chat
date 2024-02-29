@@ -22,7 +22,6 @@ export default function BackToChatroom({dataUsers}: {dataUsers: UsersProps[]}) {
 
     const [userName, setUserName] = useState<string>("");
 
-    // const callerSession = sessionUserName({session})
     useEffect(() => {
         if (session && session.user && session.user.name) {
             setUserName(session.user.name);

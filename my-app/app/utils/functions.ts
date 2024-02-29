@@ -4,14 +4,6 @@ type EffectProps = {
     pathname: string;
 };
 
-type SessionUserNameProps = {
-    session: {
-        user: {
-            name: string;
-        }
-    }
-};
-
 export function effectFunc({pathname}: EffectProps): string {
     
     const [customPathname, setCustomPathname] = useState<string>("");
@@ -39,15 +31,3 @@ export function effectFunc({pathname}: EffectProps): string {
     return customPathname;
 }
 
-export function sessionUserName({session}: SessionUserNameProps): string {
-
-    const [userName, setUserName] = useState<string>("");
-
-    useEffect(() => {
-        if (session && session.user && session.user.name) {
-            setUserName(session.user.name);
-        }
-    }, [session]);
-
-    return userName;
-}
