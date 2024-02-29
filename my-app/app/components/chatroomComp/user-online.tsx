@@ -34,33 +34,37 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     const [refuseInvite, setRefuseInvite] = useState<boolean>(false);
 
     //sender - response - selectedroom
-    useEffect(() => {
-        const verifyQuestion = dataUsers.filter((user: UsersProps) => (
-            (user.response === 1) && (user.selectedroom).includes("/question"))
-        );
-        const verifyInfo = dataUsers.filter((user: UsersProps) => (
-            (user.response === 1) && (user.selectedroom).includes("/info"))
-        );
-        const verifyConfidential = dataUsers.filter((user: UsersProps) => (
-            (user.response === 1) && (user.selectedroom).includes("/confidential"))
-        );
+    /* const handleConfirm = () => {
+        if (selectedroom === "/chatroom") {}
+        setTimeout(() => {
+            const verifyQuestion = dataUsers.filter((user: UsersProps) => (
+                (user.response === 1) && (user.selectedroom).includes("/question"))
+            );
+            const verifyInfo = dataUsers.filter((user: UsersProps) => (
+                (user.response === 1) && (user.selectedroom).includes("/info"))
+            );
+            const verifyConfidential = dataUsers.filter((user: UsersProps) => (
+                (user.response === 1) && (user.selectedroom).includes("/confidential"))
+            );
+            if (verifyQuestion.length === 2) {
+                router.push("/chatroom/question");
+            } else if (verifyInfo.length === 2) {
+                router.push("/chatroom/info");
+            } else if (verifyConfidential.length === 2) {
+                router.push("/chatroom/confidential");
+            } else {
+                console.log("There aren't 2 response for same room");
+            }
+        }, 2000);
 
-        if (verifyQuestion.length === 2) {
-            router.push("/chatroom/question");
-        } else if (verifyInfo.length === 2) {
-            router.push("/chatroom/info");
-        } else if (verifyConfidential.length === 2) {
-            router.push("/chatroom/confidential");
-        } else {
-            console.log("No twice response at same room");
-        }
-        /* const interval = setInterval(() => {
+        const interval = setInterval(() => {
             console.log(verifyResponse, "verifyresponse");
             console.info("Verify response...")
-        }, 2000); */
+        }, 2000);
         //return () => clearInterval(interval);
+        
         return () => console.log("Interval from useEffect() !");
-    }, []);
+    }; */
 
     const handleResponse = (findSender: string) => {
         const responseToSender = dataUsers.find((data: UsersProps) => data.username === findSender);
@@ -75,35 +79,56 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
         const findSender = dataUsers.find((user: UsersProps) => user.sender !== "");
         if (findSender && findSender.sender) {
             handleResponse(findSender.sender);
-        }
+        };
+        const verifyQuestion = dataUsers.filter((user: UsersProps) => (
+            (user.response === 1) && (user.selectedroom).includes("/question" || "/info" || "/confidential"))
+        );
+        console.info(verifyQuestion, "verifyQuestion")
+        if (verifyQuestion.length === 2) {
+            setTimeout(() => {
+                const verifyQuestion = dataUsers.filter((user: UsersProps) => (
+                    (user.response === 1) && (user.selectedroom).includes("/question"))
+                );
+                const verifyInfo = dataUsers.filter((user: UsersProps) => (
+                    (user.response === 1) && (user.selectedroom).includes("/info"))
+                );
+                const verifyConfidential = dataUsers.filter((user: UsersProps) => (
+                    (user.response === 1) && (user.selectedroom).includes("/confidential"))
+                );
+                if (verifyQuestion.length === 2) {
+                    router.push("/chatroom/question");
+                } else if (verifyInfo.length === 2) {
+                    router.push("/chatroom/info");
+                } else if (verifyConfidential.length === 2) {
+                    router.push("/chatroom/confidential");
+                } else {
+                    console.log("There aren't 2 response for same room");
+                }
+            }, 2000);
+        };
         return () => console.log("Clean-up session findSender (u-o) 2 !");
     }, [dataUsers]);
 
+    // user 2 response yes or no
     const handleRouteToChange = (): void => {
         setTimeout(() => {
             const filterDataByRoom = dataUsers.filter((d: UsersProps) => d.selectedroom);
-            
-            console.log(filterDataByRoom, "filter from handleRouteToChange !");
-
             const filterDataByRoomFind = dataUsers.find((d: UsersProps) => d.selectedroom);
-            if (filterDataByRoom.length === 2) {
-                if (filterDataByRoomFind?.selectedroom === "/question") {
+                if ((filterDataByRoomFind?.selectedroom === "/question") && (filterDataByRoom.length === 2)) {
                     router.push("/chatroom/question");
-                } else if (filterDataByRoomFind?.selectedroom === "/info") {
+                } else if ((filterDataByRoomFind?.selectedroom === "/info") && (filterDataByRoom.length === 2)) {
                     router.push("/chatroom/info");
-                } else if (filterDataByRoomFind?.selectedroom === "/confidential") {
+                } else if ((filterDataByRoomFind?.selectedroom === "/confidential") && (filterDataByRoom.length === 2)) {
                     router.push("/chatroom/confidential");
+                } else if (filterDataByRoom.length > 2) {
+                    console.error("users greater than 2 !")
                 } else {
                     console.log("2 users required !")
                 }
-            } else if (filterDataByRoom.length > 2) {
-                console.error("users greater than 2 !")
-            } else {
-                console.info("2 users required !")
-            };
         }, 2000)
     };
 
+    //initial window invitation
     const handleDisplayLinks = (id: number): void => {
         const openInvitation = mapping.map((user: UsersProps) => user.id === id 
             ? {...user, boolinvitation: 1}
@@ -112,6 +137,7 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
         setNewMapping(openInvitation);
     };
 
+    //to close invitation window
     const handleCloseInvitation = (id: number): void => {
         const closeInvitation = mapping.map((user: UsersProps) => user.id === id 
             ? {...user, boolinvitation: 0}
@@ -120,10 +146,12 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
         setNewMapping(closeInvitation);
     };
 
+    // yes
     const handleAccept = (): void => {
         setAcceptInvite(!acceptInvite);
     };
 
+    // no
     const handleRefuse = (): void => {
         setRefuseInvite(!refuseInvite);
     };
