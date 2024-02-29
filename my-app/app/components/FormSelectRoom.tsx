@@ -34,8 +34,8 @@ export default function FormSelectRoom() {
 
     return (
         <form onSubmit={(e) => handleSubmit(e)} 
-            className='flex flex-col items-center justify-between bg-slate-900 w-2/5 h-auto 
-              m-auto mt-40 p-10 rounded-xl'>
+            className='flex flex-col items-center justify-between bg-slate-900/60 w-2/5 h-auto 
+              m-auto mt-40 p-10 rounded-xl shadow-inside'>
 
             <div className='flex items-center justify-between mb-10'>
               <label htmlFor="room" className='text-xl'>Select a room:</label>

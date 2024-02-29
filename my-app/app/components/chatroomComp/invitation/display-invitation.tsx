@@ -37,31 +37,28 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
     }, [session])
 
     const handleInfo = (): void => {
+        setStateRoom((prevInfo) => ({...prevInfo, info: !prevInfo.info}));
         if (stateRoom.info === false) {
-            setStateRoom((prevInfo) => ({...prevInfo, info: !prevInfo.info}));
             setSelectedRoom("/info");
         } else {
-            setStateRoom((prevInfo) => ({...prevInfo, info: !prevInfo.info}));
             setSelectedRoom("");
         }
     };
 
     const handleQuestion = (): void => {
+        setStateRoom((prevQuestion) => ({...prevQuestion, question: !prevQuestion.question}));
         if (stateRoom.question === false) {
-            setStateRoom((prevQuestion) => ({...prevQuestion, question: !prevQuestion.question}));
             setSelectedRoom("/question");
         } else {
-            setStateRoom((prevQuestion) => ({...prevQuestion, question: !prevQuestion.question}));
             setSelectedRoom("");
         }
     };
 
     const handleConfidential = (): void => {
+        setStateRoom((prevConfi) => ({...prevConfi, confidential: !prevConfi.confidential}));
         if (stateRoom.confidential === false) {
-            setStateRoom((prevConfi) => ({...prevConfi, confidential: !prevConfi.confidential}));
             setSelectedRoom("/confidential");
         } else {
-            setStateRoom((prevConfi) => ({...prevConfi, confidential: !prevConfi.confidential}));
             setSelectedRoom("");
         }
     };
@@ -69,7 +66,7 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
     if (!session) {
         redirect("/login")
     };
-    //console.log(selectedRoom, "selectedRoom")
+
     return (
         <div>
             {newMapping.map((user: UsersProps) => (
@@ -131,13 +128,13 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
                             </button>
                             
                             {code?.message ? (
-                                <p>{code.message}</p>
+                                <p className='text-indigo-500 mt-4'>{code.message}</p>
                                 ) : null
                             }
                         </form>
 
                         <ul className='flex items-center justify-center'>
-                            <li className='list-disc text-md text-blue-600 hover:text-blue-600/70 active:text-blue-500 m-4'>
+                            <li className='list-disc text-md text-blue-600 hover:text-blue-600/70 active:text-blue-500 my-4'>
                                 <Link href="/email">Send e-mail</Link>
                             </li>
                         </ul>
