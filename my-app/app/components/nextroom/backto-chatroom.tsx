@@ -28,20 +28,19 @@ export default function BackToChatroom({dataUsers}: {dataUsers: UsersProps[]}) {
         }
     }, [session]);
 
-    const handleRouteToChange = () => {
+    const handleRouteToChange = (): void => {
         setTimeout(() => {
             const dataFilter = dataUsers.filter((d: UsersProps) => d.selectedroom === "/chatroom");
-            console.log(dataFilter, "data filter");
             const mappingRoom = dataFilter.map((u: UsersProps) => u.selectedroom);
-            console.log(mappingRoom, "mapping room");
             if (mappingRoom) {
                 router.push("/chatroom");
             }
         }, 2000)
     };
 
-
-    console.log(code?.message ? code.message : "No code message");
+    if (code?.message) {
+        console.info(code.message);
+    };
     
     return (
         <div className='fixed z-20 bottom-0 left-0 w-1/5 bg-blue-900 text-slate-900 pb-5'>

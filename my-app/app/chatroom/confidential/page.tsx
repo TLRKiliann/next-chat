@@ -41,7 +41,8 @@ export default async function SecretRoom() {
 
                 <UserOnline dataUsers={JSON.parse(dataUsers)} />
 
-                <div className='w-full h-content shadow-inside bg-slate-50'>
+                <div className='w-full h-content shadow-inside bg-gradient-to-r 
+                    from-red-200 from-10% to-orange-200 to-90%'>
 
                     <ScreenMessage dataroom={JSON.parse(data)} />
 

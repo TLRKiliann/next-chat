@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 type EffectProps = {
     pathname: string;
 };
 
-export default function effectFunc({pathname}: EffectProps) {
+export function effectFunc({pathname}: EffectProps): string {
     
     const [customPathname, setCustomPathname] = useState<string>("");
 
@@ -30,3 +30,4 @@ export default function effectFunc({pathname}: EffectProps) {
 
     return customPathname;
 }
+

@@ -4,11 +4,9 @@ import type { UsersChatProps } from '@/app/lib/definitions'
 import React, { useState, useEffect, useRef } from 'react'
 import { useSession } from "next-auth/react";
 import { redirect, usePathname } from 'next/navigation';
-import effectFunc from '@/app/utils/functions';
+import { effectFunc } from '@/app/utils/functions';
 
 export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) {
-
-    console.info(dataroom, "+++ dataroom +++");
 
     const {data: session} = useSession();
     const pathname = usePathname();
@@ -25,12 +23,12 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
         if (session && session.user && session.user.name) {
             setUsername(session.user.name);
         }
-        return () => console.log("Clean-up session (sm) !");
+        return () => console.log("Clean-up session (s-m) 1 !");
     }, [session]);
 
     useEffect(() => {
         msgRef.current?.scrollIntoView();
-        return () => console.log("Clean-up update msg (sm) !")
+        return () => console.log("Clean-up update msg (s-m) 2 !")
     }, [updateMsg])
 
     if (!session) {
