@@ -2,6 +2,7 @@
 
 import type { UsersProps } from '@/app/lib/definitions';
 import React, { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import DisplayInvitation from './invitation/display-invitation';
 import ResponseReceiver from './invitation/response-receiver';
@@ -10,6 +11,17 @@ import UsersBoard from './invitation/users-board';
 export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
 
     const router = useRouter();
+
+    const { data: session } = useSession();
+
+    const [userName, setUserName] = useState<string>("");
+
+    useEffect(() => {
+        if (session && session.user && session.user.name) {
+            setUserName(session.user.name);
+        }
+        return () => console.log("Clean-up session (sm) !");
+    }, [session]);
 
     const [senderResponse, setSenderResponse] = useState<UsersProps | undefined>(undefined);
 
@@ -29,6 +41,17 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
             return null;
         }
     };
+
+    useEffect(() => {
+        const verifyResponse = dataUsers.find((user: UsersProps) => (
+            (user.response === 1) && (user.username === userName))
+        );
+        const interval = setInterval(() => {
+            verifyResponse;
+            console.info("Verify response...")
+        }, 2000);
+        return () => clearInterval(interval);
+    }, [])
 
     useEffect(() => {
         const findSender = dataUsers.find((user: UsersProps) => user.sender !== "");
