@@ -29,7 +29,6 @@ export default function ResponseReceiver({
     const {data: session} = useSession();
 
     const [userName, setUserName] = useState<string>("");
-    console.log(userName, "userName");
 
     useEffect(() => {
         if (session && session.user && session.user.name) {

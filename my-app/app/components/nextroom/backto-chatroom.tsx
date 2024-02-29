@@ -40,7 +40,9 @@ export default function BackToChatroom({dataUsers}: {dataUsers: UsersProps[]}) {
         }, 2000)
     };
 
-    console.log(code?.message ? code.message : "No code message");
+    if (code?.message) {
+        console.info(code.message);
+    };
     
     return (
         <div className='fixed z-20 bottom-0 left-0 w-1/5 bg-blue-900 text-slate-900 pb-5'>

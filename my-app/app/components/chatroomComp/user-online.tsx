@@ -42,7 +42,7 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
         }
     };
 
-    useEffect(() => {
+    /* useEffect(() => {
         const verifyResponse = dataUsers.find((user: UsersProps) => (
             (user.response === 1) && (user.username === userName))
         );
@@ -51,7 +51,7 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
             console.info("Verify response...")
         }, 2000);
         return () => clearInterval(interval);
-    }, [])
+    }, []); */
 
     useEffect(() => {
         const findSender = dataUsers.find((user: UsersProps) => user.sender !== "");
@@ -64,6 +64,9 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     const handleRouteToChange = (): void => {
         setTimeout(() => {
             const filterDataByRoom = dataUsers.filter((d: UsersProps) => d.selectedroom);
+            
+            console.log(filterDataByRoom, "filter from handleRouteToChange !");
+
             const filterDataByRoomFind = dataUsers.find((d: UsersProps) => d.selectedroom);
             if (filterDataByRoom.length === 2) {
                 if (filterDataByRoomFind?.selectedroom === "/question") {
