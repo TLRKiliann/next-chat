@@ -29,7 +29,7 @@ export default function Login() {
       </div>
     )
   } else {
-    redirect("/chatroom")
+    redirect("/")
   }
 }
 
