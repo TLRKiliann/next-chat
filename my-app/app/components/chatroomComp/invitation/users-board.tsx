@@ -1,9 +1,9 @@
 import type { UsersProps } from '@/app/lib/definitions'
 import React from 'react'
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+/* import { usePathname } from 'next/navigation';
 import { effectFunc } from '@/app/utils/functions';
-
+ */
 type UsersBoard = {
     newMapping: UsersProps[];
     handleDisplayLinks: (id: number) => void;
@@ -11,14 +11,14 @@ type UsersBoard = {
 
 export default function UsersBoard({newMapping, handleDisplayLinks}: UsersBoard) {
 
-    const pathname = usePathname();
+    //const pathname = usePathname();
 
-    const callerPathName = effectFunc({pathname});
+    //const callerPathName = effectFunc({pathname});
 
     return (
         <>
             {newMapping.map((user: UsersProps) => (
-                user.selectedroom === callerPathName ? (
+                /* (user.selectedroom === callerPathName) && (user.display === 0) ? ( */
                     <div key={user.id} onClick={() => handleDisplayLinks(user.id)}
                         className='flex items-center justify-start bg-slate-800 cursor-pointer border-b border-slate-700 px-4 py-3'>
                         
@@ -33,7 +33,7 @@ export default function UsersBoard({newMapping, handleDisplayLinks}: UsersBoard)
                             : <span className='w-[20px] h-[20px] bg-red-600 border border-red-600 rounded-full'></span>
                         } 
                     </div>
-                ) : null
+                /* ) : null */
             ))}
         </>
     )
