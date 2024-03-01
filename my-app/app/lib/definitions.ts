@@ -23,7 +23,7 @@ export type UsersChatProps = {
     date: string;
 };
 
-export type UsersToJoin ={
+export type UsersToJoin = {
     chatid: number;
     id: number;
     username: string;
@@ -38,4 +38,11 @@ export type UsersToJoin ={
     message: string;
     room: string;
     date: string;
-}
+};
+
+export type EmailProps = {
+    id: number;
+    sender: string;
+    email: string;
+    textArea: string;
+};

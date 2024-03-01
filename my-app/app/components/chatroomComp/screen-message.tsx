@@ -4,7 +4,7 @@ import type { UsersChatProps } from '@/app/lib/definitions'
 import React, { useState, useEffect, useRef } from 'react'
 import { useSession } from "next-auth/react";
 import { redirect, usePathname } from 'next/navigation';
-import { effectFunc } from '@/app/utils/functions';
+import { effectFunc } from '@/app/lib/functions';
 
 export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 

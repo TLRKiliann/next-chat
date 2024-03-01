@@ -22,10 +22,11 @@ export default function HeaderChatroom({children}: {children: React.ReactNode}) 
             </h1>
 
             <button type="button" onClick={handleLogout} 
-                className='text-slate-200 bg-blue-600 transition ease-in-out transform duration-100 hover:scale-105 hover:bg-blue-600/70 
-                active:bg-blue-400 active:scale-95 px-2 py-2 rounded-full hover:shadow-none active:shadow-none mr-4'
+                className='w-8 h-8 text-slate-200 bg-blue-600 transition ease-in-out transform duration-100 
+                hover:scale-105 hover:bg-blue-600/70 active:bg-blue-400 active:scale-95 
+                rounded-full hover:shadow-none active:shadow-none border-none mr-4'
             >
-                <FaPowerOff />
+                <FaPowerOff size={18} className='m-auto' />
             </button>
 
         </div>

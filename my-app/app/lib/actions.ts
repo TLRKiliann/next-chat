@@ -1,6 +1,6 @@
 "use server";
 
-import { queryMessage, queryInvitation } from './db';
+import { queryMessage, queryInvitation, queryEmail } from './db';
 import { revalidatePath } from 'next/cache';
 
 export async function mysqlQueryChatroom(prevState: {message: string} | undefined, formData: FormData) {
@@ -117,3 +117,28 @@ export default async function returnToChatRoom(prevState: {message: string} | un
         throw error;
     }
 };
+
+//sending mail
+export async function emailSubmitAction(prevState: {message: string} | undefined, formData: FormData) {
+    try {
+        const id = formData.get("id");
+        const sender = formData.get("sender");
+        const email = formData.get("email");
+        const textarea = formData.get("textArea");
+        const btnEmail = formData.get("submit");
+        if (btnEmail === "btnEmail") {
+            if (id !== null && sender !== null && email !== null && textarea !== null) {
+                const result = await queryEmail("INSERT INTO mailbox VALUES (?, ?, ?, ?)",
+                    [id, sender, email, textarea]
+                );
+                if (result) {
+                    revalidatePath("/email")
+                    return {message: "Email sent !"};
+                }
+            }
+        }
+    } catch (error) {
+        console.log("Error: ", error);
+        throw error;
+    };
+}

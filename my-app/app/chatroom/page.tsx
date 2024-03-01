@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import React from 'react';
-import { queryUsers, queryChatRoom, queryToJoin } from '@/app/lib/db';
+import { queryUsers, queryChatRoom } from '@/app/lib/db';
 import HeaderChatroom from '@/app/components/chatroomComp/header-chatroom';
 import UserOnline from '@/app/components/chatroomComp/user-online';
 import ScreenMessage from '@/app/components/chatroomComp/screen-message';
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "default room"
 };
 
-export default async function ChatRoom() {
+export default async function LayoutChatRoom() {
 
     const req = await queryUsers("SELECT * FROM userschat", []);
     const dataUsers: string = JSON.stringify(req);
@@ -23,17 +23,12 @@ export default async function ChatRoom() {
     const request = await queryChatRoom("SELECT * FROM chatroom", []);
     const data: string = JSON.stringify(request);
 
-    //cross join
-    /* const reqToJoin = await queryToJoin("SELECT * FROM chatroom CROSS JOIN userschat", []);
-    const dataToJoin: string = JSON.stringify(reqToJoin); */
-    //console.info(dataToJoin)
-
     if (!dataUsers) {
-        throw new Error("Error: data not loaded for db");
+        throw new Error("Error: dataUsers not loaded from db");
     };
 
     if (!data) {
-        throw new Error("Error: data not loaded for db");
+        throw new Error("Error: data not loaded from db");
     };
 
     return (

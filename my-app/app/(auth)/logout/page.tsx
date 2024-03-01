@@ -30,7 +30,7 @@ export default function LogoutPage() {
         </p>
         <button className="text-slate-50 bg-red-600 transition trasform duration-100 
           hover:bg-red-600/90 hover:scale-105 active:bg-red-500 active:scale-95 py-2 px-6 
-          rounded-md hover:shadow-btn" onClick={() => signOut()}>
+          rounded-md" onClick={() => signOut()}>
           Sign out
         </button>
         <li className="text-lg text-sky-400 hover:text-sky-500 active:text-sky-400 mt-4">
