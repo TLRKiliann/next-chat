@@ -19,7 +19,6 @@ export default function FormSelectRoom() {
       const form = event.currentTarget;
       const formData = new FormData(form);
       const finalVal = formData.get("room");
-  
       if (finalVal === "development") {
         router.push(`/chatroom/development`);
       } else if (finalVal === "programming") {
@@ -27,7 +26,7 @@ export default function FormSelectRoom() {
       } else if (finalVal === "security") {
         router.push(`/chatroom/security`);
       } else {
-        console.log("Nothing choosen !")
+        console.log("chatroom by default")
         router.push(`/chatroom`);
       }
     }
