@@ -7,7 +7,7 @@ import { mysqlQueryChatroom } from '@/app/lib/actions';
 import { useFormState, useFormStatus } from 'react-dom';
 import { redirect } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import { effectFunc } from '@/app/utils/functions';
+import { effectFunc } from '@/app/lib/functions';
 
 type dataStateProps = {
     newId: number;

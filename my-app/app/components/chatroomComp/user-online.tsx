@@ -78,7 +78,7 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     useEffect(() => {
         console.log(verifyQuestion, verifyInfo, verifyConfidential, "verify")
         setTimeout(() => {
-            handleVerifyRoom;
+            handleVerifyRoom();
         }, 2000);
         return () => console.log("Clean-up verifyRoom (u-o)");
     }, [verifyQuestion, verifyInfo, verifyConfidential]);
