@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import { queryEmail, queryUsers } from '@/app/lib/db';
-import HeaderChatroom from '../components/chatroomComp/header-chatroom';
-import EmailForm from '../components/emailComp/email-form';
+import HeaderChatroom from '@/app/components/chatroomComp/header-chatroom';
+import EmailForm from '@/app/components/emailComp/email-form';
+import EmailBox from '@/app/components/emailComp/email-box';
 
 export const metadata: Metadata = {
     title: {
@@ -32,7 +33,13 @@ export default async function EmailPage() {
 
             <HeaderChatroom>Email</HeaderChatroom>
 
-            <EmailForm dataUsers={JSON.parse(dataUsers)} emailResponse={JSON.parse(emailResponse)} />
+            <div className="flex">
+
+                <EmailForm dataUsers={JSON.parse(dataUsers)} emailResponse={JSON.parse(emailResponse)} />
+
+                <EmailBox dataUsers={JSON.parse(dataUsers)} emailResponse={JSON.parse(emailResponse)} />
+
+            </div>
 
         </div>
     )
