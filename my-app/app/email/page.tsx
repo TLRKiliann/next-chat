@@ -33,11 +33,15 @@ export default async function EmailPage() {
 
             <HeaderChatroom>Email</HeaderChatroom>
 
-            <div className="flex">
+            <div className='flex w-full md:h-auto xl:min-h-screen m-auto'>
+
+            <div className="flex items-center justify-around w-full h-[600px] m-auto px-10">
 
                 <EmailForm dataUsers={JSON.parse(dataUsers)} emailResponse={JSON.parse(emailResponse)} />
 
                 <EmailBox dataUsers={JSON.parse(dataUsers)} emailResponse={JSON.parse(emailResponse)} />
+
+            </div>
 
             </div>
 
