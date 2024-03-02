@@ -33,20 +33,18 @@ export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersP
     const [textArea, setTextArea] = useState<string>("");
 
     const handleEmail = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-      const { value } = event.currentTarget;
-      console.log(value, "value selected");
+      const { value }: HTMLSelectElement = event.currentTarget;
       setEmail(value);
     };
 
     const handleText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const { value } = event.currentTarget;
-        console.log(value, "value selected");
+        const { value }: HTMLTextAreaElement = event.currentTarget;
         setTextArea(value);
     };
 
     return (
         <div className='w-[440px] h-auto bg-gradient-to-r from-blue-900 from-10% 
-        via-sky-700 via-50% to-blue-900 to-90% m-auto mt-28 rounded-xl'>
+        via-sky-700 via-50% to-blue-900 to-90% rounded-xl'>
             
             <form action={formData} className='flex flex-col items-center justify-around'>
 

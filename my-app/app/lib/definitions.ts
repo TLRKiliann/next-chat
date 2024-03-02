@@ -44,5 +44,5 @@ export type EmailProps = {
     id: number;
     sender: string;
     email: string;
-    textArea: string;
+    textarea: string;
 };
