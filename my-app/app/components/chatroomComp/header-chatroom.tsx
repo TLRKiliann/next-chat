@@ -17,7 +17,7 @@ export default function HeaderChatroom({children}: {children: React.ReactNode}) 
             via-sky-700 via-30% to-blue-900 to-90%"
         >
 
-            <h1 className='text-2xl italic font-bold p-[20px]'>
+            <h1 className='text-2xl italic font-bold p-5'>
                 {children}
             </h1>
 
