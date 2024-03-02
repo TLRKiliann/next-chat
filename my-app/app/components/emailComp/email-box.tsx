@@ -17,42 +17,39 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
         return () => console.log("clean-up (e-b)");
     }, []);
 
-    const verifyMailBox = emailResponse.find((emailItem: EmailProps) => emailItem.sender === userName);
-    console.log(verifyMailBox?.sender, "verifyMailBox");
+    const verifyMailBox = emailResponse.filter((emailItem: EmailProps) => emailItem.sender !== userName);
+    console.log(verifyMailBox);
 
     return (
         <div className='w-[440px] h-auto bg-gradient-to-r from-blue-900 from-10% 
-        via-sky-700 via-50% to-blue-900 to-90% m-auto mt-28 rounded-xl'>
+            via-sky-700 via-50% to-blue-900 to-90% pt-2 pb-5 rounded-xl'>
 
             <h1 className='text-xl text-center py-2'>MailBox</h1>
             
             {dataUsers.map((item: UsersProps) => (
-                userName === item.username ? (
+                item.username === userName ? (
                     <div key={item.id}>
-                        <p className='w-full px-10'>Email box: {item.email}</p>
-
+                        <p className='w-full text-cyan-400 px-10'>Email box: {item.email}</p>
                     </div>
                     
                 ) : null
             ))}
 
-            <div className='px-10 py-5'>
+            <div className='px-10 pt-2'>
                 {emailResponse.map((emailRes: EmailProps) => (
-                    userName !== emailRes.sender ? (
+                    emailRes.sender !== userName ? (
                     <div key={emailRes.id} className='flex justify-between py-2 border'>
                         <p>{emailRes.email}</p>
                         <p>{emailRes.sender}</p>
                         <p>{emailRes.textarea}</p>
                     </div>
-                    ) : (
-                        <p>EmailBox is empty</p>
-                    )
+                    ) : null
                 ))}
             </div>
 
             <div>
-                {verifyMailBox.sender ? (
-                        <p>EmailBox is empty</p>
+                {verifyMailBox ? (
+                    <p className='text-orange-400 px-10'>No message received...</p>
                     ) : null
                 }
             </div>
