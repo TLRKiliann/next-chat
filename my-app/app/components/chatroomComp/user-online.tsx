@@ -50,18 +50,18 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
         return () => console.log("Clean-up session findSender (u-o) 2 !");
     }, [dataUsers]);
 
-    const verifyQuestion = dataUsers.filter((user: UsersProps) => (
+    const verifyQuestion: UsersProps[] = dataUsers.filter((user: UsersProps) => (
         (user.response === 1) && (user.selectedroom).includes("/question"))
     );
-    console.log(verifyQuestion, "verifyQuestion");
-    const verifyInfo = dataUsers.filter((user: UsersProps) => (
+    //console.log(verifyQuestion, "verifyQuestion");
+    const verifyInfo: UsersProps[] = dataUsers.filter((user: UsersProps) => (
         (user.response === 1) && (user.selectedroom).includes("/info"))
     );
-    console.log(verifyInfo, "verifyInfo");
-    const verifyConfidential = dataUsers.filter((user: UsersProps) => (
+    //console.log(verifyInfo, "verifyInfo");
+    const verifyConfidential: UsersProps[] = dataUsers.filter((user: UsersProps) => (
         (user.response === 1) && (user.selectedroom).includes("/confidential"))
     );
-    console.log(verifyInfo, "verifyConfidential");
+    //console.log(verifyInfo, "verifyConfidential");
 
     const handleVerifyRoom = () => {
         if (verifyQuestion.length === 2) {
@@ -76,7 +76,7 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     };
 
     useEffect(() => {
-        console.log(verifyQuestion, verifyInfo, verifyConfidential, "verify")
+        //console.log(verifyQuestion, verifyInfo, verifyConfidential, "verify")
         setTimeout(() => {
             handleVerifyRoom();
         }, 2000);
@@ -86,8 +86,8 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     // user 2 response yes or no
     const handleRouteToChange = (): void => {
         setTimeout(() => {
-            const filterDataByRoom = dataUsers.filter((d: UsersProps) => d.selectedroom);
-            const filterDataByRoomFind = dataUsers.find((d: UsersProps) => d.selectedroom);
+            const filterDataByRoom: UsersProps[] = dataUsers.filter((d: UsersProps) => d.selectedroom);
+            const filterDataByRoomFind: UsersProps | undefined = dataUsers.find((d: UsersProps) => d.selectedroom);
 
                 if ((filterDataByRoomFind?.selectedroom === "/question") && (filterDataByRoom.length === 2)) {
                     router.push("/chatroom/question");
@@ -105,7 +105,7 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
 
     //initial window invitation
     const handleDisplayLinks = (id: number): void => {
-        const openInvitation = mapping.map((user: UsersProps) => user.id === id 
+        const openInvitation: UsersProps[] = mapping.map((user: UsersProps) => user.id === id 
             ? {...user, boolinvitation: 1}
             : user
         );
@@ -114,7 +114,7 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
 
     //to close invitation window
     const handleCloseInvitation = (id: number): void => {
-        const closeInvitation = mapping.map((user: UsersProps) => user.id === id 
+        const closeInvitation: UsersProps[] = mapping.map((user: UsersProps) => user.id === id 
             ? {...user, boolinvitation: 0}
             : user
         );

@@ -50,7 +50,7 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
     }, [dataroom]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        const { value } = event.currentTarget;
+        const { value }: HTMLInputElement = event.currentTarget;
         setDataState((prev) => ({...prev, message: value}));
     };
 
@@ -59,7 +59,7 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
     };
     
     const handleClickEmoji = (event: React.MouseEvent<HTMLSpanElement>): void => {
-        const value = event.currentTarget;
+        const value: HTMLSpanElement = event.currentTarget;
         if (value.id === "emo1") {
             setDataState((prev) => ({...prev, message: prev.message + " 🙂 "}));
         } else if (value.id === "emo2") {

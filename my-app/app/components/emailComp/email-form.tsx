@@ -33,14 +33,12 @@ export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersP
     const [textArea, setTextArea] = useState<string>("");
 
     const handleEmail = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-      const { value } = event.currentTarget;
-      console.log(value, "value selected");
+      const { value }: HTMLSelectElement = event.currentTarget;
       setEmail(value);
     };
 
     const handleText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const { value } = event.currentTarget;
-        console.log(value, "value selected");
+        const { value }: HTMLTextAreaElement = event.currentTarget;
         setTextArea(value);
     };
 
