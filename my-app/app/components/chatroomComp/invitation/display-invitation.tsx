@@ -71,12 +71,12 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
         <div>
             {newMapping.map((user: UsersProps) => (
                 user.boolinvitation === 1 ? (
-                    <div key={user.id} className="fixed z-20 top-0 left-0 w-2/5 h-auto
-                        bg-slate-200 text-slate-600 rounded-br-xl shadow-2xl">
+                    <div key={user.id} className="fixed z-20 md:top-[20%] xl:top-[30%] md:left-[30%] lg:left-[33%] xl:left-[35%] w-2/5 m-auto h-auto
+                    text-slate-200 bg-slate-700 rounded-xl shadow-2xl">
                         <div className='flex justify-end'>
                             <button type="button" onClick={() => handleCloseInvitation(user.id)}
                                 className="flex items-center justify-center w-5 h-5 pb-[2px] text-slate-500 
-                                mt-2 mr-2 border border-slate-500 rounded-full"
+                                mt-2 mr-2 rounded-full"
                             >
                                 x
                             </button>
@@ -84,7 +84,7 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
 
                         <div className='flex flex-col'>
                             <h2 className="font-bold text-lg text-center">Invitation proposal for :</h2>
-                            <p className="text-lg text-center text-indigo-600 mt-2 mb-1">{user.username}</p>
+                            <p className="text-lg text-center text-indigo-400 mt-2 mb-1">{user.username}</p>
                         </div>
 
                         <div className='flex flex-col items-center justify-center'>
@@ -142,8 +142,7 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
                         </form>
 
                         <ul className='flex items-center justify-center'>
-                            <li className='list-disc text-md text-blue-600 hover:text-blue-600/70 active:text-blue-500 my-4'>
-                                {/* <Link href={`/email/${user.username}`}>Send e-mail</Link> */}
+                            <li className='list-disc text-md text-indigo-400 hover:text-indigo-500 active:text-indigo-600 my-4'>
                                 <Link href="email">Send e-mail</Link>
                             </li>
                         </ul>
