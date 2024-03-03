@@ -5,6 +5,8 @@ import HeaderChatroom from '@/app/components/chatroomComp/header-chatroom';
 import EmailForm from '@/app/components/emailComp/email-form';
 import EmailBox from '@/app/components/emailComp/email-box';
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
     title: {
       absolute: "Email"

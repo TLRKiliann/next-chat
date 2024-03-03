@@ -6,6 +6,8 @@ import { useSession } from 'next-auth/react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { emailSubmitAction } from '@/app/lib/actions';
 
+export const dynamic = "force-dynamic";
+
 export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersProps[], emailResponse: EmailProps[]}) {
 
     const { data: session } = useSession();
@@ -15,12 +17,16 @@ export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersP
 
     const [userName, setUserName] = useState<string>("");
     const [newId, setNewId] = useState<number>(0);
+    const [email, setEmail] = useState<string>("Email");
+    const [textArea, setTextArea] = useState<string>("");
 
     useEffect(() => {
-        const nbEmail = emailResponse.length + 1;
-        setNewId(nbEmail);
+        const timer = setTimeout(() => {
+            const nbEmail = emailResponse.length + 1;
+            setNewId(nbEmail);
+        }, 2000);
         return () => console.log("clean-up email (1)");
-    }, []);
+    }, [emailResponse]);
 
     useEffect(() => {
         if (session && session.user && session.user.name) {
@@ -28,9 +34,6 @@ export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersP
         };
         return () => console.log("clean-up email (2)");
     }, [session]);
-
-    const [email, setEmail] = useState<string>("Email");
-    const [textArea, setTextArea] = useState<string>("");
 
     const handleEmail = (event: React.ChangeEvent<HTMLSelectElement>): void => {
       const { value }: HTMLSelectElement = event.currentTarget;
@@ -40,6 +43,19 @@ export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersP
     const handleText = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
         const { value }: HTMLTextAreaElement = event.currentTarget;
         setTextArea(value);
+    };
+
+    const handleTimer = () => {
+        const timer = setTimeout(() => {
+            setTextArea("");
+            console.log("timer")
+        }, 2000)
+    };
+
+    console.log(newId, "new ID");
+    
+    if (code?.message) {
+        console.log(code?.message);
     };
 
     return (
@@ -67,18 +83,21 @@ export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersP
                 </textarea>
 
                 <input type="number" name="bool_text" id="bool_text" value={0} hidden readOnly />
+                
+                <input type="reset" id="refresher" hidden />
 
                 <div className='flex w-full py-4'>
-                    <button type="submit" id="submit" name="submit" value="btnEmail" disabled={pending} 
+                    <button type="submit" id="submit" name="submit" value="btnEmail" disabled={pending}
+                        onClick={handleTimer}
                         className='font-bold btn-primary m-auto'
                     >
                         {pending ? "Pending..." : "Submit"}
                     </button>
                 </div>
 
-                {code?.message ? (
+                {/* {code?.message ? (
                     <p className='text-cyan-400 text-center mb-4'>{code.message}</p>
-                ) : null}
+                ) : null} */}
 
             </form>
 
