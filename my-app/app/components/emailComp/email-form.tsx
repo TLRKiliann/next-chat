@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { emailSubmitAction } from '@/app/lib/actions';
-
-export const dynamic = "force-dynamic";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersProps[], emailResponse: EmailProps[]}) {
 
@@ -46,13 +46,14 @@ export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersP
     };
 
     const handleTimer = () => {
-        const timer = setTimeout(() => {
-            setTextArea("");
-            console.log("timer")
-        }, 2000)
-    };
+        toast.success("Message sent !", {
+            autoClose: 2000,
+            position: 'top-center'
+        });
+        setTextArea("");
+    }
 
-    console.log(newId, "new ID");
+    //console.log(newId, "new ID");
     
     if (code?.message) {
         console.log(code?.message);

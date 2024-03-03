@@ -4,7 +4,7 @@ import type { UsersChatProps } from '@/app/lib/definitions'
 import React, { useState, useEffect, useRef } from 'react'
 import { useSession } from "next-auth/react";
 import { redirect, usePathname } from 'next/navigation';
-import { effectFunc } from '@/app/lib/functions';
+import { EffectFunc } from '@/app/lib/functions';
 
 export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) {
 
@@ -17,7 +17,7 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
 
     const updateMsg: string[] = dataroom.map((msg: UsersChatProps) => msg.message);
 
-    const callerPathName = effectFunc({pathname});
+    const callerPathName = EffectFunc({pathname});
 
     useEffect(() => {
         if (session && session.user && session.user.name) {
