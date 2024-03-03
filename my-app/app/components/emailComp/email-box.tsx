@@ -1,17 +1,27 @@
 "use client";
 
+import { deleteMessage } from '@/app/lib/actions';
 import type { EmailProps, UsersProps } from '@/app/lib/definitions';
 import { useSession } from 'next-auth/react';
 import React, { useState, useEffect } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { IoIosMail } from "react-icons/io";
 import { IoIosMailOpen } from "react-icons/io";
 
 export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersProps[], emailResponse: EmailProps[]}) {
 
+    const { pending } = useFormStatus();
+    const [code, formData] = useFormState(deleteMessage, undefined);
+
     const { data: session } = useSession();
 
     const [userName, setUserName] = useState<string>("");
     const [newEmailList, setNewEmailList] = useState<EmailProps[]>(emailResponse);
+
+    const findUser: UsersProps | undefined = dataUsers.find((usr: UsersProps) => usr.username === userName);
+    const findMsg: EmailProps | undefined = emailResponse.find((msg: EmailProps) => msg.email === findUser?.email);
+
+    const [stateMsg] = useState<EmailProps | undefined>(findMsg);
 
     useEffect(() => {
         if (session && session.user && session.user.name) {
@@ -19,9 +29,6 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
         }
         return () => console.log("clean-up (e-b)");
     }, [session]);
-
-    const findUser: UsersProps | undefined = dataUsers.find((usr: UsersProps) => usr.username === userName);
-    const findMsg: EmailProps | undefined = emailResponse.find((msg: EmailProps) => msg.email === findUser?.email);
 
     const handleText = (id: number): void | null => {
         const findTextById: EmailProps | undefined = newEmailList.find((email: EmailProps) => email.id === id);
@@ -52,57 +59,61 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
                 ) : null
             ))}
 
-            <div className='md:text-sm px-8 pt-2'>
-
-                <div className='flex items-center justify-between'>
-                    <p className="text-cyan-400 px-2 py-1">Sender</p>
-                    <p className="text-cyan-400 px-2 py-1">Mail</p>
-                </div>
-                {newEmailList.map((emailRes: EmailProps) => (
-                    (emailRes.sender !== userName) && (emailRes.email === findMsg?.email) ? (
-                    <div key={emailRes.id} className='flex items-center justify-between bg-blue-900 border-b 
-                        border-cyan-600 py-2'
-                    >
-                        <p className="px-2 py-1">{emailRes.sender}</p>
-                        
-                        {emailRes.bool_text === 0 ? (
-                            <button type="button" onClick={() => handleText(emailRes.id)} className='px-2'>
-                                <IoIosMail size={24} />
-                           </button>
-                            ) : (
-                            <div className='flex items-center justify-between w-full text-slate-800 bg-slate-200 pl-2 rounded'>
-                                <p>
-                                    Message: {emailRes.textarea}
-                                </p>
-                                <form /* action={} */ className='absolute flex justify-end w-[24%]'>
-                                    <button type="submit" id="submit" name="submit" value="btnDeleteMsg"
-                                        /* disabled={pending} */
-                                        className='flex items-center justify-center text-sm text-red-600 border border-red-600 
-                                        px-2 rounded'
-                                    >
-                                        x
-                                    </button>
-                                </form>
-                                <button type="button" onClick={() => handleText(emailRes.id)} 
-                                    className='px-2'
-                                >
-                                    <IoIosMailOpen size={24}/>
-                                </button>            
-                            </div>
-                        )}
-                    </div>
-                    ) : (
-                        null
-                    )
-                ))}
-            </div>
-
             <div>
-                {!findMsg?.email ? (
+                {!stateMsg?.email ? (
                     <p className='text-orange-400 px-10'>No message received...</p>
-                ) : null}
+                ) : (
+                    <div className='md:text-sm px-8 pt-2'>
+
+                        <div className='flex items-center justify-between'>
+                            <p className="text-cyan-400 px-2 py-1">Sender</p>
+                            <p className="text-cyan-400 px-2 py-1">Mail</p>
+                        </div>
+                        {newEmailList.map((emailRes: EmailProps) => (
+                            (emailRes.sender !== userName) && (emailRes.email === findMsg?.email) ? (
+                            <div key={emailRes.id} className='flex items-center justify-between bg-blue-900 border-b 
+                                border-cyan-600 py-2'
+                            >
+                                <p className="px-2 py-1">{emailRes.sender}</p>
+                                
+                                {emailRes.bool_text === 0 ? (
+                                    <button type="button" onClick={() => handleText(emailRes.id)} className='px-2'>
+                                        <IoIosMail size={24} />
+                                </button>
+                                    ) : (
+                                    <div className='flex items-center justify-between w-full text-slate-800 bg-slate-200 pl-2 rounded'>
+                                        <p>
+                                            Message: {emailRes.textarea}
+                                        </p>
+                                        <form action={formData} className='absolute flex justify-end w-[24%]'>
+                                            <input type="number" id="id" name="id" value={emailRes.id} hidden readOnly />
+                                            <button type="submit" id="submit" name="submit" value="btnDeleteMsg"
+                                                disabled={pending}
+                                                className='flex items-center justify-center text-sm text-red-600 border border-red-600 
+                                                px-2 rounded'
+                                            >
+                                                x
+                                            </button>
+                                        </form>
+                                        <button type="button" onClick={() => handleText(emailRes.id)} 
+                                            className='px-2'
+                                        >
+                                            <IoIosMailOpen size={24}/>
+                                        </button>            
+                                    </div>
+                                )}
+                            </div>
+                            ) : (
+                                null
+                            )
+                        ))}
+                    </div>
+                )}
             </div>
 
+            {code?.message ? (
+                <p className='text-center text-cyan-400 pt-4'>{code.message}</p>
+            ) : null}
 
         </div>
     )

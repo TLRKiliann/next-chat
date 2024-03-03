@@ -1,6 +1,6 @@
 "use server";
 
-import { queryMessage, queryInvitation, queryEmail } from './db';
+import { queryMessage, queryInvitation, queryEmail, queryDeleteMsg } from './db';
 import { revalidatePath } from 'next/cache';
 
 export async function mysqlQueryChatroom(prevState: {message: string} | undefined, formData: FormData) {
@@ -142,4 +142,23 @@ export async function emailSubmitAction(prevState: {message: string} | undefined
         console.log("Error: ", error);
         throw error;
     };
-}
+};
+
+export async function deleteMessage(prevState: {message: string} | undefined, formData: FormData) {
+    try {
+        const id = formData.get("id");
+        const btnDeleteMsg = formData.get("submit");
+        if (btnDeleteMsg === "btnDeleteMsg") {
+            if (id !== null) {
+                const result = await queryDeleteMsg("DELETE FROM mailbox WHERE id=?", [id]);
+                if (result) {
+                    revalidatePath("/email");
+                    return {message: "Message deleted !"};
+                }
+            }
+        }
+    } catch (error) {
+        console.log("Error: ", error);
+        throw error;
+    }
+};

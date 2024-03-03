@@ -47,3 +47,7 @@ export type EmailProps = {
     textarea: string;
     bool_text: number;
 };
+
+export type IdProps = {
+    id: number;
+}

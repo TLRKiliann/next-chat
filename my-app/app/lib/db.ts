@@ -1,6 +1,6 @@
 import mysql from 'mysql2/promise';
 import type {
-    UsersChatProps, UsersProps, UsersToJoin, EmailProps
+    UsersChatProps, UsersProps, UsersToJoin, EmailProps, IdProps
 } from './definitions';
 
 type GenericProps = UsersChatProps | UsersProps | UsersToJoin | [];
@@ -118,11 +118,28 @@ const queryEmail = async (query: string, data: FormDataEntryValue[]): Promise<Em
     }
 };
 
+const queryDeleteMsg = async (query: string, data: FormDataEntryValue[]): Promise<EmailProps[]> => {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        const [result] = await connection.execute(query, data);
+        return result as EmailProps[];
+    } catch (error) {
+        console.log(error);
+        throw error;
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
 export {
     queryUsers,
     queryChatRoom,
     queryToJoin,
     queryMessage,
     queryInvitation,
-    queryEmail
+    queryEmail,
+    queryDeleteMsg
 };
