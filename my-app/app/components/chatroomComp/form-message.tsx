@@ -7,7 +7,7 @@ import { mysqlQueryChatroom } from '@/app/lib/actions';
 import { useFormState, useFormStatus } from 'react-dom';
 import { redirect } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import { effectFunc } from '@/app/lib/functions';
+import { EffectFunc } from '@/app/lib/functions';
 
 type dataStateProps = {
     newId: number;
@@ -33,7 +33,7 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
         toggleEmoji: false
     });
 
-    const callerPathName = effectFunc({pathname});
+    const callerPathName = EffectFunc({pathname});
 
     useEffect(() => {
         if (session && session.user && session.user.name && session.user.image) {

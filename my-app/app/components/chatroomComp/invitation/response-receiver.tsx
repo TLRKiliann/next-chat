@@ -41,17 +41,17 @@ export default function ResponseReceiver({
         <>
             {newMapping.map((user: UsersProps) => (
                 (user.display === 1) && (user.username === userName) ? (
-                    <div key={user.id} className='fixed z-10 top-0 left-0 w-[400px] text-slate-600
-                        bg-slate-200 rounded-br-xl shadow-lg'>
+                    <div key={user.id} className="fixed z-20 md:top-[20%] xl:top-[30%] md:left-[30%] lg:left-[33%] 
+                    xl:left-[35%] w-2/5 h-auto text-slate-200 bg-slate-700 rounded-xl shadow-2xl">
                         
                         <h2 className='text-xl font-bold text-center my-2'>Invitation</h2>
                         
                         <p className='px-10 py-2'>
-                            <span className='text-red-600'>
+                            <span className='text-indigo-400'>
                                 {user.sender} 
                             </span>
                             &nbsp;sent an invitation to you for going to&nbsp;
-                            <span className='text-red-600'>
+                            <span className='text-indigo-400'>
                                 {user.selectedroom}&nbsp;
                             </span>
                             room.

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import SessionWrapper from './components/SessionWrapper';
+import { ToastContainer } from 'react-toastify';
 import "./globals.css";
 
 
@@ -16,11 +17,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <SessionWrapper>
-      <html lang="en">
-        <body>{children}</body>
-      </html>
-    </SessionWrapper>
+  return (  
+    <html lang="en">
+      <body>
+        <SessionWrapper>
+          <ToastContainer />
+            {children}
+        </SessionWrapper>        
+      </body>
+    </html>
   );
 }

@@ -4,7 +4,7 @@ type EffectProps = {
     pathname: string;
 };
 
-export function effectFunc({pathname}: EffectProps): string {
+export function EffectFunc({pathname}: EffectProps): string {
     
     const [customPathname, setCustomPathname] = useState<string>("");
 
@@ -26,7 +26,7 @@ export function effectFunc({pathname}: EffectProps): string {
                 console.log("end of loop (s-m)");
         };
         return () => console.log("Clean-up pathname (sm) !")
-    }, []);
+    }, [pathname]);
 
     return customPathname;
 }

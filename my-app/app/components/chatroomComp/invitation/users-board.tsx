@@ -2,7 +2,7 @@ import type { UsersProps } from '@/app/lib/definitions'
 import React from 'react'
 import Image from 'next/image';
 /* import { usePathname } from 'next/navigation';
-import { effectFunc } from '@/app/lib/functions';
+import { EffectFunc } from '@/app/lib/functions';
  */
 type UsersBoard = {
     newMapping: UsersProps[];
@@ -13,7 +13,7 @@ export default function UsersBoard({newMapping, handleDisplayLinks}: UsersBoard)
 
     //const pathname = usePathname();
 
-    //const callerPathName = effectFunc({pathname});
+    //const callerPathName = EffectFunc({pathname});
 
     return (
         <>

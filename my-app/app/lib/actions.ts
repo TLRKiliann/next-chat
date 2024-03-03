@@ -1,6 +1,6 @@
 "use server";
 
-import { queryMessage, queryInvitation, queryEmail } from './db';
+import { queryMessage, queryInvitation, queryEmail, queryDeleteMsg } from './db';
 import { revalidatePath } from 'next/cache';
 
 export async function mysqlQueryChatroom(prevState: {message: string} | undefined, formData: FormData) {
@@ -125,11 +125,12 @@ export async function emailSubmitAction(prevState: {message: string} | undefined
         const sender = formData.get("sender");
         const email = formData.get("email");
         const textarea = formData.get("textArea");
+        const bool_text = formData.get("bool_text");
         const btnEmail = formData.get("submit");
         if (btnEmail === "btnEmail") {
-            if (id !== null && sender !== null && email !== null && textarea !== null) {
-                const result = await queryEmail("INSERT INTO mailbox VALUES (?, ?, ?, ?)",
-                    [id, sender, email, textarea]
+            if (id !== null && sender !== null && email !== null && textarea !== null && bool_text !== null) {
+                const result = await queryEmail("INSERT INTO mailbox VALUES (?, ?, ?, ?, ?)",
+                    [id, sender, email, textarea, bool_text]
                 );
                 if (result) {
                     revalidatePath("/email")
@@ -141,4 +142,23 @@ export async function emailSubmitAction(prevState: {message: string} | undefined
         console.log("Error: ", error);
         throw error;
     };
-}
+};
+
+export async function deleteMessage(prevState: {message: string} | undefined, formData: FormData) {
+    try {
+        const id = formData.get("id");
+        const btnDeleteMsg = formData.get("submit");
+        if (btnDeleteMsg === "btnDeleteMsg") {
+            if (id !== null) {
+                const result = await queryDeleteMsg("DELETE FROM mailbox WHERE id=?", [id]);
+                if (result) {
+                    revalidatePath("/email");
+                    return {message: "Message deleted !"};
+                }
+            }
+        }
+    } catch (error) {
+        console.log("Error: ", error);
+        throw error;
+    }
+};
