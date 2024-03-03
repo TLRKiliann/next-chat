@@ -41,6 +41,11 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
         }
         return null;
     };
+    
+    const handleDeleteMsg = (id: number) => {
+        const filterById = newEmailList.filter((newMail: EmailProps) => newMail.id !== id);
+        setNewEmailList(filterById);
+    };
 
     return (
         <div className='md:w-[440px] xl:w-[600px] h-auto bg-gradient-to-r from-blue-900 from-10% 
@@ -53,7 +58,6 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
                     <div key={user.id}>
                         <p className='w-full text-slate-100 px-10'>Email box: <span className='text-cyan-400'>{user.email}</span></p>
                     </div>
-                    
                 ) : null
             ))}
 
@@ -80,10 +84,11 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
                                     <p>
                                         Message: {emailRes.textarea}
                                     </p>
-                                    <form action={formData} className='absolute flex justify-end w-[24%]'>
+                                    <form action={formData} className='absolute flex justify-end w-[24%] md:pr-8 xl:pr-0'>
                                         <input type="number" id="id" name="id" value={emailRes.id} hidden readOnly />
                                         <button type="submit" id="submit" name="submit" value="btnDeleteMsg"
                                             disabled={pending}
+                                            onClick={() => handleDeleteMsg(emailRes.id)}
                                             className='flex items-center justify-center text-sm text-red-600 border border-red-600 
                                             px-2 rounded'
                                         >
@@ -97,15 +102,13 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
                                     </button>            
                                 </div>
                             )}
-
-
                         </div>
-                    ):null
+                    ) : null
                 ))}
             </div>
 
             <div>
-                {findMsg?.email.length === 0 ? (
+                {findMsg?.email === undefined ? (
                     <p className='text-orange-400 px-10'>No message received...</p>
                 ) : null}
             </div>
