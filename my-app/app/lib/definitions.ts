@@ -45,4 +45,5 @@ export type EmailProps = {
     sender: string;
     email: string;
     textarea: string;
+    bool_text: number;
 };

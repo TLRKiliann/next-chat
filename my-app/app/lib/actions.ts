@@ -125,11 +125,12 @@ export async function emailSubmitAction(prevState: {message: string} | undefined
         const sender = formData.get("sender");
         const email = formData.get("email");
         const textarea = formData.get("textArea");
+        const bool_text = formData.get("bool_text");
         const btnEmail = formData.get("submit");
         if (btnEmail === "btnEmail") {
-            if (id !== null && sender !== null && email !== null && textarea !== null) {
-                const result = await queryEmail("INSERT INTO mailbox VALUES (?, ?, ?, ?)",
-                    [id, sender, email, textarea]
+            if (id !== null && sender !== null && email !== null && textarea !== null && bool_text !== null) {
+                const result = await queryEmail("INSERT INTO mailbox VALUES (?, ?, ?, ?, ?)",
+                    [id, sender, email, textarea, bool_text]
                 );
                 if (result) {
                     revalidatePath("/email")
