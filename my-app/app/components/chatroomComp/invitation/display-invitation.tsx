@@ -71,8 +71,8 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
         <div>
             {newMapping.map((user: UsersProps) => (
                 user.boolinvitation === 1 ? (
-                    <div key={user.id} className="fixed z-20 md:top-[20%] xl:top-[30%] md:left-[30%] lg:left-[33%] xl:left-[35%] w-2/5 m-auto h-auto
-                    text-slate-200 bg-slate-700 rounded-xl shadow-2xl">
+                    <div key={user.id} className="fixed z-20 md:top-[20%] xl:top-[30%] md:left-[30%] lg:left-[33%] xl:left-[35%] 
+                    w-2/5 h-auto text-slate-200 bg-slate-700 rounded-xl">
                         <div className='flex justify-end'>
                             <button type="button" onClick={() => handleCloseInvitation(user.id)}
                                 className="flex items-center justify-center w-5 h-5 pb-[2px] text-slate-500 

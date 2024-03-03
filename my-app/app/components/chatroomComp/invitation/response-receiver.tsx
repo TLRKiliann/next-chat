@@ -41,8 +41,8 @@ export default function ResponseReceiver({
         <>
             {newMapping.map((user: UsersProps) => (
                 (user.display === 1) && (user.username === userName) ? (
-                    <div key={user.id} className="fixed z-20 md:top-[20%] xl:top-[30%] md:left-[30%] lg:left-[33%] xl:left-[35%] w-2/5 m-auto h-auto
-                    text-slate-200 bg-slate-700 rounded-xl shadow-2xl">
+                    <div key={user.id} className="fixed z-20 md:top-[20%] xl:top-[30%] md:left-[30%] lg:left-[33%] 
+                    xl:left-[35%] w-2/5 h-auto text-slate-200 bg-slate-700 rounded-xl shadow-2xl">
                         
                         <h2 className='text-xl font-bold text-center my-2'>Invitation</h2>
                         
