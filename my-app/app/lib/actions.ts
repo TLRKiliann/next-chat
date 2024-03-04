@@ -121,16 +121,15 @@ export default async function returnToChatRoom(prevState: {message: string} | un
 //sending mail
 export async function emailSubmitAction(prevState: {message: string} | undefined, formData: FormData) {
     try {
-        const id = formData.get("id");
         const sender = formData.get("sender");
         const email = formData.get("email");
-        const textarea = formData.get("textArea");
+        const textarea = formData.get("textarea");
         const bool_text = formData.get("bool_text");
         const btnEmail = formData.get("submit");
         if (btnEmail === "btnEmail") {
-            if (id !== null && sender !== null && email !== null && textarea !== null && bool_text !== null) {
-                const result = await queryEmail("INSERT INTO mailbox VALUES (?, ?, ?, ?, ?)",
-                    [id, sender, email, textarea, bool_text]
+            if (sender !== null && email !== null && textarea !== null && bool_text !== null) {
+                const result = await queryEmail("INSERT INTO mailbox (sender, email, textarea, bool_text) VALUES (?, ?, ?, ?)",
+                    [sender, email, textarea, bool_text]
                 );
                 if (result) {
                     revalidatePath("/email")

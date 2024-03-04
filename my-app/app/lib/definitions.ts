@@ -41,6 +41,13 @@ export type UsersToJoin = {
 };
 
 export type EmailProps = {
+    sender: string;
+    email: string;
+    textarea: string;
+    bool_text: number;
+};
+
+export type RetrieveEmailProps = {
     id: number;
     sender: string;
     email: string;
