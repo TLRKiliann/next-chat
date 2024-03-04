@@ -1,12 +1,12 @@
 "use client";
 
-import type { UsersChatProps } from '@/app/lib/definitions'
+import type { UsersChatByChatIdProps } from '@/app/lib/definitions'
 import React, { useState, useEffect, useRef } from 'react'
 import { useSession } from "next-auth/react";
 import { redirect, usePathname } from 'next/navigation';
 import { EffectFunc } from '@/app/lib/functions';
 
-export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) {
+export default function ScreenMessage({dataroom}: {dataroom: UsersChatByChatIdProps[]}) {
 
     const {data: session} = useSession();
     const pathname = usePathname();
@@ -15,7 +15,7 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
 
     const msgRef = useRef<HTMLDivElement>(null);
 
-    const updateMsg: string[] = dataroom.map((msg: UsersChatProps) => msg.message);
+    const updateMsg: string[] = dataroom.map((msg: UsersChatByChatIdProps) => msg.message);
 
     const callerPathName = EffectFunc({pathname});
 
@@ -38,17 +38,19 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatProps[]}) 
     return (               
         <div className='flex flex-col items-center justify-start w-full h-[calc(100%-80px)] overflow-scroll 
             scroll-smooth'>
-            {dataroom.map((d: UsersChatProps) => (
+            {dataroom.map((d: UsersChatByChatIdProps) => (
                 d.room === callerPathName ? (
                 <div key={d.chatid} 
                     className={`flex flex-col ${d.username === username 
                         ? "items-end"
-                        : "items-start"} justify-center w-full`}>
+                        : "items-start"} justify-center w-full`}
+                >
 
                     <div ref={msgRef} className={`w-[50%] bg-slate-100 m-4 p-2
                         ${d.username === username 
                             ? "rounded-tl-lg" 
-                            : "rounded-br-lg"} rounded-tr-lg rounded-bl-lg shadow-msg`}>
+                            : "rounded-br-lg"} rounded-tr-lg rounded-bl-lg shadow-msg`}
+                    >
                         
                         <p className='text-lg text-slate-700 mb-2'>{d.message}</p>
 

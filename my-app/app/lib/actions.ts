@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 
 export async function mysqlQueryChatroom(prevState: {message: string} | undefined, formData: FormData) {
     try {
-        const chatid = formData.get("chatid");
+        //const chatid = formData.get("chatid");
         const id = formData.get("id");
         const username = formData.get("username");
         const online = formData.get("online");
@@ -14,9 +14,9 @@ export async function mysqlQueryChatroom(prevState: {message: string} | undefine
         const date = formData.get("date");
         const btnSubmit = formData.get("submit");
         if (btnSubmit === "insert") {
-            if (chatid !== null && id !== null && username !== null && online !== null && message !== null && room !== null && date !== null) {
-                const result = await queryMessage(`INSERT INTO ${room.slice(1)} VALUES (?, ?, ?, ?, ?, ?, ?)`, 
-                    [chatid, id, username, message, online, room, date]
+            if (id !== null && username !== null && message !== null && online !== null && room !== null && date !== null) {
+                const result = await queryMessage(`INSERT INTO ${room.slice(1)} (id, username, message, online, room, date) VALUES (?, ?, ?, ?, ?, ?)`, 
+                    [id, username, message, online, room, date]
                 );
                 if (result) {
                     revalidatePath("/chatroom");
