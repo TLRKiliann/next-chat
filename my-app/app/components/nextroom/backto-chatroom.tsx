@@ -28,14 +28,15 @@ export default function BackToChatroom({dataUsers}: {dataUsers: UsersProps[]}) {
         }
     }, [session]);
 
-    const handleRouteToChange = (): void => {
-        setTimeout(() => {
+    const handleRouteToChange = (): (() => void) => {
+        const timer = setTimeout(() => {
             const dataFilter: UsersProps[] = dataUsers.filter((d: UsersProps) => d.selectedroom === "/chatroom");
             const mappingRoom: string[] = dataFilter.map((u: UsersProps) => u.selectedroom);
-            if (mappingRoom) {
+            if (mappingRoom.length > 0) { // changed
                 router.push("/chatroom");
             }
         }, 2000)
+        return () => clearTimeout(timer);
     };
 
     if (code?.message) {
