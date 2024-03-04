@@ -10,8 +10,9 @@ export default function Home() {
   const router = useRouter();
 
   if (!session) {
-    router.push("/login")
-  }
+    router.push("/login");
+  };
+  
   return (
     <main className="w-full min-h-screen bg-slate-800">
 

@@ -30,11 +30,6 @@ export default function BackToChatroom({dataUsers}: {dataUsers: UsersProps[]}) {
 
     const handleRouteToChange = (): (() => void) => {
         const timer = setTimeout(() => {
-            /* const dataFilter: UsersProps[] = dataUsers.filter((d: UsersProps) => d.selectedroom === "/chatroom");
-            const mappingRoom: string[] = dataFilter.map((u: UsersProps) => u.selectedroom);
-            if (mappingRoom.length > 0) { // changed
-                router.push("/chatroom");
-            }; */
             router.push("/chatroom");
         }, 2000)
         return () => clearTimeout(timer);
