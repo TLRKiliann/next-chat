@@ -24,7 +24,7 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
     useEffect(() => {
         if (session && session.user && session.user.name) {
             setUserName(session.user.name)
-        }
+        };
         return () => console.log("clean-up (e-b)");
     }, [session]);
 
@@ -42,9 +42,12 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
         return null;
     };
     
-    const handleDeleteMsg = (id: number) => {
-        const filterById = newEmailList.filter((newMail: RetrieveEmailProps) => newMail.id !== id);
-        setNewEmailList(filterById);
+    const handleDeleteMsg = (id: number): (() => void) => {
+        const timer = setTimeout(() => {
+            const filterById = newEmailList.filter((newMail: RetrieveEmailProps) => newMail.id !== id);
+            setNewEmailList(filterById);
+        }, 2000);
+        return () => clearTimeout(timer);
     };
 
     return (
@@ -84,22 +87,23 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
                                     <p>
                                         Message: {emailRes.textarea}
                                     </p>
-                                    <form action={formData} className='absolute flex justify-end w-[24%] md:pr-8 xl:pr-0'>
-                                        <input type="number" id="id" name="id" value={emailRes.id} hidden readOnly />
-                                        <button type="submit" id="submit" name="submit" value="btnDeleteMsg"
-                                            disabled={pending}
-                                            onClick={() => handleDeleteMsg(emailRes.id)}
-                                            className='flex items-center justify-center text-sm text-red-600 border border-red-600 
-                                            px-2 rounded'
+                                    <div className='flex'>
+                                        <form action={formData}>
+                                            <input type="number" id="id" name="id" value={emailRes.id} hidden readOnly />
+                                            <button type="submit" id="submit" name="submit" value="btnDeleteMsg"
+                                                disabled={pending}
+                                                onClick={() => handleDeleteMsg(emailRes.id)}
+                                                className='text-sm text-red-600 border border-red-600 px-2 rounded'
+                                            >
+                                                x
+                                            </button>
+                                        </form>
+                                        <button type="button" onClick={() => handleText(emailRes.id)} 
+                                            className='px-2'
                                         >
-                                            x
-                                        </button>
-                                    </form>
-                                    <button type="button" onClick={() => handleText(emailRes.id)} 
-                                        className='px-2'
-                                    >
-                                        <IoIosMailOpen size={24}/>
-                                    </button>            
+                                            <IoIosMailOpen size={24}/>
+                                        </button> 
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -108,7 +112,7 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
             </div>
 
             <div>
-                {findMsg?.email === undefined ? (
+                {!findMsg?.email ? (
                     <p className='text-orange-400 px-10'>No message received...</p>
                 ) : null}
             </div>
