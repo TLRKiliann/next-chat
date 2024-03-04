@@ -15,7 +15,8 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     const { data: session } = useSession();
 
     const [userName, setUserName] = useState<string>("");
-    console.log(userName)
+    console.log(userName, "user session");
+
     useEffect(() => {
         if (session && session.user && session.user.name) {
             setUserName(session.user.name);
@@ -33,7 +34,7 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     const [acceptInvite, setAcceptInvite] = useState<boolean>(false);
     const [refuseInvite, setRefuseInvite] = useState<boolean>(false);
 
-    const handleResponse = (findSender: string) => {
+    const handleResponse = (findSender: string): null | void => {
         const responseToSender = dataUsers.find((data: UsersProps) => data.username === findSender);
         if (responseToSender) {
             setSenderResponse(responseToSender);
@@ -53,17 +54,16 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     const verifyQuestion: UsersProps[] = dataUsers.filter((user: UsersProps) => (
         (user.response === 1) && (user.selectedroom).includes("/question"))
     );
-    //console.log(verifyQuestion, "verifyQuestion");
+
     const verifyInfo: UsersProps[] = dataUsers.filter((user: UsersProps) => (
         (user.response === 1) && (user.selectedroom).includes("/info"))
     );
-    //console.log(verifyInfo, "verifyInfo");
+
     const verifyConfidential: UsersProps[] = dataUsers.filter((user: UsersProps) => (
         (user.response === 1) && (user.selectedroom).includes("/confidential"))
     );
-    //console.log(verifyInfo, "verifyConfidential");
 
-    const handleVerifyRoom = () => {
+    const handleVerifyRoom = (): void => {
         if (verifyQuestion.length === 2) {
             router.push("/chatroom/question");
         } else if (verifyInfo.length === 2) {
@@ -76,16 +76,15 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     };
 
     useEffect(() => {
-        //console.log(verifyQuestion, verifyInfo, verifyConfidential, "verify")
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             handleVerifyRoom();
         }, 2000);
-        return () => console.log("Clean-up verifyRoom (u-o)");
+        return () => clearTimeout(timer);
     }, [verifyQuestion, verifyInfo, verifyConfidential]);
 
     // user 2 response yes or no
-    const handleRouteToChange = (): void => {
-        setTimeout(() => {
+    const handleRouteToChange = (): (() => void) => {
+        const timer = setTimeout(() => {
             const filterDataByRoom: UsersProps[] = dataUsers.filter((d: UsersProps) => d.selectedroom);
             const filterDataByRoomFind: UsersProps | undefined = dataUsers.find((d: UsersProps) => d.selectedroom);
 
@@ -101,6 +100,7 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
                     console.log("2 users required !")
                 }
         }, 2000)
+        return () => clearTimeout(timer);
     };
 
     //initial window invitation

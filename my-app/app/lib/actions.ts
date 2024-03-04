@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 
 export async function mysqlQueryChatroom(prevState: {message: string} | undefined, formData: FormData) {
     try {
-        const chatid = formData.get("chatid");
+        //const chatid = formData.get("chatid");
         const id = formData.get("id");
         const username = formData.get("username");
         const online = formData.get("online");
@@ -14,9 +14,9 @@ export async function mysqlQueryChatroom(prevState: {message: string} | undefine
         const date = formData.get("date");
         const btnSubmit = formData.get("submit");
         if (btnSubmit === "insert") {
-            if (chatid !== null && id !== null && username !== null && online !== null && message !== null && room !== null && date !== null) {
-                const result = await queryMessage(`INSERT INTO ${room.slice(1)} VALUES (?, ?, ?, ?, ?, ?, ?)`, 
-                    [chatid, id, username, message, online, room, date]
+            if (id !== null && username !== null && message !== null && online !== null && room !== null && date !== null) {
+                const result = await queryMessage(`INSERT INTO ${room.slice(1)} (id, username, message, online, room, date) VALUES (?, ?, ?, ?, ?, ?)`, 
+                    [id, username, message, online, room, date]
                 );
                 if (result) {
                     revalidatePath("/chatroom");
@@ -121,16 +121,15 @@ export default async function returnToChatRoom(prevState: {message: string} | un
 //sending mail
 export async function emailSubmitAction(prevState: {message: string} | undefined, formData: FormData) {
     try {
-        const id = formData.get("id");
         const sender = formData.get("sender");
         const email = formData.get("email");
-        const textarea = formData.get("textArea");
+        const textarea = formData.get("textarea");
         const bool_text = formData.get("bool_text");
         const btnEmail = formData.get("submit");
         if (btnEmail === "btnEmail") {
-            if (id !== null && sender !== null && email !== null && textarea !== null && bool_text !== null) {
-                const result = await queryEmail("INSERT INTO mailbox VALUES (?, ?, ?, ?, ?)",
-                    [id, sender, email, textarea, bool_text]
+            if (sender !== null && email !== null && textarea !== null && bool_text !== null) {
+                const result = await queryEmail("INSERT INTO mailbox (sender, email, textarea, bool_text) VALUES (?, ?, ?, ?)",
+                    [sender, email, textarea, bool_text]
                 );
                 if (result) {
                     revalidatePath("/email")

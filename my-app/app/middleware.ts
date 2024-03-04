@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/email')) {
     redirect('/login')
   }
-}
+};
 export const config = {
   matcher: ['/', '/email'],
-}
+};

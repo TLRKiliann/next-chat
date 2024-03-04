@@ -14,6 +14,15 @@ export type UsersProps = {
 };
 
 export type UsersChatProps = {
+    id: number;
+    username: string;
+    message: string;
+    online: number;
+    room: string;
+    date: string;
+};
+
+export type UsersChatByChatIdProps = {
     chatid: number;
     id: number;
     username: string;
@@ -41,13 +50,16 @@ export type UsersToJoin = {
 };
 
 export type EmailProps = {
-    id: number;
     sender: string;
     email: string;
     textarea: string;
     bool_text: number;
 };
 
-export type IdProps = {
+export type RetrieveEmailProps = {
     id: number;
-}
+    sender: string;
+    email: string;
+    textarea: string;
+    bool_text: number;
+};

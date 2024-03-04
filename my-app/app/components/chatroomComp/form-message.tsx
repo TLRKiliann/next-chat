@@ -5,12 +5,11 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { mysqlQueryChatroom } from '@/app/lib/actions';
 import { useFormState, useFormStatus } from 'react-dom';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { EffectFunc } from '@/app/lib/functions';
 
 type dataStateProps = {
-    newId: number;
     username: string | undefined | null;
     message: string;
     date: Date;
@@ -25,8 +24,9 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
     const { data: session } = useSession();
     const pathname = usePathname();
 
+    const router = useRouter();
+
     const [dataState, setDataState] = useState<dataStateProps>({
-        newId: 0,
         username: "",
         message: "",
         date: new Date,
@@ -36,7 +36,7 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
     const callerPathName = EffectFunc({pathname});
 
     useEffect(() => {
-        if (session && session.user && session.user.name && session.user.image) {
+        if (session && session.user && session.user.name) {
             setDataState((prev) => ({...prev, username: session.user?.name}));
         };
         return () => console.log("Clean-up useEffect (f-m) 1 !");
@@ -44,7 +44,7 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
 
     useEffect(() => {
         if (dataroom) {
-            setDataState((prev) => ({...prev, newId: dataroom.length + 1, date: new Date, message: ""}));
+            setDataState((prev) => ({...prev, date: new Date, message: ""}));
         }
         return () => console.log("Clean-up useEffect (f-m) 2 !");
     }, [dataroom]);
@@ -81,7 +81,7 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
     };
 
     if (!session) {
-        redirect("/login")
+        router.push("/login")
     };
 
     if (code?.message) {
@@ -97,11 +97,9 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
                         to-blue-900 to-90% px-4'
                     >
 
-                        <input type="number" id="chatid" name="chatid" value={dataState.newId} hidden readOnly />
                         <input type="number" id="id" name="id" value={d.id} hidden readOnly />
                         
                         <input type="text" id="username" name="username" value={dataState.username} hidden readOnly />
-                        <input type="number" id="online" name="online" value={d.online} hidden readOnly />
 
                         <div className='flex items-center justify-end w-full'>
                             <input type="text" id="message" name="message" value={dataState.message} 
@@ -109,6 +107,7 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
                                 placeholder="Comment something here..." 
                                 className='w-full text-slate-800 bg-slate-200 placeholder:text-slate-500 mr-10 px-4 py-1 rounded-full'
                             />
+
                             <button onClick={handleToggleEmoji}
                                 className='absolute mr-11 text-xl'
                             >
@@ -153,6 +152,7 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
                             }
                         </div>
 
+                        <input type="number" id="online" name="online" value={d.online} hidden readOnly />
                         <input type="text" id="room" name="room" value={callerPathName} hidden readOnly />
                         <input type="text" id="date" name="date" value={dataState.date.toLocaleString()} hidden readOnly />
 

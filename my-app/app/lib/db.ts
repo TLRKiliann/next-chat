@@ -1,6 +1,6 @@
 import mysql from 'mysql2/promise';
 import type {
-    UsersChatProps, UsersProps, UsersToJoin, EmailProps, IdProps
+    UsersChatProps, UsersProps, UsersToJoin, EmailProps, RetrieveEmailProps
 } from './definitions';
 
 type GenericProps = UsersChatProps | UsersProps | UsersToJoin | [];

@@ -19,8 +19,8 @@ export default async function EmailPage() {
     const req = await queryUsers("SELECT * FROM userschat", []);
     const dataUsers: string = JSON.stringify(req);
 
-    const requestEmail = await queryEmail("SELECT * FROM mailbox", []);
-    const emailResponse: string = JSON.stringify(requestEmail);
+    const request = await queryEmail("SELECT * FROM mailbox", []);
+    const emailResponse: string = JSON.stringify(request);
 
     if (!dataUsers) {
         throw new Error("Error: dataUsers not accessible from db !");
@@ -39,7 +39,7 @@ export default async function EmailPage() {
 
             <div className="flex items-center justify-around w-full h-[600px] m-auto px-10">
 
-                <EmailForm dataUsers={JSON.parse(dataUsers)} emailResponse={JSON.parse(emailResponse)} />
+                <EmailForm dataUsers={JSON.parse(dataUsers)} />
 
                 <EmailBox dataUsers={JSON.parse(dataUsers)} emailResponse={JSON.parse(emailResponse)} />
 
