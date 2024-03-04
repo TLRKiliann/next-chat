@@ -10,9 +10,8 @@ export default function FormSelectRoom() {
   
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>): void => {
       const { value }: HTMLSelectElement = event.currentTarget;
-      //console.log(value, "value selected");
       setSelectVal(value);
-    }
+    };
   
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
       event.preventDefault();
@@ -29,10 +28,10 @@ export default function FormSelectRoom() {
         console.log("chatroom by default")
         router.push(`/chatroom`);
       }
-    }
+    };
 
     return (
-        <form onSubmit={(e) => handleSubmit(e)} 
+        <form onSubmit={(event) => handleSubmit(event)} 
             className='flex flex-col items-center justify-between bg-slate-900/60 w-2/5 h-auto 
               m-auto mt-40 p-10 rounded-xl shadow-inside'>
 
