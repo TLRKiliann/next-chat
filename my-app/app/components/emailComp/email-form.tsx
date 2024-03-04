@@ -1,6 +1,6 @@
 "use client";
 
-import type { EmailProps, UsersProps } from '@/app/lib/definitions';
+import type { UsersProps } from '@/app/lib/definitions';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useFormState, useFormStatus } from 'react-dom';
@@ -8,7 +8,7 @@ import { emailSubmitAction } from '@/app/lib/actions';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersProps[], emailResponse: EmailProps[]}) {
+export default function EmailForm({dataUsers}: {dataUsers: UsersProps[]}) {
 
     const { data: session } = useSession();
 
@@ -16,23 +16,14 @@ export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersP
     const [code, formData] = useFormState(emailSubmitAction, undefined);
 
     const [userName, setUserName] = useState<string>("");
-    const [newId, setNewId] = useState<number>(0);
-    const [email, setEmail] = useState<string>("Email");
-    const [textArea, setTextArea] = useState<string>("");
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            const nbEmail = emailResponse.length + 1;
-            setNewId(nbEmail);
-        }, 2000);
-        return () => console.log("clean-up email (1)");
-    }, [emailResponse]);
+    const [email, setEmail] = useState<string>("");
+    const [textarea, setTextarea] = useState<string>("");
 
     useEffect(() => {
         if (session && session.user && session.user.name) {
             setUserName(session.user.name)
         };
-        return () => console.log("clean-up email (2)");
+        return () => console.log("clean-up session email (e-f)");
     }, [session]);
 
     const handleEmail = (event: React.ChangeEvent<HTMLSelectElement>): void => {
@@ -42,7 +33,7 @@ export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersP
 
     const handleText = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
         const { value }: HTMLTextAreaElement = event.currentTarget;
-        setTextArea(value);
+        setTextarea(value);
     };
 
     const handleTimer = () => {
@@ -50,10 +41,12 @@ export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersP
             autoClose: 2000,
             position: 'top-center'
         });
-        setTextArea("");
+        const timer = setTimeout(() => {
+            setTextarea("");
+            console.log("text erased")
+        }, 2000);
+        return () => clearTimeout(timer);
     }
-
-    //console.log(newId, "new ID");
     
     if (code?.message) {
         console.log(code?.message);
@@ -75,17 +68,14 @@ export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersP
                     </select>
                 </div>
 
-                <input type="number" name="id" id="id" value={newId} hidden readOnly />
                 <input type="text" name="sender" id="sender" value={userName} hidden readOnly />
 
-                <textarea name="textArea" id="textArea" cols={30} rows={10} placeholder="Comment here..."
-                    className='text-slate-700 p-2 rounded' value={textArea} onChange={handleText}
+                <textarea name="textarea" id="textarea" cols={30} rows={10} placeholder="Comment here..."
+                    className='text-slate-700 p-2 rounded' value={textarea} onChange={(event) => handleText(event)}
                 >
                 </textarea>
 
                 <input type="number" name="bool_text" id="bool_text" value={0} hidden readOnly />
-                
-                <input type="reset" id="refresher" hidden />
 
                 <div className='flex w-full py-4'>
                     <button type="submit" id="submit" name="submit" value="btnEmail" disabled={pending}
@@ -95,10 +85,6 @@ export default function EmailForm({dataUsers, emailResponse}: {dataUsers: UsersP
                         {pending ? "Pending..." : "Submit"}
                     </button>
                 </div>
-
-                {/* {code?.message ? (
-                    <p className='text-cyan-400 text-center mb-4'>{code.message}</p>
-                ) : null} */}
 
             </form>
 
