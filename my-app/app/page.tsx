@@ -1,12 +1,16 @@
 "use client";
+
 import { useSession } from "next-auth/react";
 import FormSelectRoom from "@/app/components/FormSelectRoom";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const { data: session } = useSession();
+
+  const router = useRouter();
+
   if (!session) {
-    redirect("/login")
+    router.push("/login")
   }
   return (
     <main className="w-full min-h-screen bg-slate-800">

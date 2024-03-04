@@ -3,7 +3,7 @@
 import type { UsersChatByChatIdProps } from '@/app/lib/definitions'
 import React, { useState, useEffect, useRef } from 'react'
 import { useSession } from "next-auth/react";
-import { redirect, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { EffectFunc } from '@/app/lib/functions';
 
 export default function ScreenMessage({dataroom}: {dataroom: UsersChatByChatIdProps[]}) {
@@ -19,6 +19,8 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatByChatIdPr
 
     const callerPathName = EffectFunc({pathname});
 
+    const router = useRouter();
+
     useEffect(() => {
         if (session && session.user && session.user.name) {
             setUsername(session.user.name);
@@ -32,7 +34,7 @@ export default function ScreenMessage({dataroom}: {dataroom: UsersChatByChatIdPr
     }, [updateMsg])
 
     if (!session) {
-        redirect("/login")
+        router.push("/login")
     };
 
     return (               
