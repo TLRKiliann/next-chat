@@ -2,15 +2,13 @@
 
 import React from 'react'
 import { useSession, signOut } from "next-auth/react";
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import Image from "next/image";
 
 export default function LogoutPage() {
 
   const { data: session } = useSession();
-
-  const router = useRouter();
 
   if (session) {
     return (
@@ -44,6 +42,6 @@ export default function LogoutPage() {
       </div>
     )
   } else {
-      router.push("/");
+      redirect("/");
   }
 }
