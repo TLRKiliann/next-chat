@@ -36,7 +36,7 @@ export default function EmailForm({dataUsers}: {dataUsers: UsersProps[]}) {
         setTextarea(value);
     };
 
-    const handleTimer = () => {
+    const handleTimer = (): (() => void) => {
         toast.success("Message sent !", {
             autoClose: 2000,
             position: 'top-center'

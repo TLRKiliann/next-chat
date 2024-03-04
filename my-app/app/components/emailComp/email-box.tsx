@@ -1,14 +1,14 @@
 "use client";
 
 import { deleteMessage } from '@/app/lib/actions';
-import type { EmailProps, UsersProps } from '@/app/lib/definitions';
+import type { RetrieveEmailProps, UsersProps } from '@/app/lib/definitions';
 import { useSession } from 'next-auth/react';
 import React, { useState, useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { IoIosMail } from "react-icons/io";
 import { IoIosMailOpen } from "react-icons/io";
 
-export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersProps[], emailResponse: EmailProps[]}) {
+export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersProps[], emailResponse: RetrieveEmailProps[]}) {
 
     const { pending } = useFormStatus();
     const [code, formData] = useFormState(deleteMessage, undefined);
@@ -16,10 +16,10 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
     const { data: session } = useSession();
 
     const [userName, setUserName] = useState<string>("");
-    const [newEmailList, setNewEmailList] = useState<EmailProps[]>(emailResponse);
+    const [newEmailList, setNewEmailList] = useState<RetrieveEmailProps[]>(emailResponse);
 
     const findUser: UsersProps | undefined = dataUsers.find((usr: UsersProps) => usr.username === userName);
-    const findMsg: EmailProps | undefined = emailResponse.find((msg: EmailProps) => msg.email === findUser?.email);
+    const findMsg: RetrieveEmailProps | undefined = emailResponse.find((msg: RetrieveEmailProps) => msg.email === findUser?.email);
     
     useEffect(() => {
         if (session && session.user && session.user.name) {
@@ -29,13 +29,13 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
     }, [session]);
 
     const handleText = (id: number): void | null => {
-        const findTextById: EmailProps | undefined = newEmailList.find((email: EmailProps) => email.id === id);
+        const findTextById: RetrieveEmailProps | undefined = newEmailList.find((email: RetrieveEmailProps) => email.id === id);
         if (findTextById?.bool_text === 0) {
-            const mapBoolTextNeg: EmailProps[] = newEmailList.map((email: EmailProps) => email.id === findTextById.id 
+            const mapBoolTextNeg: RetrieveEmailProps[] = newEmailList.map((email: RetrieveEmailProps) => email.id === findTextById.id 
                 ? {...email, bool_text: 1} : email);
             setNewEmailList(mapBoolTextNeg);
         } else if (findTextById?.bool_text === 1) {
-            const mapBoolTextPos: EmailProps[] = newEmailList.map((email: EmailProps) => email.id === findTextById.id 
+            const mapBoolTextPos: RetrieveEmailProps[] = newEmailList.map((email: RetrieveEmailProps) => email.id === findTextById.id 
                 ? {...email, bool_text: 0} : email);
             setNewEmailList(mapBoolTextPos);
         }
@@ -43,7 +43,7 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
     };
     
     const handleDeleteMsg = (id: number) => {
-        const filterById = newEmailList.filter((newMail: EmailProps) => newMail.id !== id);
+        const filterById = newEmailList.filter((newMail: RetrieveEmailProps) => newMail.id !== id);
         setNewEmailList(filterById);
     };
 
@@ -68,7 +68,7 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
                     <p className="text-cyan-400 px-2 py-1">Mail</p>
                 </div>
                 
-                {newEmailList.map((emailRes: EmailProps) => (
+                {newEmailList.map((emailRes: RetrieveEmailProps) => (
                     (emailRes.sender !== userName) && (emailRes.email === findMsg?.email) ? (
                         <div key={emailRes.id} className='flex items-center justify-between bg-blue-900 border-b 
                             border-cyan-600 py-2'
