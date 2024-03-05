@@ -37,7 +37,7 @@ export default async function InfoRoom() {
 
             <HeaderChatroom>Info</HeaderChatroom>
 
-            <div className='flex w-full h-[calc(100%-72px)]'>
+            <div className='flex w-full h-full pt-[72px]'>
 
                 <UserOnline dataUsers={JSON.parse(dataUsers)} />
 

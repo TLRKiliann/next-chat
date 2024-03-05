@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { mysqlQueryChatroom } from '@/app/lib/actions';
 import { useFormState, useFormStatus } from 'react-dom';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { EffectFunc } from '@/app/lib/functions';
 
@@ -23,8 +23,6 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
 
     const { data: session } = useSession();
     const pathname = usePathname();
-
-    const router = useRouter();
 
     const [dataState, setDataState] = useState<dataStateProps>({
         username: "",
@@ -81,7 +79,7 @@ export default function FormMessage({dataroom, dataUsers}: {dataroom: UsersChatP
     };
 
     if (!session) {
-        router.push("/login")
+        redirect("/login")
     };
 
     if (code?.message) {

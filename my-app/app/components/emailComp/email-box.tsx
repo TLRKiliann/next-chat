@@ -51,7 +51,7 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
     };
 
     return (
-        <div className='md:w-[440px] xl:w-[600px] h-auto bg-gradient-to-r from-blue-900 from-10% 
+        <div className='md:w-[440px] xl:w-[650px] h-auto bg-gradient-to-r from-blue-900 from-10% 
             via-sky-700 via-50% to-blue-900 to-90% pt-2 pb-5 rounded-xl'>
 
             <h1 className='text-xl text-center py-2'>MailBox</h1>
@@ -76,14 +76,14 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
                         <div key={emailRes.id} className='flex items-center justify-between bg-blue-900 border-b 
                             border-cyan-600 py-2'
                         >
-                            <p className="px-2 py-1">{emailRes.sender}</p>
+                            <p className="px-2 py-2">{emailRes.sender}</p>
                         
                             {emailRes.bool_text === 0 ? (
-                                <button type="button" onClick={() => handleText(emailRes.id)} className='px-2'>
+                                <button type="button" onClick={() => handleText(emailRes.id)} className='hover:text-slate-400 px-2'>
                                     <IoIosMail size={24} />
                                 </button>
                                 ) : (
-                                <div className='flex items-center justify-between w-full text-slate-800 bg-slate-200 pl-2 rounded'>
+                                <div className='flex items-center justify-between w-full text-slate-800 bg-slate-200 pl-2 py-1 rounded'>
                                     <p>
                                         Message: {emailRes.textarea}
                                     </p>
@@ -93,13 +93,14 @@ export default function EmailBox({dataUsers, emailResponse}: {dataUsers: UsersPr
                                             <button type="submit" id="submit" name="submit" value="btnDeleteMsg"
                                                 disabled={pending}
                                                 onClick={() => handleDeleteMsg(emailRes.id)}
-                                                className='text-sm text-red-600 border border-red-600 px-2 rounded'
+                                                className='w-6 h-6 text-sm text-red-600 border border-red-600 hover:bg-red-200
+                                                active:text-slate-100 active:bg-red-600 my-auto rounded-full'
                                             >
                                                 x
                                             </button>
                                         </form>
                                         <button type="button" onClick={() => handleText(emailRes.id)} 
-                                            className='px-2'
+                                            className='text-blue-700 hover:text-blue-800 px-2'
                                         >
                                             <IoIosMailOpen size={24}/>
                                         </button> 

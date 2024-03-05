@@ -20,7 +20,9 @@ export default function Home() {
 
       </div>
 
-      <FormSelectRoom />
+      <div className="flex items-center justify-center w-full h-screen -mt-[105px]">
+        <FormSelectRoom />
+      </div>
 
     </main>
   );

@@ -1,12 +1,20 @@
 "use client";
 
 import type { UsersProps } from '@/app/lib/definitions';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import DisplayInvitation from './invitation/display-invitation';
 import ResponseReceiver from './invitation/response-receiver';
 import UsersBoard from './invitation/users-board';
+
+type GlobalStateProps = {
+    userName: string | null | undefined;
+    senderResponse: UsersProps | undefined;
+    newMapping: UsersProps[];
+    acceptInvite: boolean;
+    refuseInvite: boolean;
+};
 
 export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
 
@@ -14,32 +22,30 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
 
     const { data: session } = useSession();
 
-    const [userName, setUserName] = useState<string>("");
-    console.log(userName, "user session");
-
-    useEffect(() => {
-        if (session && session.user && session.user.name) {
-            setUserName(session.user.name);
-        }
-        return () => console.log("Clean-up session (u-o) 1 !");
-    }, [session]);
-
-    const [senderResponse, setSenderResponse] = useState<UsersProps | undefined>(undefined);
-
     const mapping: UsersProps[] = dataUsers.filter((obj: {username: string}, index: number) => {
         return index === dataUsers.findIndex((o: {username: string}) => obj.username === o.username)
     });
 
-    const [newMapping, setNewMapping] = useState<UsersProps[]>(mapping);
-    const [acceptInvite, setAcceptInvite] = useState<boolean>(false);
-    const [refuseInvite, setRefuseInvite] = useState<boolean>(false);
+    const [globalState, setGlobalState] = useState<GlobalStateProps>({
+        userName: "",
+        senderResponse: undefined,
+        newMapping: mapping,
+        acceptInvite: false,
+        refuseInvite: false
+    });
 
-    const handleResponse = (findSender: string): null | void => {
+    useEffect(() => {
+        if (session && session.user && session.user.name) {
+            setGlobalState((prev) => ({...prev, userName: session.user?.name}));
+        }
+        return () => console.log("Clean-up session (u-o) 1 !");
+    }, [session]);
+
+
+    const handleResponse = (findSender: string): void => {
         const responseToSender = dataUsers.find((data: UsersProps) => data.username === findSender);
         if (responseToSender) {
-            setSenderResponse(responseToSender);
-        } else {
-            return null;
+            setGlobalState((prev) => ({...prev, senderResponse: responseToSender}));
         }
     };
 
@@ -64,21 +70,22 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     );
 
     const handleVerifyRoom = (): void => {
+        let redirectRoute: string = "";
         if (verifyQuestion.length === 2) {
-            router.push("/chatroom/question");
+            redirectRoute = "/chatroom/question";
         } else if (verifyInfo.length === 2) {
-            router.push("/chatroom/info");
+            redirectRoute = "/chatroom/info";
         } else if (verifyConfidential.length === 2) {
-            router.push("/chatroom/confidential");
+            redirectRoute = "/chatroom/confidential";
         } else {
             console.log("There aren't 2 response for same room");
+            return;
         }
+        router.push(redirectRoute);
     };
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            handleVerifyRoom();
-        }, 2000);
+        const timer = setTimeout(handleVerifyRoom, 2000);
         return () => clearTimeout(timer);
     }, [verifyQuestion, verifyInfo, verifyConfidential]);
 
@@ -109,7 +116,7 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
             ? {...user, boolinvitation: 1}
             : user
         );
-        setNewMapping(openInvitation);
+        setGlobalState((prev) => ({...prev, newMapping: openInvitation}));
     };
 
     //to close invitation window
@@ -118,39 +125,39 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
             ? {...user, boolinvitation: 0}
             : user
         );
-        setNewMapping(closeInvitation);
+        setGlobalState((prev) => ({...prev, newMapping: closeInvitation}));
     };
 
     // yes
     const handleAccept = (): void => {
-        setAcceptInvite(!acceptInvite);
+        setGlobalState((prev) => ({...prev, acceptInvite: !prev.acceptInvite}))
     };
 
     // no
     const handleRefuse = (): void => {
-        setRefuseInvite(!refuseInvite);
+        setGlobalState((prev) => ({...prev, refuseInvite: !prev.refuseInvite}))
     };
 
     return (
         <div className='flex flex-col w-[25%] bg-blue-900'>
 
             <UsersBoard 
-                newMapping={newMapping}
+                newMapping={globalState.newMapping}
                 handleDisplayLinks={(id) => handleDisplayLinks(id)}
             />
 
             <ResponseReceiver 
-                newMapping={newMapping}
-                acceptInvite={acceptInvite}
-                refuseInvite={refuseInvite}
+                newMapping={globalState.newMapping}
+                acceptInvite={globalState.acceptInvite}
+                refuseInvite={globalState.refuseInvite}
                 handleAccept={handleAccept}
                 handleRefuse={handleRefuse}
-                senderResponse={senderResponse}
+                senderResponse={globalState.senderResponse}
                 handleRouteToChange={handleRouteToChange}
             />
             
             <DisplayInvitation
-                newMapping={newMapping} 
+                newMapping={globalState.newMapping} 
                 handleCloseInvitation={(id: number) => handleCloseInvitation(id)} 
             />
 

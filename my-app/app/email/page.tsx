@@ -37,7 +37,7 @@ export default async function EmailPage() {
 
             <div className='flex w-full md:h-auto xl:min-h-screen m-auto'>
 
-            <div className="flex items-center justify-around w-full h-[600px] m-auto px-10">
+            <div className="flex items-center justify-around w-full h-screen m-auto px-10 pt-20">
 
                 <EmailForm dataUsers={JSON.parse(dataUsers)} />
 
