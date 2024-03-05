@@ -8,36 +8,44 @@ import DisplayInvitation from './invitation/display-invitation';
 import ResponseReceiver from './invitation/response-receiver';
 import UsersBoard from './invitation/users-board';
 
+type GlobalStateProps = {
+    userName: string | null | undefined;
+    senderResponse: UsersProps | undefined;
+    newMapping: UsersProps[];
+    acceptInvite: boolean;
+    refuseInvite: boolean;
+};
+
 export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
 
     const router = useRouter();
 
     const { data: session } = useSession();
 
-    const [userName, setUserName] = useState<string>("");
-    console.log(userName, "user session");
-
-    useEffect(() => {
-        if (session && session.user && session.user.name) {
-            setUserName(session.user.name);
-        }
-        return () => console.log("Clean-up session (u-o) 1 !");
-    }, [session]);
-
-    const [senderResponse, setSenderResponse] = useState<UsersProps | undefined>(undefined);
-
     const mapping: UsersProps[] = dataUsers.filter((obj: {username: string}, index: number) => {
         return index === dataUsers.findIndex((o: {username: string}) => obj.username === o.username)
     });
 
-    const [newMapping, setNewMapping] = useState<UsersProps[]>(mapping);
-    const [acceptInvite, setAcceptInvite] = useState<boolean>(false);
-    const [refuseInvite, setRefuseInvite] = useState<boolean>(false);
+    const [globalState, setGlobalState] = useState<GlobalStateProps>({
+        userName: "",
+        senderResponse: undefined,
+        newMapping: mapping,
+        acceptInvite: false,
+        refuseInvite: false
+    });
+
+    useEffect(() => {
+        if (session && session.user && session.user.name) {
+            setGlobalState((prev) => ({...prev, userName: session.user?.name}));
+        }
+        return () => console.log("Clean-up session (u-o) 1 !");
+    }, [session]);
+
 
     const handleResponse = (findSender: string): null | void => {
         const responseToSender = dataUsers.find((data: UsersProps) => data.username === findSender);
         if (responseToSender) {
-            setSenderResponse(responseToSender);
+            setGlobalState((prev) => ({...prev, senderResponse: responseToSender}));
         } else {
             return null;
         }
@@ -109,7 +117,7 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
             ? {...user, boolinvitation: 1}
             : user
         );
-        setNewMapping(openInvitation);
+        setGlobalState((prev) => ({...prev, newMapping: openInvitation}));
     };
 
     //to close invitation window
@@ -118,39 +126,39 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
             ? {...user, boolinvitation: 0}
             : user
         );
-        setNewMapping(closeInvitation);
+        setGlobalState((prev) => ({...prev, newMapping: closeInvitation}));
     };
 
     // yes
     const handleAccept = (): void => {
-        setAcceptInvite(!acceptInvite);
+        setGlobalState((prev) => ({...prev, acceptInvite: !prev.acceptInvite}))
     };
 
     // no
     const handleRefuse = (): void => {
-        setRefuseInvite(!refuseInvite);
+        setGlobalState((prev) => ({...prev, refuseInvite: !prev.refuseInvite}))
     };
 
     return (
         <div className='flex flex-col w-[25%] bg-blue-900'>
 
             <UsersBoard 
-                newMapping={newMapping}
+                newMapping={globalState.newMapping}
                 handleDisplayLinks={(id) => handleDisplayLinks(id)}
             />
 
             <ResponseReceiver 
-                newMapping={newMapping}
-                acceptInvite={acceptInvite}
-                refuseInvite={refuseInvite}
+                newMapping={globalState.newMapping}
+                acceptInvite={globalState.acceptInvite}
+                refuseInvite={globalState.refuseInvite}
                 handleAccept={handleAccept}
                 handleRefuse={handleRefuse}
-                senderResponse={senderResponse}
+                senderResponse={globalState.senderResponse}
                 handleRouteToChange={handleRouteToChange}
             />
             
             <DisplayInvitation
-                newMapping={newMapping} 
+                newMapping={globalState.newMapping} 
                 handleCloseInvitation={(id: number) => handleCloseInvitation(id)} 
             />
 
