@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import React, { useState, useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 type DisplayInvitationProps = {
     newMapping: UsersProps[];
@@ -19,8 +19,6 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
     const [code, formData] = useFormState(mysqlSendInvitation, undefined);
 
     const {data: session} = useSession();
-
-    const router = useRouter();
 
     const [userName, setUserName] = useState<string>("");
     const [selectedRoom, setSelectedRoom] = useState<string>("");
@@ -39,7 +37,7 @@ export default function DisplayInvitation({newMapping, handleCloseInvitation}: D
     }, [session])
 
     if (!session) {
-        router.push("/login")
+        redirect("/login")
     };
 
     const handleInfo = (): void => {

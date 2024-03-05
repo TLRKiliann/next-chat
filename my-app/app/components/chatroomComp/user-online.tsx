@@ -1,7 +1,7 @@
 "use client";
 
 import type { UsersProps } from '@/app/lib/definitions';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import DisplayInvitation from './invitation/display-invitation';
@@ -42,12 +42,10 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     }, [session]);
 
 
-    const handleResponse = (findSender: string): null | void => {
+    const handleResponse = (findSender: string): void => {
         const responseToSender = dataUsers.find((data: UsersProps) => data.username === findSender);
         if (responseToSender) {
             setGlobalState((prev) => ({...prev, senderResponse: responseToSender}));
-        } else {
-            return null;
         }
     };
 
@@ -72,21 +70,22 @@ export default function UserOnline({dataUsers}: {dataUsers: UsersProps[]}) {
     );
 
     const handleVerifyRoom = (): void => {
+        let redirectRoute: string = "";
         if (verifyQuestion.length === 2) {
-            router.push("/chatroom/question");
+            redirectRoute = "/chatroom/question";
         } else if (verifyInfo.length === 2) {
-            router.push("/chatroom/info");
+            redirectRoute = "/chatroom/info";
         } else if (verifyConfidential.length === 2) {
-            router.push("/chatroom/confidential");
+            redirectRoute = "/chatroom/confidential";
         } else {
             console.log("There aren't 2 response for same room");
+            return;
         }
+        router.push(redirectRoute);
     };
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            handleVerifyRoom();
-        }, 2000);
+        const timer = setTimeout(handleVerifyRoom, 2000);
         return () => clearTimeout(timer);
     }, [verifyQuestion, verifyInfo, verifyConfidential]);
 
