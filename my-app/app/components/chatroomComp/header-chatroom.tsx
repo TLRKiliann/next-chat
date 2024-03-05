@@ -14,7 +14,7 @@ export default function HeaderChatroom({children}: {children: React.ReactNode}) 
     };
 
     return (
-        <div className="flex items-center justify-between bg-gradient-to-r from-blue-900 from-10% 
+        <div className="fixed z-10 w-full flex items-center justify-between bg-gradient-to-r from-blue-900 from-10% 
             via-sky-700 via-30% to-blue-900 to-90%"
         >
 
@@ -27,6 +27,9 @@ export default function HeaderChatroom({children}: {children: React.ReactNode}) 
                     <Link href="/">Home</Link>
                 </div>
                 <div>
+                    <Link href="/chatroom">Chatroom</Link>
+                </div>
+                <div>
                     <Link href="/chatroom/development">Development</Link>
                 </div>
                 <div>
@@ -34,6 +37,9 @@ export default function HeaderChatroom({children}: {children: React.ReactNode}) 
                 </div>
                 <div>
                     <Link href="/chatroom/security">Security</Link>
+                </div>
+                <div>
+                    <Link href="/email">Email</Link>
                 </div>
             </div>
 
